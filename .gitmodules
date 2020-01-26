@@ -1,0 +1,3 @@
+[submodule "libmx"]
+	path = libmx
+	url = https://github.com/AIexMoran/libmx
