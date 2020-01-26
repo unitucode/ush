@@ -7,6 +7,7 @@ int mx_get_input(char *buf) {
     char tmp[1];
     size_t index = 0;
 
+    buf[0] = '\0';
     while (read(STDIN_FILENO, tmp, 1) && isvalid(tmp[0])
            && index < ARG_MAX) {
         if (tmp[0] == 127 && index > 0) {
