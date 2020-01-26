@@ -7,3 +7,4 @@
 #include "inc/libmx.h"
 
 int mx_unset(char *name);
+int mx_pwd(char *flags);
