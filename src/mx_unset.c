@@ -4,7 +4,7 @@ int mx_unset(char *name) {
     int result = 0;
     char **split;
     
-    if (mx_strcmp("", name) == 0) {
+    if (name == NULL) {
         fprintf(stderr, "unset: not enough arguments\n");
         return 1;
     }
