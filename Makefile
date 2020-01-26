@@ -8,7 +8,8 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
-mx_export.c \
+      mx_export.c \
+	  mx_unset.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

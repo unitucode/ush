@@ -6,7 +6,7 @@ static void get_value(char **value, char *str, int space_index);
 void mx_export(char *str) {
     char **strs = mx_strsplit(str, ' '); 
     bool flag = 0;
-a
+
     for (int i = 0; strs[i]; i++) {
         char *value = mx_strdup("");
         int space_index = mx_get_char_index(strs[i], '=');
