@@ -16,3 +16,6 @@
 #define MX_SHELL_PROMPT "u$h"
 
 int mx_get_input(char *buf);
+
+int mx_unset(char *name);
+void mx_export(char *str);
