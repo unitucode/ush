@@ -16,8 +16,9 @@
 
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h"
+#define MX_NON_PRINTABLE "[\x03\x04\x0a]"
 
-int mx_get_input(char *buf);
+void mx_get_input(char *buf, int *code);
 struct termios *mx_get_tty();
 void mx_enable_canon();
 void mx_disable_canon();

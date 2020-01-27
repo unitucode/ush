@@ -18,7 +18,7 @@ static void main_cycle() {
 
     while (strcmp(cmd, "exit") && result != -1) {
         printf("%s> ", MX_SHELL_PROMPT);
-        result = mx_get_input(cmd);
+        mx_get_input(cmd, &result);
         printf("\r\n");
     }
 }
