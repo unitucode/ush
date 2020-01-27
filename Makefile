@@ -11,6 +11,7 @@ SRC = mx_ush.c \
 	mx_get_input.c \
     mx_export.c \
 	mx_unset.c \
+	mx_pwd.c \
 	mx_get_tty.c \
 	mx_enable_canon.c \
 	mx_disable_canon.c \

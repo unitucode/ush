@@ -26,3 +26,4 @@ bool mx_match(char *src, char *regex);
 
 int mx_unset(char *name);
 void mx_export(char *str);
+int mx_pwd(char **flags);
