@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static bool isvalid(char *c);
+static bool isvalid(char *c, int index);
 static void backspace(size_t *index, int times);
 static void set_code(char *tmp, int *code, int index);
 
@@ -10,7 +10,7 @@ void mx_get_input(char *buf, int *code) {
 
     buf[0] = '\0';  
     while (read(STDIN_FILENO, tmp, 5)
-           && index < ARG_MAX && isvalid(tmp)) {
+           && index < ARG_MAX && isvalid(tmp, index)) {
         if (tmp[0] == 0x7f && index > 0)
             backspace(&index, 1);
         if (tmp[0] == 0x15)
@@ -40,7 +40,10 @@ static void backspace(size_t *index, int times) {
     }
 }
 
-static bool isvalid(char *c) {
+static bool isvalid(char *c, int index) {
+    if (c[0] == '\x04' && !index) {
+        return false;
+    }
     if (mx_match(c, MX_NON_PRINTABLE)) {
         return false;
     }
