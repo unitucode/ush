@@ -10,12 +10,18 @@
 #include <termios.h>
 #include <fcntl.h>
 #include <ctype.h>
+#include <regex.h>
+#include <stdbool.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h"
 
 int mx_get_input(char *buf);
+struct termios *mx_get_tty();
+void mx_enable_canon();
+void mx_disable_canon();
+bool mx_match(char *src, char *regex);
 
 int mx_unset(char *name);
 void mx_export(char *str);

@@ -2,10 +2,13 @@
 
 static void main_cycle();
 static void init();
+static void deinit();
 
 int main() {
     init();
     main_cycle();
+    deinit();
+    system("leaks -q ush");
     return 0;
 }
 
@@ -20,11 +23,12 @@ static void main_cycle() {
     }
 }
 
-static void init() {
-    struct termios tty;
+static void deinit() {
+    mx_disable_canon();
+}
 
+static void init() {
+    tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);
-    tcgetattr(STDIN_FILENO, &tty);
-    tty.c_lflag &= ~(ICANON | ISIG | ECHO | IEXTEN);
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &tty);
+    mx_enable_canon();
 }
