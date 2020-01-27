@@ -29,6 +29,8 @@ void mx_get_input(char *buf, int *code) {
 static void set_code(char *tmp, int *code) {
     if (tmp[0] == '\x03')
         *code = 130;
+    if (tmp[0] == '\x04')
+        *code = -1;
 }
 
 static void backspace(size_t *index, int times) {
