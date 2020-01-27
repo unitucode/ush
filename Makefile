@@ -10,6 +10,7 @@ INC = ush.h
 SRC = mx_ush.c \
       mx_export.c \
 	  mx_unset.c \
+	  mx_pwd.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
