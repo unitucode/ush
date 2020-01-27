@@ -9,3 +9,4 @@
 
 int mx_unset(char *name);
 void mx_export(char *str);
+bool mx_pwd(char *flags);

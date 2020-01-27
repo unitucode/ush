@@ -1,7 +1,8 @@
 #include "ush.h"
 
-int main(int argc, char **argv) {
-    printf("init");
-    argc++;
-    argv++;
+int main() {
+    bool retval = mx_pwd("-P");
+
+    system("leaks -q ush");
+    return retval;
 }
