@@ -8,9 +8,14 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
-      mx_export.c \
-	  mx_unset.c \
-	  mx_pwd.c \
+	mx_get_input.c \
+    mx_export.c \
+	mx_unset.c \
+	mx_pwd.c \
+	mx_get_tty.c \
+	mx_enable_canon.c \
+	mx_disable_canon.c \
+	mx_match.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

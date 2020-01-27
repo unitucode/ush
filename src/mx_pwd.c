@@ -1,43 +1,50 @@
 #include "ush.h"
 
-static bool pars_flag(char **flags, bool *mode);
-static void cross_dir();
+static bool pars_flags(char **flags, bool *mode);
+static bool is_flag_stop(char *flag) ;
 
-bool mx_pwd(char *flags) {
+int mx_pwd(char **flags) {
     bool mode = 0;
-    bool exit_status = 0;
 
-    while (*flags != '\0') {
-        if (*flags != ' ') {
-            if (*flags == '-')
-                exit_status = pars_flag(&flags, &mode);
-            else
-                fprintf(stderr, "%s", "pwd: too many arguments");
-                return 1;
-        }
-        flags++;
+    if (!pars_flags(flags, &mode)) {
+        if (mode)
+            puts(realpath(getenv("PWD"), NULL));
+        else
+            puts(getenv("PWD"));
+        return 0;
     }
-    if (mode == 1)
-        cross_dir();
-    else
-        printf("%s", getenv("PWD"));
-    return exit_status;
+    return 1;
 }
 
-static void cross_dir() {
-    printf("Flag -P");
-}
+// pars_flags return 1 if any error cases, else 0
+static bool pars_flags(char **flags, bool *mode) {
+    bool flag_stop = 0;
 
-static bool pars_flag(char **flags, bool *mode) {
-    (*flags)++;
-    while (**flags != ' ' && **flags != '\0') {
-        if (**flags == 'P')
-            *mode = 1;
-        else if (**flags != 'L') {
-            fprintf(stderr, "%s%c", "pwd: bad option: -", **flags);
+    for (int i = 0; flags[i]; i++) {
+        if (flags[i][0] == '-' && !flag_stop) {
+            flag_stop = is_flag_stop(flags[i]);
+            for (int j = 1; flags[i][j] != '\0'; j++) {
+                if (flags[i][j] == 'P')
+                    *mode = 1;
+                else if (flags[i][j] != 'L' && (flags[i][j] != '-'
+                         || (flags[i][j] == '-' && j == 2))) {
+                    fprintf(stderr, "pwd: bad option: -%c\n", flags[i][j]);
+                    return 1;
+                }
+            }
+        }
+        else {
+            fprintf(stderr, "pwd: too many arguments\n");
             return 1;
         }
-        (*flags)++;
+    }
+    return 0;
+}
+
+static bool is_flag_stop(char *flag) {
+    if ((flag[1] == '-' && flag[2] == '\0')
+        || flag[1] == '\0') {
+        return 1;
     }
     return 0;
 }
