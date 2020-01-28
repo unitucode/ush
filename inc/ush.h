@@ -12,6 +12,7 @@
 #include <ctype.h>
 #include <regex.h>
 #include <stdbool.h>
+#include <sys/stat.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
