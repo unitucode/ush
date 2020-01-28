@@ -19,6 +19,7 @@ static void main_cycle() {
     while (strcmp(prompt->command, "exit") && result != -1) {
         printf("%s> ", MX_SHELL_PROMPT);
         mx_get_input(prompt, &result);
+        mx_update_history(prompt);
         printf("\r\n");
     }
     free(prompt);
