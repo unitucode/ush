@@ -22,6 +22,7 @@ SRC = mx_ush.c \
 	mx_update_history.c \
 	mx_print_env.c \
 	mx_rcmd.c \
+	mx_get_lenv.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
