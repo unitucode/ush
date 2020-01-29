@@ -11,6 +11,7 @@ void mx_get_input(t_prompt *prompt, int *code) {
            && handle_key(prompt, code)) {
         printf("%s", prompt->command);
     }
+    mx_update_history(prompt);
 }
 
 static void set_code(char *buff, int *code, int index) {
