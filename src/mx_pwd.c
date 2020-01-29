@@ -4,15 +4,16 @@ static bool parse_flags(char **flags, bool *mode);
 static bool is_flag_stop(char *flag);
 
 int mx_pwd(char **flags) {
-    t_map *map = mx_get_lenv();
+    t_map **map = mx_get_lenv();
     bool mode = 0;
+    char *pwd = mx_get_map(map, "PWD");
 
     if (!parse_flags(flags, &mode))
     {
         if (mode)
-            puts(getcwd(mx_get_map(&map, "PWD"), PATH_MAX));
+            puts(getcwd(pwd, PATH_MAX));
         else
-            puts(mx_get_map(&map, "PWD"));
+            puts(pwd);
         return 0;
     }
     return 1;

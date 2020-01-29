@@ -18,7 +18,7 @@
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h"
 #define MX_NON_PRINTABLE "[\x03\x0a]"
-#define MX_NEW_LINE_CHARS "[\x03\x0a]"
+#define MX_NEW_LINE_CHARS "^[\x03\x0a]$"
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 
@@ -48,6 +48,7 @@ void mx_handle_print_char(t_prompt *prompt);
 bool mx_handle_history(t_prompt *prompt);
 void mx_update_history(t_prompt *prompt);
 void mx_rcmd(char *dst, char *src, size_t size, unsigned int *index);
+t_map **mx_get_lenv();
 
 int mx_unset(char *name);
 int mx_export(char **args);
