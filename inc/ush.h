@@ -25,7 +25,7 @@
 
 typedef struct s_prompt {
     unsigned int index;
-    bool ishistory;
+    bool end;
     t_d_list *history_head;
     t_d_list *history_back;
     t_d_list *tmp_history;
@@ -48,6 +48,7 @@ void mx_backspace(unsigned int times);
 void mx_handle_print_char(t_prompt *prompt);
 bool mx_handle_history(t_prompt *prompt);
 void mx_update_history(t_prompt *prompt);
+void mx_rcmd(char *dst, char *src, size_t size, unsigned int *index);
 
 int mx_unset(char *name);
 int mx_export(char **args);

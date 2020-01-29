@@ -22,6 +22,7 @@ static void main_cycle() {
         mx_update_history(prompt);
         printf("\r\n");
     }
+    mx_d_del_list(&prompt->history_head);
     free(prompt);
 }
 
