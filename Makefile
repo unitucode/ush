@@ -16,6 +16,7 @@ SRC = mx_ush.c \
 	mx_enable_canon.c \
 	mx_disable_canon.c \
 	mx_match.c \
+	mx_print_env.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

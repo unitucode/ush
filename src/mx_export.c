@@ -1,60 +1,35 @@
 #include "ush.h"
 
-static void print_env();
-// static char *get_var_name(char *str);
+static char *get_var_name(char *str);
+static char *get_var_val(char *arg);
 
 int mx_export(char **args) {
     if (args[0] == NULL)
-        print_env();
+        mx_print_env();
     else {
         for (int i = 0; args[i]; i++) {
             if (mx_match(args[i], MX_EXPORT_ARG))
-                printf("%s\n", args[i]);
+                if (mx_match(args[i], MX_ENV_ARG)) {
+                    setenv(get_var_name(args[i]), get_var_val(args[i]), 1);
+                    // And add this Variable to own export list
+                }
+                else
+                    printf("ONLY FOR EXPORT\n"); // Add only to own export list
             else
-                printf("ERROR: %s\n", args[i]);
+                printf("ERROR: %s\n", args[i]); // Pars Errors!
         }
     }
     return 0;
 }
 
-static void print_env() {
-    extern char **environ;
-    int len = 0;
+static char *get_var_name(char *arg) {
+    char *name = mx_strndup(arg, mx_get_char_index(arg, '='));
 
-    for (int i = 0; environ[i]; i++)
-        len++;
-    mx_bubble_sort(environ, len);
-    mx_print_strarr(environ, "\n");
+    return name;
 }
 
-// static char *get_var_name(char *str) {
-//     char *name = mx_strndup(str, mx_get_char_index(str, '='));
+static char *get_var_val(char *arg) {
+    char *value = mx_strdup(arg + mx_get_char_index(arg, '=') + 1);
 
-//     return name;
-// }
-// static int test()
-// {
-//     reti = regcomp(&regex, MX_EXPORT_ARG, 0);
-//     if (reti)
-//     {
-//         fprintf(stderr, "Could not compile regex\n");
-//         exit(1);
-//     }
-
-//     reti = regexec(&regex, "A=a", 0, NULL, 0);
-//     if (!reti)
-//     {
-//         puts("Match");
-//     }
-//     else if (reti == REG_NOMATCH)
-//     {
-//         puts("No match");
-//     }
-//     else
-//     {
-//         regerror(reti, &regex, msgbuf, sizeof(msgbuf));
-//         fprintf(stderr, "Regex match failed: %s\n", msgbuf);
-//         exit(1);
-//     }
-//     return 0;
-// }
+    return value;
+}
