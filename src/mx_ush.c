@@ -13,14 +13,16 @@ int main() {
 }
 
 static void main_cycle() {
-    char cmd[ARG_MAX + 1];
     int result = 0;
+    t_prompt *prompt = malloc(sizeof(t_prompt));
 
-    while (strcmp(cmd, "exit") && result != -1) {
+    while (strcmp(prompt->command, "exit") && result != -1) {
         printf("%s> ", MX_SHELL_PROMPT);
-        mx_get_input(cmd, &result);
+        mx_get_input(prompt, &result);
+        mx_update_history(prompt);
         printf("\r\n");
     }
+    free(prompt);
 }
 
 static void deinit() {
