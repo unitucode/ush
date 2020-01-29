@@ -1,37 +1,35 @@
 #include "ush.h"
 
 static char *get_var_name(char *str);
-static void get_value(char **value, char *str, int space_index);
+static char *get_var_val(char *arg);
 
-void mx_export(char *str) {
-    char **strs = mx_strsplit(str, ' '); 
-    bool flag = 0;
-
-    for (int i = 0; strs[i]; i++) {
-        char *value = mx_strdup("");
-        int space_index = mx_get_char_index(strs[i], '=');
-        char *env_var_name = get_var_name(strs[i]);
-
-        if (strs[i][0] == '=' && !flag) {
-            fprintf(stderr, "ush: bad assignment");
-            flag = 1;
+int mx_export(char **args) {
+    if (args[0] == NULL)
+        mx_print_env();
+    else {
+        for (int i = 0; args[i]; i++) {
+            if (mx_match(args[i], MX_EXPORT_ARG))
+                if (mx_match(args[i], MX_ENV_ARG)) {
+                    setenv(get_var_name(args[i]), get_var_val(args[i]), 1);
+                    // And add this Variable to own export list
+                }
+                else
+                    printf("ONLY FOR EXPORT\n"); // Add only to own export list
+            else
+                printf("ERROR: %s\n", args[i]); // Pars Errors!
         }
-        if (space_index != -1 && !flag)
-            get_value(&value, strs[i], space_index);
-        setenv(env_var_name, value, 1);
-        mx_strdel(&env_var_name);
-        mx_strdel(&value);
     }
-    mx_del_strarr(&strs);
+    return 0;
 }
 
-static void get_value(char **value, char *str, int space_index) {
-    mx_strdel(value);
-    *value = mx_strdup(str += space_index + 1);
-}
-
-static char *get_var_name(char *str) {
-    char *name = mx_strndup(str, mx_get_char_index(str, '='));
+static char *get_var_name(char *arg) {
+    char *name = mx_strndup(arg, mx_get_char_index(arg, '='));
 
     return name;
+}
+
+static char *get_var_val(char *arg) {
+    char *value = mx_strdup(arg + mx_get_char_index(arg, '=') + 1);
+
+    return value;
 }

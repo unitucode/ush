@@ -8,9 +8,9 @@ int mx_pwd(char **flags) {
 
     if (!pars_flags(flags, &mode)) {
         if (mode)
-            puts(realpath(getenv("PWD"), NULL));
+            puts(getcwd(NULL, PATH_MAX));
         else
-            puts(getenv("PWD"));
+            puts("-L FLAG: NEED PWD ENV REALIZATION");
         return 0;
     }
     return 1;
@@ -23,7 +23,7 @@ static bool pars_flags(char **flags, bool *mode) {
     for (int i = 0; flags[i]; i++) {
         if (flags[i][0] == '-' && !flag_stop) {
             flag_stop = is_flag_stop(flags[i]);
-            for (int j = 1; flags[i][j] != '\0'; j++) {
+            for (int j = 1; flags[i][j] != '\0'; j++)
                 if (flags[i][j] == 'P')
                     *mode = 1;
                 else if (flags[i][j] != 'L' && (flags[i][j] != '-'
@@ -31,7 +31,6 @@ static bool pars_flags(char **flags, bool *mode) {
                     fprintf(stderr, "pwd: bad option: -%c\n", flags[i][j]);
                     return 1;
                 }
-            }
         }
         else {
             fprintf(stderr, "pwd: too many arguments\n");
