@@ -17,10 +17,11 @@
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h"
 #define MX_NEW_LINE_CHARS "[\x03\x0a]"
-#define MX_HISTORY_SIZE 3
+#define MX_HISTORY_SIZE 20
 
 typedef struct s_prompt {
     unsigned int index;
+    bool ishistory;
     t_d_list *history_head;
     t_d_list *history_back;
     t_d_list *tmp_history;

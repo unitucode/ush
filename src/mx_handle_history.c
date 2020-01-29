@@ -16,28 +16,42 @@ bool mx_handle_history(t_prompt *prompt) {
 }
 
 static void get_down_history(t_prompt *prompt) {
-    t_d_list *tmp = prompt->tmp_history->prev;
-    while (tmp) {
-        prompt->tmp_history = prompt->tmp_history->prev;
-        if (!mx_get_substr_index(prompt->tmp_history->data, prompt->tmp_command)) {
+    if (prompt->tmp_history) {
+        if (prompt->tmp_history->prev) {
+            prompt->tmp_history = prompt->tmp_history->prev;
+        }
+        // else {
+        //     strcpy(prompt->command, prompt->tmp_command);
+        //     prompt->index = strlen(prompt->tmp_command);
+        //     return;
+        // }
+    }
+    while (prompt->tmp_history) {
+        if (!mx_get_substr_index(prompt->tmp_history->data, prompt->tmp_command)
+        && strcmp(prompt->tmp_history->data, prompt->tmp_command)) {
             strcpy(prompt->command, prompt->tmp_history->data);
             prompt->index = strlen(prompt->tmp_history->data);
-            // if (prompt->tmp_history->next)
-            //     prompt->tmp_history = prompt->tmp_history->next;
             break;
         }
+        if (!prompt->tmp_history->prev)
+            break;
+        prompt->tmp_history = prompt->tmp_history->prev;
     }
 }
 
 static void get_up_history(t_prompt *prompt) {
+    if (prompt->tmp_history && !strcmp(prompt->command, prompt->tmp_history->data))
+        if (prompt->tmp_history->next)
+            prompt->tmp_history = prompt->tmp_history->next;
     while (prompt->tmp_history) {
-        if (!mx_get_substr_index(prompt->tmp_history->data, prompt->tmp_command)) {
+        if (!mx_get_substr_index(prompt->tmp_history->data, prompt->tmp_command)
+            && strcmp(prompt->tmp_history->data, prompt->tmp_command)) {
             strcpy(prompt->command, prompt->tmp_history->data);
             prompt->index = strlen(prompt->tmp_history->data);
-            if (prompt->tmp_history->next)
-                prompt->tmp_history = prompt->tmp_history->next;
             break;
         }
+        if (!prompt->tmp_history->next)
+            break;
         prompt->tmp_history = prompt->tmp_history->next;
     }
 }

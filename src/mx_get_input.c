@@ -39,4 +39,5 @@ static void clear_prompt(t_prompt *prompt) {
     memset(prompt->command, '\0', sizeof(prompt->command));
     memset(prompt->tmp_command, '\0', sizeof(prompt->tmp_command));
     prompt->index = 0;
+    prompt->ishistory = false;
 }
