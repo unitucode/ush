@@ -20,11 +20,22 @@ void mx_handle_print_char(t_prompt *prompt) {
 }
 
 static void delete_char(t_prompt *prompt) {
-    if (!prompt->index)
+    unsigned int i_d = prompt->cursor_index - 1;
+
+    if (!prompt->cursor_index || !prompt->index)
         return;
-    prompt->command[--prompt->index] = '\0';
+    memmove(prompt->command + i_d, prompt->command + i_d + 1,
+    strlen(prompt->command) - i_d);
+    prompt->index--;
+    prompt->cursor_index--;
 }
 
 static void insert_char(t_prompt *prompt) {
-    prompt->command[prompt->index++] = prompt->buff[0];
+    unsigned int c_i = prompt->cursor_index;
+
+    memmove(prompt->command + c_i + 1, prompt->command + c_i,
+    strlen(prompt->command + c_i));
+    prompt->command[prompt->cursor_index] = prompt->buff[0];
+    prompt->index++;
+    prompt->cursor_index++;
 }

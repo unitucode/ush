@@ -24,6 +24,8 @@ SRC = mx_ush.c \
 	mx_rcmd.c \
 	mx_get_lenv.c \
 	mx_which.c \
+	mx_str_prompt.c \
+	mx_handle_cursor.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

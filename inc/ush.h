@@ -13,10 +13,17 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <sys/stat.h>
+#include <sys/ioctl.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
-#define MX_SHELL_PROMPT "u$h"
+#define MX_SHELL_PROMPT "u$h> "
+#define MX_UP_ARROW "\x1b\x5b\x41"
+#define MX_DOWN_ARROW "\x1b\x5b\x42"
+#define MX_RIGHT_ARROW "\x1b\x5b\x43"
+#define MX_LEFT_ARROW "\x1b\x5b\x44"
+#define MX_MOVE_CURSOR_LEFT "\033[1C"
+#define MX_MOVE_CURSOR_RIGHT "\033[1D"
 #define MX_NON_PRINTABLE "[\x03\x0a]"
 #define MX_NEW_LINE_CHARS "^[\x03\x0a]$"
 #define MX_HISTORY_SIZE 20
@@ -24,6 +31,7 @@
 
 typedef struct s_prompt {
     unsigned int index;
+    unsigned int cursor_index;
     bool end;
     t_d_list *history_head;
     t_d_list *history_back;
@@ -33,8 +41,6 @@ typedef struct s_prompt {
     char tmp_command[ARG_MAX + 1];
 } t_prompt;
 
-#define MX_UP_ARROW "\x1b\x5b\x41"
-#define MX_DOWN_ARROW "\x1b\x5b\x42"
 
 // void mx_get_input(char *buf, int *code);
 void mx_get_input(t_prompt * prompt, int *code);
@@ -49,6 +55,8 @@ bool mx_handle_history(t_prompt *prompt);
 void mx_update_history(t_prompt *prompt);
 void mx_rcmd(char *dst, char *src, size_t size, unsigned int *index);
 t_map **mx_get_lenv();
+char *mx_str_prompt();
+void mx_handle_cursor(t_prompt *prompt);
 
 int mx_unset(char *name);
 int mx_export(char **args);

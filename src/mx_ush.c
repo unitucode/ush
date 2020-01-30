@@ -15,9 +15,13 @@ int main() {
 static void main_cycle() {
     int result = 0;
     t_prompt *prompt = malloc(sizeof(t_prompt));
+    // char str[20] = "Hello";
+    // char c = 'x';
+    // memmove(str + 3, str + 2, strlen(str + 2));
+    // str[2] = c;
+    // printf("str = %s\n", str);
 
     while (strcmp(prompt->command, "exit") && result != -1) {
-        printf("%s> ", MX_SHELL_PROMPT);
         mx_get_input(prompt, &result);
         printf("\r\n");
     }
