@@ -48,6 +48,7 @@ void mx_handle_print_char(t_prompt *prompt);
 bool mx_handle_history(t_prompt *prompt);
 void mx_update_history(t_prompt *prompt);
 
-int mx_unset(char *name);
+int mx_unset(char **args);
 int mx_export(char **args);
 int mx_pwd(char **flags);
+int mx_cd(char **args);

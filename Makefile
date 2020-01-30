@@ -20,6 +20,8 @@ SRC = mx_ush.c \
 	mx_handle_print_char.c \
 	mx_handle_history.c \
 	mx_update_history.c \
+	mx_cd.c \
+	mx_unset.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
