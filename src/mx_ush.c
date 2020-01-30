@@ -31,9 +31,19 @@ static void main_cycle() {
 
 static void deinit() {
     mx_disable_canon();
+    // TODO
+    t_map **map = mx_get_lenv();
+    mx_del_map(map);
+    //
 }
 
 static void init() {
+    // TODO
+    t_map **map = mx_get_lenv();
+    *map = mx_create_map(40);
+    mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
+    mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD")));
+    //
     tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);
     mx_enable_canon();
