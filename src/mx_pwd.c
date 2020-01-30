@@ -5,15 +5,15 @@ static bool is_flag_stop(char *flag);
 
 int mx_pwd(char **flags)
 {
-    t_map *map = mx_get_lenv();
+    // t_map *map = mx_get_lenv();
     bool mode = 0;
 
     if (!parse_flags(flags, &mode))
     {
-        if (mode)
-            puts(getcwd(mx_get_map(&map, "PWD"), PATH_MAX));
-        else
-            puts(mx_get_map(&map, "PWD"));
+        // if (mode)
+            // puts(getcwd(mx_get_map(&map, "PWD"), PATH_MAX));
+        // else
+            // puts(mx_get_map(&map, "PWD"));
         return 0;
     }
     return 1;
