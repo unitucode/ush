@@ -62,3 +62,4 @@ void mx_handle_cursor(t_prompt *prompt);
 int mx_unset(char *name);
 int mx_export(char **args);
 int mx_pwd(char **flags);
+int mx_which(char **args);
