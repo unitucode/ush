@@ -3,43 +3,52 @@
 static bool parse_flags(char **flags, bool *mode);
 static bool is_flag_stop(char *flag);
 
+<<<<<<< HEAD
 int mx_pwd(char **flags)
 {
     // t_map *map = mx_get_lenv();
+=======
+int mx_pwd(char **flags) {
+    t_map **map = mx_get_lenv();
+>>>>>>> 2bf7e83f3fcbe6e85ea8c84e47827f29752fca9a
     bool mode = 0;
+    char *pwd = mx_get_map(map, "PWD");
 
     if (!parse_flags(flags, &mode))
     {
+<<<<<<< HEAD
         // if (mode)
             // puts(getcwd(mx_get_map(&map, "PWD"), PATH_MAX));
         // else
             // puts(mx_get_map(&map, "PWD"));
+=======
+        if (mode)
+            puts(getcwd(pwd, PATH_MAX));
+        else
+            puts(pwd);
+>>>>>>> 2bf7e83f3fcbe6e85ea8c84e47827f29752fca9a
         return 0;
     }
     return 1;
 }
 
 // parse_flags return 1 if any error cases, else 0
-static bool parse_flags(char **flags, bool *mode)
-{
+static bool parse_flags(char **flags, bool *mode) {
     bool flag_stop = 0;
 
-    for (int i = 0; flags[i]; i++)
-    {
-        if (flags[i][0] == '-' && !flag_stop)
-        {
+    for (int i = 0; flags[i]; i++) {
+        if (flags[i][0] == '-' && !flag_stop) {
             flag_stop = is_flag_stop(flags[i]);
             for (int j = 1; flags[i][j] != '\0'; j++)
                 if (flags[i][j] == 'P')
                     *mode = 1;
-                else if (flags[i][j] != 'L' && (flags[i][j] != '-' || (flags[i][j] == '-' && j == 2)))
-                {
+                else if (flags[i][j] != 'L' && (flags[i][j] != '-'
+                         || (flags[i][j] == '-' && j == 2))) {
                     fprintf(stderr, "pwd: bad option: -%c\n", flags[i][j]);
                     return 1;
                 }
         }
-        else
-        {
+        else {
             fprintf(stderr, "pwd: too many arguments\n");
             return 1;
         }
@@ -47,8 +56,7 @@ static bool parse_flags(char **flags, bool *mode)
     return 0;
 }
 
-static bool is_flag_stop(char *flag)
-{
+static bool is_flag_stop(char *flag) {
     if ((flag[1] == '-' && flag[2] == '\0') || flag[1] == '\0')
     {
         return 1;

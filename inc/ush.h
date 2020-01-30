@@ -25,10 +25,9 @@
 #define MX_MOVE_CURSOR_LEFT "\033[1C"
 #define MX_MOVE_CURSOR_RIGHT "\033[1D"
 #define MX_NON_PRINTABLE "[\x03\x0a]"
-#define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*=?[A-Za-z0-9_]*$"
-#define MX_ENV_ARG "^[A-Za-z_]+[A-Za-z0-9_]*="
 #define MX_NEW_LINE_CHARS "^[\x03\x0a]$"
 #define MX_HISTORY_SIZE 20
+#define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 
 typedef struct s_prompt {
     unsigned int index;

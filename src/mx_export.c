@@ -4,8 +4,7 @@ static char *get_var_name(char *str);
 static char *get_var_val(char *arg);
 static bool parse_error(char *arg);
 
-int mx_export(char **args)
-{
+int mx_export(char **args) {
     bool args_stop = 0;
 
     if (args[0] == NULL) // MAYBE BUG WHEN "-" flag
@@ -13,8 +12,7 @@ int mx_export(char **args)
     else
         for (int i = 0; args[i] && !args_stop; i++)
             if (mx_match(args[i], MX_EXPORT_ARG))
-                if (mx_match(args[i], "="))
-                {
+                if (mx_match(args[i], "=")) {
                     setenv(get_var_name(args[i]), get_var_val(args[i]), 1);
                     // And add this Variable to own export list
                 }
@@ -25,8 +23,7 @@ int mx_export(char **args)
     return 0;
 }
 
-static bool parse_error(char *arg)
-{
+static bool parse_error(char *arg) {
     if (mx_match(arg, "^[-+]"))
         fprintf(stderr, "export: does not accept any options: %c%c\n",
                 arg[0], arg[1]);
@@ -39,15 +36,13 @@ static bool parse_error(char *arg)
     return 1;
 }
 
-static char *get_var_name(char *arg)
-{
+static char *get_var_name(char *arg) {
     char *name = mx_strndup(arg, mx_get_char_index(arg, '='));
 
     return name;
 }
 
-static char *get_var_val(char *arg)
-{
+static char *get_var_val(char *arg) {
     char *value = mx_strdup(arg + mx_get_char_index(arg, '=') + 1);
 
     return value;
