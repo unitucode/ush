@@ -3,17 +3,25 @@
 static void get_down_history(t_prompt *prompt);
 static void get_up_history(t_prompt *prompt);
 static bool isvalid(t_prompt *prompt);
+static void set_cursor(t_prompt *prompt);
 
 bool mx_handle_history(t_prompt *prompt) {
     if (!strcmp(prompt->buff, MX_DOWN_ARROW)) {
         get_down_history(prompt);
+        set_cursor(prompt);
         return true;
     }
     if (!strcmp(prompt->buff, MX_UP_ARROW)) {
         get_up_history(prompt);
+        set_cursor(prompt);
         return true;
     }
     return false;
+}
+
+static void set_cursor(t_prompt *prompt) {
+    prompt->index = strlen(prompt->command);
+    prompt->cursor_index = strlen(prompt->command);
 }
 
 static void get_down_history(t_prompt *prompt) {
