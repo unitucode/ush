@@ -1,23 +1,25 @@
 #include "ush.h"
 
-static bool pars_flags(char **flags, bool *mode);
-static bool is_flag_stop(char *flag) ;
+static bool parse_flags(char **flags, bool *mode);
+static bool is_flag_stop(char *flag);
 
 int mx_pwd(char **flags) {
+    t_map **map = mx_get_lenv();
     bool mode = 0;
+    char *pwd = mx_get_map(map, "PWD");
 
-    if (!pars_flags(flags, &mode)) {
+    if (!parse_flags(flags, &mode)) {
         if (mode)
-            puts(getcwd(NULL, PATH_MAX));
+            puts(getcwd(pwd, PATH_MAX));
         else
-            puts("-L FLAG: NEED PWD ENV REALIZATION");
+            puts(pwd);
         return 0;
     }
     return 1;
 }
 
-// pars_flags return 1 if any error cases, else 0
-static bool pars_flags(char **flags, bool *mode) {
+// parse_flags return 1 if any error cases, else 0
+static bool parse_flags(char **flags, bool *mode) {
     bool flag_stop = 0;
 
     for (int i = 0; flags[i]; i++) {
@@ -42,8 +44,13 @@ static bool pars_flags(char **flags, bool *mode) {
 
 static bool is_flag_stop(char *flag) {
     if ((flag[1] == '-' && flag[2] == '\0')
-        || flag[1] == '\0') {
+         || flag[1] == '\0') {
         return 1;
     }
     return 0;
 }
+// t_map **map = mx_get_lenv();
+// *map = mx_create_map(20);
+
+// mx_put_map(map, "PWD", strdup(getenv("PWD")));
+// mx_get_map(map, "PWD");
