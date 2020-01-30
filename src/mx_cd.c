@@ -28,7 +28,7 @@ static int check_flag(char *flag, char *newdir) {
         return 2;
     }
     if (mx_strcmp(flag, "-") == 0) {
-        change_dir(getenv("OLDPWD"));
+        change_dir("~OLDPWD");
         return 3;
     }
     if (flag[0] == '-')
@@ -44,6 +44,10 @@ static int change_dir(char *newdir) {
     int result;
     if (newdir == NULL)
         result = chdir(getenv("HOME"));
+    else if (mx_strcmp(newdir, "~OLDPWD")) {
+        result = chdir(getenv("OLDPWD"));
+        printf("%s\n", getenv("OLDPWD"));
+    }
     else
         result = chdir(newdir);
     
@@ -84,7 +88,8 @@ static void do_flags(int flag, char *newdir) {
         result = (result == -1) ? change_dir(newdir) : change_dir(buf);
     }
     if (flag == 2) {
-        
+        result = readlink(newdir_link, buf, PATH_MAX);                        
+        result = (result == -1) ? change_dir(newdir) : 0;
     }
     mx_strdel(&newdir_link);
     mx_strdel(&newdir_slash);
