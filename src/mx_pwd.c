@@ -8,8 +8,7 @@ int mx_pwd(char **flags) {
     bool mode = 0;
     char *pwd = mx_get_map(map, "PWD");
 
-    if (!parse_flags(flags, &mode))
-    {
+    if (!parse_flags(flags, &mode)) {
         if (mode)
             puts(getcwd(pwd, PATH_MAX));
         else
@@ -44,15 +43,14 @@ static bool parse_flags(char **flags, bool *mode) {
 }
 
 static bool is_flag_stop(char *flag) {
-    if ((flag[1] == '-' && flag[2] == '\0') || flag[1] == '\0')
-    {
+    if ((flag[1] == '-' && flag[2] == '\0')
+         || flag[1] == '\0') {
         return 1;
     }
     return 0;
 }
-// t_map *map = mx_get_lenv();
-// mx_put_map(&map, "PWD", strdup(getenv("PWD")));
+// t_map **map = mx_get_lenv();
+// *map = mx_create_map(20);
 
-// t_map *map = mx_get_lenv();
-
-// mx_get_map(&map, "PWD");
+// mx_put_map(map, "PWD", strdup(getenv("PWD")));
+// mx_get_map(map, "PWD");
