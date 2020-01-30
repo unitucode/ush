@@ -21,7 +21,6 @@ SRC = mx_ush.c \
 	mx_handle_history.c \
 	mx_update_history.c \
 	mx_cd.c \
-	mx_unset.c \
 	mx_print_env.c \
 	mx_rcmd.c \
 	mx_get_lenv.c \
