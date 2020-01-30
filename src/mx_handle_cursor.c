@@ -11,6 +11,12 @@ void mx_handle_cursor(t_prompt *prompt) {
         if (prompt->cursor_index)
             prompt->cursor_index--;
     }
+    if (!strcmp(prompt->buff, MX_END_KEY)) {
+        prompt->cursor_index = prompt->index;
+    }
+    if (!strcmp(prompt->buff, MX_HOME_KEY)) {
+        prompt->cursor_index = 0;
+    }
     set_cursor(prompt);
 }
 
