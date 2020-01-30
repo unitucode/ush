@@ -15,11 +15,6 @@ int main() {
 static void main_cycle() {
     int result = 0;
     t_prompt *prompt = malloc(sizeof(t_prompt));
-    // char str[20] = "Hello";
-    // char c = 'x';
-    // memmove(str + 3, str + 2, strlen(str + 2));
-    // str[2] = c;
-    // printf("str = %s\n", str);
 
     while (strcmp(prompt->command, "exit") && result != -1) {
         mx_get_input(prompt, &result);
@@ -44,6 +39,7 @@ static void init() {
     mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
     mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD")));
     //
+    setenv("MX_PROMPT", "u$h> ", 0);
     tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);
     mx_enable_canon();
