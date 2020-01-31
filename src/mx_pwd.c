@@ -9,7 +9,7 @@ int mx_pwd(char **flags) {
 
     if (!parse_flags(flags, &mode)) {
         if (mode)
-            puts(getcwd(pwd, PATH_MAX));
+            puts(realpath(pwd, NULL));
         else
             puts(pwd);
         return 0;
