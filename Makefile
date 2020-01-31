@@ -31,7 +31,6 @@ SRC = mx_ush.c \
 	mx_interpretate.c \
 	mx_check_quotes.c \
 	mx_split_commands.c \
-	mx_print_sh_error.c \
 	mx_preinterpretate.c \
 	mx_handle_command.c \
 

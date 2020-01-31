@@ -1,11 +1,15 @@
 #include "ush.h"
 
-char **mx_interpretate(char *command) {
-    char **commands = NULL;
+// static char **split_arguments(char *command);
 
-    if (!mx_check_quotes(command)) {
-        return NULL;
-    }
-    // commands = mx_split_semicolon(command);
-    return commands;
+char **mx_interpretate(char *command) {
+    // char **arguments = split_arguments(command);
+
+    // return arguments;
+    command++;
+    return NULL;
 }
+
+// static char **split_arguments(char *command) {
+    
+// }
