@@ -19,13 +19,14 @@ void mx_get_input(t_prompt *prompt, int *code) {
 }
 
 static void set_code(char *buff, int *code, int index) {
-    if (buff[0] == '\x03')
+    if (buff[0] == '\x03' && strlen(buff) == 1)
         *code = 130;
-    if (buff[0] == '\x04' && !index)
+    if (buff[0] == '\x04' && !index && strlen(buff) == 1)
         *code = -1;
 }
 
 static bool handle_key(t_prompt *prompt, int *code) {
+    set_code(prompt->buff, code, prompt->index);
     if (mx_match(prompt->buff, MX_NEW_LINE_CHARS))
         return false;
     if (prompt->buff[0] == '\x04' && !prompt->index)
@@ -35,7 +36,6 @@ static bool handle_key(t_prompt *prompt, int *code) {
         mx_handle_print_char(prompt);
         strcpy(prompt->tmp_command, prompt->command);
     }
-    set_code(prompt->buff, code, prompt->index);
     return true;
 }
 

@@ -29,6 +29,8 @@
 #define MX_END_KEY "\x1b\x5b\x46"
 #define MX_NON_PRINTABLE "[\x03\x0a]"
 #define MX_NEW_LINE_CHARS "^[\x03\x0a]$"
+#define MX_S_QUOTE '\''
+#define MX_GRAVE_ACCENT '`'
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 
@@ -60,6 +62,12 @@ void mx_rcmd(char *dst, char *src, size_t size, unsigned int *index);
 t_map **mx_get_lenv();
 char *mx_str_prompt();
 void mx_handle_cursor(t_prompt *prompt);
+char **mx_interpretate(char *command);
+bool mx_check_quotes(char *command);
+char **mx_split_commands(char *command);
+void mx_print_sh_error(char *process, char *message);
+int mx_preinterpretate(char *command);
+void mx_handle_command(char *command, int *code);
 
 int mx_unset(char **args);
 int mx_export(char **args);

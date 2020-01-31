@@ -19,6 +19,7 @@ static void main_cycle() {
     while (strcmp(prompt->command, "exit") && result != -1) {
         mx_get_input(prompt, &result);
         printf("\r\n");
+        mx_handle_command(prompt->command, &result); 
     }
     mx_d_del_list(&prompt->history_head);
     free(prompt);
@@ -38,6 +39,7 @@ static void init() {
     *map = mx_create_map(40);
     mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
     mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD")));
+    mx_put_map(map, strdup("$?"), mx_itoa(0));
     //
     setenv("MX_PROMPT", "u$h> ", 0);
     tcgetattr(STDIN_FILENO, mx_get_tty());
