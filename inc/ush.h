@@ -22,8 +22,11 @@
 #define MX_DOWN_ARROW "\x1b\x5b\x42"
 #define MX_RIGHT_ARROW "\x1b\x5b\x43"
 #define MX_LEFT_ARROW "\x1b\x5b\x44"
-#define MX_MOVE_CURSOR_LEFT "\033[1C"
-#define MX_MOVE_CURSOR_RIGHT "\033[1D"
+#define MX_MOVE_CURSOR_LEFT "\x1b[1C"
+#define MX_MOVE_CURSOR_RIGHT "\x1b[1D"
+#define MX_DELETE_KEY "\x1b\x5b\x33\x7e"
+#define MX_HOME_KEY "\x1b\x5b\x48"
+#define MX_END_KEY "\x1b\x5b\x46"
 #define MX_NON_PRINTABLE "[\x03\x0a]"
 #define MX_NEW_LINE_CHARS "^[\x03\x0a]$"
 #define MX_HISTORY_SIZE 20
@@ -59,7 +62,8 @@ t_map **mx_get_lenv();
 char *mx_str_prompt();
 void mx_handle_cursor(t_prompt *prompt);
 
-int mx_unset(char *name);
+int mx_unset(char **args);
 int mx_export(char **args);
 int mx_pwd(char **flags);
+int mx_cd(char **args);
 int mx_which(char **args);
