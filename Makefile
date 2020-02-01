@@ -33,6 +33,10 @@ SRC = mx_ush.c \
 	mx_split_commands.c \
 	mx_preinterpretate.c \
 	mx_handle_command.c \
+	mx_check_escape.c \
+	mx_isescape_char.c \
+	mx_replace_special.c \
+	mx_replace_escape.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

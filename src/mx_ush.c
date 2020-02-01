@@ -8,6 +8,10 @@ int main() {
     init();
     main_cycle();
     deinit();
+    // char *Escape = "\n\t\v\a";
+    // for (int i = 0; i < mx_strlen(Escape); i++) {
+    //     printf("char = %d", Escape[i]);
+    // }
     system("leaks -q ush");
     return 0;
 }
