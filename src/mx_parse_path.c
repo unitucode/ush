@@ -1,16 +1,17 @@
 #include "ush.h"
 
-void printarray(char **split);
 static char *check_path(char *path);
 static char *make_bad_path(char *path, char *newdir);
 static char *collect_path(char **split_path);
 static int count_size_of_path(char **split_path);
 
-char *mx_parse_path(char *path, char *newdir) {
+char *mx_parse_path(char *path, char *newdir, t_map **map) {
     char *temp;
     
     if (newdir == NULL)
         return getenv("HOME");
+    if (mx_strcmp(newdir, "~OLDPWD") == 0)
+        return mx_get_map(map, "OLDPWD");
     temp = make_bad_path(path, newdir);
     path = check_path(temp);
     mx_strdel(&temp);
@@ -50,12 +51,6 @@ static char *collect_path(char **split_path) {
         }
     }
     return path;
-}
-
-void printarray(char **split) {
-    for (int i = 0; split[i]; i++) {
-        printf("%s ", split[i]);
-    }
 }
 
 static int count_size_of_path(char **split_path) {
