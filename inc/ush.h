@@ -72,6 +72,7 @@ bool mx_check_escape(char *command);
 bool mx_isescape_char(char *command, int i);
 char *mx_replace_special(char *argument);
 char *mx_replace_escape(char *arg, char *escape, char new, bool in_q);
+char *mx_replace_env(char *arg);
 
 int mx_unset(char **args);
 int mx_export(char **args);

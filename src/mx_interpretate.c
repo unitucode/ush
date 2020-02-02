@@ -16,11 +16,10 @@ char **mx_interpretate(char *command) {
 static char **replace_all(t_list *arguments) {
     int size = mx_list_size(arguments);
     char **result = malloc(sizeof(char *) * (size + 1));
-    unsigned int i = 0;
+    int i = 0;
 
     result[size] = NULL;
-    while (result[i]) {
-        // printf("arg->data = %s\n", arguments->data);
+    while (i < size) {
         result[i] = mx_replace_special(arguments->data);
         arguments = arguments->next;
         i++;
