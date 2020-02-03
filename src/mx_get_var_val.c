@@ -1,6 +1,6 @@
 #include "ush.h"
 
-char *mx_get_var_val(char *key, char *var) {
+char *mx_get_var_val(t_var_list key, char *var) {
     t_list **list = mx_get_var_list(key);
     t_list *current = *list;
     char *search = mx_strjoin(var, "=");

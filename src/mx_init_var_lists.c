@@ -22,8 +22,8 @@ static char **get_sorted_environ() {
 }
 
 void mx_init_var_lists() {
-    t_list **shell_list = mx_get_var_list("shell");
-    t_list **exp_list = mx_get_var_list("exp");
+    t_list **shell_list = mx_get_var_list(shell);
+    t_list **exp_list = mx_get_var_list(exp);
     char **sorted_environ = get_sorted_environ();
 
     for (int i = 0; sorted_environ[i]; i++) {

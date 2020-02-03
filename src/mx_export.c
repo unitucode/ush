@@ -14,15 +14,15 @@ static bool parse_error(char *arg) {
 }
 
 static void add_var_to_lists(char *arg) {
-    mx_var_list_insert("shell", arg);
-    mx_var_list_insert("exp", arg);
+    mx_var_list_insert(shell, arg);
+    mx_var_list_insert(exp, arg);
 }
 
 int mx_export(char **args) {
     bool args_stop = 0;
 
     if (args[0] == NULL) // MAYBE BUG WHEN "-" flag
-        mx_print_var_list("exp");
+        mx_print_var_list(exp);
     else
         for (int i = 0; args[i] && !args_stop; i++)
             if (mx_match(args[i], MX_EXPORT_ARG)) {
