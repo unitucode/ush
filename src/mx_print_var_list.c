@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void mx_print_var_list(char *key) {
+void mx_print_var_list(t_var_list key) {
     t_list **var_list = mx_get_var_list(key);
     t_list *current = *var_list;
 
