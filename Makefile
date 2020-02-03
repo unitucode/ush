@@ -20,7 +20,6 @@ SRC = mx_ush.c \
 	mx_handle_print_char.c \
 	mx_handle_history.c \
 	mx_update_history.c \
-	mx_cd.c \
 	mx_print_env.c \
 	mx_is_flag_stop.c \
 	mx_rcmd.c \
@@ -36,6 +35,18 @@ SRC = mx_ush.c \
 	mx_parse_path.c \
 	mx_clear_slashes_end.c \
 	mx_cd_flags.c \
+	mx_get_var_list.c \
+	mx_init_var_lists.c \
+	mx_print_var_list.c \
+	mx_var_list_insert.c \
+	mx_get_var_info.c \
+	mx_get_var_val.c \
+	mx_check_escape.c \
+	mx_isescape_char.c \
+	mx_replace_special.c \
+	mx_replace_escape.c \
+	mx_replace_env.c \
+	mx_cd.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

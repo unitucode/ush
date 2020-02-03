@@ -1,32 +1,8 @@
 #include "ush.h"
 
-static char *get_var_info(char *arg, bool info_type);
-static bool parse_error(char *arg, char *arg_name);
+static bool parse_error(char *arg) {
+    char *arg_name = mx_get_var_info(arg, 0);
 
-int mx_export(char **args) {
-    bool args_stop = 0;
-
-    if (args[0] == NULL) // MAYBE BUG WHEN "-" flag
-        mx_print_env();
-    else
-        for (int i = 0; args[i] && !args_stop; i++) {
-            char *name = get_var_info(args[i], 0);
-            char *val = get_var_info(args[i], 1);
-
-            if (mx_match(args[i], MX_EXPORT_ARG)) {
-                if (mx_match(args[i], "="))
-                    setenv(name, val, 1);
-                printf("ONLY FOR EXPORT\n"); // Add to own export list
-            }
-            else
-                args_stop = parse_error(args[i], name);
-            mx_strdel(&name);
-            mx_strdel(&val);
-        }
-    return 0;
-}
-
-static bool parse_error(char *arg, char *arg_name) {
     if (mx_match(arg, "^[-+]"))
         fprintf(stderr, "export: does not accept any options: %c%c\n",
                 arg[0], arg[1]);
@@ -37,13 +13,24 @@ static bool parse_error(char *arg, char *arg_name) {
     return 1;
 }
 
-// argument 'info_type' inform what func need to return (0-name/1-val)
-static char *get_var_info(char *arg, bool info_type) {
-    char *info = NULL;
+static void add_var_to_lists(char *arg) {
+    mx_var_list_insert("shell", arg);
+    mx_var_list_insert("exp", arg);
+}
 
-    if (info_type == 0)
-        info = mx_strndup(arg, mx_get_char_index(arg, '='));
+int mx_export(char **args) {
+    bool args_stop = 0;
+
+    if (args[0] == NULL) // MAYBE BUG WHEN "-" flag
+        mx_print_var_list("exp");
     else
-        info = mx_strdup(arg + mx_get_char_index(arg, '=') + 1);
-    return info;
+        for (int i = 0; args[i] && !args_stop; i++)
+            if (mx_match(args[i], MX_EXPORT_ARG)) {
+                if (mx_match(args[i], "=")) // CHANGE TO if (value exist)
+                    putenv(args[i]);
+                add_var_to_lists(args[i]);
+            }
+            else
+                args_stop = parse_error(args[i]);
+    return 0;
 }
