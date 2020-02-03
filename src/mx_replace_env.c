@@ -26,11 +26,10 @@ char *mx_replace_env(char *arg) {
 
 static char *get_spec_sub(char *arg) {
     unsigned int i = 1;
+    char *env = NULL;
+    char *res = NULL;
 
     if (isalpha(arg[i]) || arg[i] == '_') {
-        char *env = NULL;
-        char *res = NULL;
-
         i = get_len_spec(arg);
         env = mx_strnew(i);
         strncpy(env, arg + 1, i - 1);

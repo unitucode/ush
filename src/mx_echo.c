@@ -3,6 +3,7 @@
 static char *replace_escape(char *arg);
 static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv);
 static void copy(char *result, char *replace);
+static void print_nl(bool is_nl);
 
 int mx_echo(char **args) {
     bool is_nl = true;
@@ -22,15 +23,22 @@ int mx_echo(char **args) {
         if (args[index])
             printf(" ");
     }
+    print_nl(is_nl);
+    return 0;
+}
+
+static void print_nl(bool is_nl) {
     if (is_nl)
         printf("\n");
-    return 0;
+    else
+        printf("\x1b[0;47;30m%%\x1b[0m\n");
 }
 
 static char *replace_escape(char *arg) {
     char *replace = mx_replace_substr(arg, "\x0a", "\\n");
     char *result = mx_strnew(ARG_MAX);
 
+    copy(result, replace);
     replace = mx_replace_substr(result, "\x09", "\\t");
     copy(result, replace);
     replace = mx_replace_substr(result, "\x0b", "\\v");
