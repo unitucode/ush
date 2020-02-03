@@ -70,8 +70,14 @@ void mx_print_sh_error(char *process, char *message);
 int mx_preinterpretate(char *command);
 void mx_handle_command(char *command, int *code);
 
+char *mx_parse_path(char *pwd, char *newdir, t_map **map);
+char *mx_clear_slashes_end(char *str);
+void mx_change_dir(char *newdir, t_map **map);
+void mx_cd_flags(char *flag, t_map **map, char *newdir);
+void mx_change_map(t_map **map, char *newdir);
+
 int mx_unset(char **args);
 int mx_export(char **args);
 int mx_pwd(char **flags);
-int mx_cd(char **args);
+int mx_cd(char **args, t_map **map);
 int mx_which(char **args);
