@@ -29,8 +29,9 @@
 #define MX_END_KEY "\x1b\x5b\x46"
 #define MX_NON_PRINTABLE "[\x03\x0a]"
 #define MX_NEW_LINE_CHARS "^[\x03\x0a]$"
-#define MX_S_QUOTE '\''
+#define MX_D_QUOTES '\"'
 #define MX_GRAVE_ACCENT '`'
+#define MX_ESCAPE_CHARS "\\\"ntva$ "
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 
@@ -46,8 +47,6 @@ typedef struct s_prompt {
     char tmp_command[ARG_MAX + 1];
 } t_prompt;
 
-
-// void mx_get_input(char *buf, int *code);
 void mx_get_input(t_prompt * prompt, int *code);
 struct termios *mx_get_tty();
 void mx_enable_canon();
@@ -75,6 +74,11 @@ void mx_print_var_list(char *key);
 void mx_var_list_insert(char *key, char *arg);
 char *mx_get_var_info(char *arg, bool info_type);
 char *mx_get_var_val(char *key, char *var);
+bool mx_check_escape(char *command);
+bool mx_isescape_char(char *command, int i);
+char *mx_replace_special(char *argument);
+char *mx_replace_escape(char *arg, char *escape, char new, bool in_q);
+char *mx_replace_env(char *arg);
 
 int mx_unset(char **args);
 int mx_export(char **args);

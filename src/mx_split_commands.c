@@ -29,11 +29,7 @@ static unsigned int get_next_command(char *command) {
             return i;
         if (!command[i + 1] && command[i] != ';')
             return i + 1;
-        if (command[i] == MX_S_QUOTE) {
-            if (i > 1 && command[i - 1] == '\\' && command[i - 2] != '\\')
-                continue;
-            if (i == 1 && command[i - 1] == '\\')
-                continue;
+        if (command[i] == MX_D_QUOTES && !mx_isescape_char(command, i)) {
             s_q = !s_q;
         }
         if (command[i] == MX_GRAVE_ACCENT && !s_q)
@@ -50,13 +46,7 @@ static unsigned int get_count_commands(char *command) {
     for (unsigned int i = 0; command[i]; i++) {
         if ((command[i] == ';' && !s_q && !g_a) || !command[i + 1])
             result++;
-        if (command[i] == MX_S_QUOTE) {
-            if (i > 1 && command[i - 1] == '\\'
-                && command[i - 2] != '\\') {
-                continue;
-            }
-            if (i == 1 && command[i - 1] == '\\')
-                continue;
+        if (command[i] == MX_D_QUOTES && !mx_isescape_char(command, i)) {
             s_q = !s_q;
         }
         if (command[i] == MX_GRAVE_ACCENT && !s_q)

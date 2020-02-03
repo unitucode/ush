@@ -6,5 +6,10 @@ int mx_preinterpretate(char *command) {
         MX_SHELL_NAME);
         return 1;
     }
+    if (!mx_check_escape(command)) {
+        fprintf(stderr, "%s: syntax error: illegal escape character\n",
+        MX_SHELL_NAME);
+        return 1;
+    }
     return 0;
 }

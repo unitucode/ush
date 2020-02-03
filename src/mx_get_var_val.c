@@ -11,5 +11,6 @@ char *mx_get_var_val(char *key, char *var) {
             current = current->next;
         else
             break;
-    return strdup((char *)(current->data) + len);
+    mx_strdel(&search);
+    return (char *)(current->data) + len;
 }

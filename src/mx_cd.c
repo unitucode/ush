@@ -1,97 +1,94 @@
 #include "ush.h"
 
-static int check_flag(char *flag, char *newdir);
-static int change_dir(char *newdir);
-static void do_flags(int flag, char *newdir);
-static void cd_second_part(char **split, int flag_code);
+static void change_dir(char *newdir, t_map **map);
+static int check_on_flags(char *flag, char *newdir, t_map **map);
+static void do_on_flags(int flag, char *newdir, t_map **map);
+static void change_map(t_map **map, char *newdir);
 
-int mx_cd(char **split) {
-    int flag_code;
-
-    if (split == NULL || (mx_strcmp(split[0], "~") && !split[1]) == 0) {
-        change_dir(split[0]);
-        return 0;
+int mx_cd(char **split, t_map **map) {
+    if (split == NULL)
+        change_dir(NULL, map);
+    if (check_on_flags(split[0], split[1], map) == 0) {
+        change_dir(split[0], map);
     }
-    flag_code = check_flag(split[0], split[1]);
-    if (flag_code < 1 || flag_code > 4)
-        cd_second_part(split, flag_code);
-    return 0;
+    return 1;
 }
 
-static int check_flag(char *flag, char *newdir) {
-    if (mx_strcmp(flag, "-sP") == 0 || mx_strcmp(flag, "-P") == 0) {
-        do_flags(1, newdir);
-        return 1;
-    }
-    if (mx_strcmp(flag, "-Ps") == 0 || mx_strcmp(flag, "-s") == 0) {
-        do_flags(2, newdir);
-        return 2;
-    }
-    if (mx_strcmp(flag, "-") == 0) {
-        change_dir("~OLDPWD");
-        return 3;
-    }
-    if (flag[0] == '-')
-        return -1;
-    if (mx_strcmp(flag, "/") == 0) {
-        change_dir(flag);
-        return 4;
-    }
-    return 0;
-}
 
-static int change_dir(char *newdir) {
+
+static void change_dir(char *newdir, t_map **map) {
     int result;
+
     if (newdir == NULL)
         result = chdir(getenv("HOME"));
-    else if (mx_strcmp(newdir, "~OLDPWD")) {
-        result = chdir(getenv("OLDPWD"));
-        printf("%s\n", getenv("OLDPWD"));
+    else if (mx_strcmp(newdir, "~OLDPWD") == 0) {
+        result = chdir(mx_get_map(map, "OLDPWD"));
+        printf("%s\n", mx_get_map(map, "OLDPWD"));
     }
     else
         result = chdir(newdir);
+    if (result < 0)
+        fprintf(stderr, "cd: %s No such file or directory.\n", newdir);
+    else {
+        change_map(map, newdir);
+    }
+}
+
+static int check_on_flags(char *flag, char *newdir, t_map **map) {
+    if (mx_strcmp(flag, "-P") == 0)
+        do_on_flags(1, newdir, map);
+    else if (mx_strcmp(flag, "-s") == 0)
+        do_on_flags(2, newdir, map);
+    else if (mx_strcmp(flag, "-") == 0 && newdir == NULL)
+        change_dir("~OLDPWD", map);
+    else if ((mx_strcmp(flag, "-") == 0 && newdir != NULL)
+            || flag[0] == '-')
+        fprintf(stderr, "cd: string not in pwd: %s\n", flag); 
+    else if (mx_strcmp(flag, "/") == 0)
+        change_dir(flag, map);
+    else
+        return 0;
+    return 1;
+}
+
+static void do_on_flags(int flag, char *newdir, t_map **map) {
+    char *newdir_path;
+    char *newdir_path_real;
     
-    if (result < 0) {
-        fprintf(stderr, "cd: %s: No such file or directory.\n", newdir);
-    }
-/*
-    char dir[1024];
-    getcwd(dir, 1024);
-    mx_printstr(dir);
-    mx_printstr("\n");
-*/
-    return result;
-}
-
-void cd_second_part(char **split, int flag_code) {
-    if (flag_code == -1) {
-        fprintf(stderr, "cd: string not in pwd: %s\n", split[0]);
-        return;
-    }
-    else if (flag_code == 0 && split[2]) {                                    
-        change_dir(split[0]);
-        return;                                                             
-    }                                                                         
-    change_dir(split[0]);
-    return;
-}
-
-static void do_flags(int flag, char *newdir) {
-    char buf[PATH_MAX];
-    int result = 0;
-    char *newdir_slash = mx_strjoin("/", newdir);
-    char *newdir_link;
-
-    newdir_link = mx_strjoin(getenv("PWD"), newdir_slash);
+    newdir_path = mx_strjoin(getenv("PWD"), "/");
+    newdir_path = strcat(newdir_path, newdir);
+    newdir_path_real = realpath(newdir_path, NULL);
     if (flag == 1) {
-        result = readlink(newdir_link, buf, PATH_MAX);
-        result = (result == -1) ? change_dir(newdir) : change_dir(buf);
+        if (mx_strcmp(newdir_path, newdir_path_real) != 0) {
+
+        }
     }
-    if (flag == 2) {
-        result = readlink(newdir_link, buf, PATH_MAX);                        
-        result = (result == -1) ? change_dir(newdir) : 0;
+    else if (flag == 2) {
+        if (mx_strcmp(newdir_path, newdir_path_real) != 0)
+            fprintf(stderr, "cd: %s: is not a directory.\n", newdir);
+        else
+            change_dir(newdir, map);
     }
-    mx_strdel(&newdir_link);
-    mx_strdel(&newdir_slash);
-    return;
+    mx_strdel(&newdir_path_real); 
+    mx_strdel(&newdir_path);
+}
+
+static void change_map(t_map **map, char *newdir) {
+    char *tmp = mx_strnew(mx_strlen(mx_get_map(map, "PWD")));
+    char *result_path;
+    
+    if (mx_strcmp(newdir, "~OLDPWD") != 0) {
+        tmp = mx_strcpy(tmp, mx_get_map(map, "PWD"));
+        result_path = mx_parse_path(tmp, newdir, map);     
+        mx_put_map(map, "OLDPWD", strdup(mx_get_map(map, "PWD")));            
+        mx_put_map(map, "PWD", strdup(result_path));                          
+        mx_strdel(&result_path);
+        mx_strdel(&tmp);
+    }
+    else {
+        mx_strdel(&tmp);
+        tmp = strdup(mx_get_map(map, "OLDPWD"));
+        mx_put_map(map, "OLDPWD", strdup(mx_get_map(map, "PWD")));
+        mx_put_map(map, "PWD", tmp);
+    }
 }
