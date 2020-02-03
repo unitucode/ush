@@ -20,7 +20,6 @@ char *mx_replace_env(char *arg) {
         mx_strdel(&env);
     }
     strcat(result, arg);
-    printf("result = %s\n", result);
     mx_strdel(&save);
     return result;
 }

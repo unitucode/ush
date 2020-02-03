@@ -10,7 +10,7 @@ void mx_handle_command(char *command, int *code) {
         return;
     commands = mx_split_commands(command);
     for (unsigned int i = 0; commands[i]; i++) {
-        arguments = mx_interpretate(commands[i]);
+        arguments = mx_interpretate(commands[i]); // arg for one command;
     }
     mx_del_strarr(&commands);
 }

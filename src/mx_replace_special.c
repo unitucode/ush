@@ -21,11 +21,11 @@ static char *replace_all_special(char *arg) {
 }
 
 static char *replace_all_escape(char *arg) {
-    arg = mx_replace_escape(arg, "\\n", '\x0a', true);
-    arg = mx_replace_escape(arg, "\\t", '\x09', true);
-    arg = mx_replace_escape(arg, "\\v", '\x0b', true);
-    arg = mx_replace_escape(arg, "\\a", '\x07', true);
-    arg = mx_replace_escape(arg, "\\\"", '\"', false);
-    arg = mx_replace_escape(arg, "\\ ", ' ', false);
+    arg = mx_replace_escape(arg, "\\n", '\x0a', false);
+    arg = mx_replace_escape(arg, "\\t", '\x09', false);
+    arg = mx_replace_escape(arg, "\\v", '\x0b', false);
+    arg = mx_replace_escape(arg, "\\a", '\x07', false);
+    arg = mx_replace_escape(arg, "\\\"", '\"', true);
+    arg = mx_replace_escape(arg, "\\ ", ' ', true);
     return arg;
 }
