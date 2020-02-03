@@ -12,5 +12,7 @@ char *mx_get_var_val(char *key, char *var) {
         else
             break;
     mx_strdel(&search);
+    if (current == NULL)
+        return NULL;
     return (char *)(current->data) + len;
 }
