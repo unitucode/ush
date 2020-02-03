@@ -69,6 +69,12 @@ char **mx_split_commands(char *command);
 void mx_print_sh_error(char *process, char *message);
 int mx_preinterpretate(char *command);
 void mx_handle_command(char *command, int *code);
+t_list **mx_get_var_list(char *key);
+void mx_init_var_lists();
+void mx_print_var_list(char *key);
+void mx_var_list_insert(char *key, char *arg);
+char *mx_get_var_info(char *arg, bool info_type);
+char *mx_get_var_val(char *key, char *var);
 
 int mx_unset(char **args);
 int mx_export(char **args);

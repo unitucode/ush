@@ -2,10 +2,10 @@
 
 void mx_print_env() {
     extern char **environ;
-    int len;
 
-    for (len = 0; environ[len]; len++) {
+    for (int i = 0; environ[i]; i++) {
+        mx_printstr(environ[i]);
+        if (environ[i + 1] != NULL)
+            mx_printstr("\n");
     }
-    mx_bubble_sort(environ, len);
-    mx_print_strarr(environ, "\n");
 }
