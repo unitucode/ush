@@ -26,7 +26,7 @@ int mx_export(char **args) {
     else
         for (int i = 0; args[i] && !args_stop; i++)
             if (mx_match(args[i], MX_EXPORT_ARG)) {
-                if (mx_match(args[i], "="))
+                if (mx_match(args[i], "=")) // CHANGE TO if (value exist)
                     putenv(args[i]);
                 add_var_to_lists(args[i]);
             }
