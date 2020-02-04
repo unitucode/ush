@@ -96,5 +96,5 @@ int mx_echo(char **args);
 int mx_unset(char **args);
 int mx_export(char **args);
 int mx_pwd(char **flags);
-int mx_cd(char **args, t_map **map);
+int mx_cd(char **args);
 int mx_which(char **args);
