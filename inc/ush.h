@@ -35,6 +35,11 @@
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 
+typedef enum e_var_list {
+    shell,
+    exp
+} t_var_list;
+
 typedef struct s_prompt {
     unsigned int index;
     unsigned int cursor_index;
@@ -68,17 +73,18 @@ char **mx_split_commands(char *command);
 void mx_print_sh_error(char *process, char *message);
 int mx_preinterpretate(char *command);
 void mx_handle_command(char *command, int *code);
-t_list **mx_get_var_list(char *key);
+t_list **mx_get_var_list(t_var_list key);
 void mx_init_var_lists();
-void mx_print_var_list(char *key);
-void mx_var_list_insert(char *key, char *arg);
+void mx_print_var_list(t_var_list key);
+void mx_var_list_insert(t_var_list key, char *arg);
 char *mx_get_var_info(char *arg, bool info_type);
-char *mx_get_var_val(char *key, char *var);
+char *mx_get_var_val(t_var_list key, char *var);
 bool mx_check_escape(char *command);
 bool mx_isescape_char(char *command, int i);
 char *mx_replace_special(char *argument);
 char *mx_replace_escape(char *arg, char *escape, char new, bool in_q);
 char *mx_replace_env(char *arg);
+bool mx_check_semicolons(char **commands, int *code);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char *mx_clear_slashes_end(char *str);
@@ -86,6 +92,7 @@ void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 
+int mx_echo(char **args);
 int mx_unset(char **args);
 int mx_export(char **args);
 int mx_pwd(char **flags);

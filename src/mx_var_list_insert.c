@@ -26,7 +26,7 @@ static void push_mid(t_list **list, t_list **node) {
     }
 }
 
-void mx_var_list_insert(char *key, char *arg) {
+void mx_var_list_insert(t_var_list key, char *arg) {
     t_list **list = mx_get_var_list(key);
     t_list *node = mx_create_node(arg);
 

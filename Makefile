@@ -46,7 +46,9 @@ SRC = mx_ush.c \
 	mx_replace_special.c \
 	mx_replace_escape.c \
 	mx_replace_env.c \
-	mx_cd.c \
+	mx_echo.c \
+	mx_check_semicolons.c \
+	# mx_cd.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
