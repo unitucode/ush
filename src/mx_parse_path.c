@@ -29,13 +29,13 @@ static char *check_path(char *path) {
     for (int i = 0; split_path[i]; i++) {
         if (mx_strcmp(split_path[i], ".") == 0) {
             mx_strdel(&split_path[i]);
-            split_path[i] = mx_strdup("null0");
+            split_path[i] = strdup("null0");
         }
         if (mx_strcmp(split_path[i], "..") == 0) {
             mx_strdel(&split_path[i]);
             mx_strdel(&split_path[i - 1]);
-            split_path[i] = mx_strdup("null0");
-            split_path[i - 1] = mx_strdup("null0");
+            split_path[i] = strdup("null0");
+            split_path[i - 1] = strdup("null0");
         }
     }
     result = collect_path(split_path);

@@ -27,10 +27,6 @@ static bool check_link_full_path(t_map **map, char *newdir) {
             1 + mx_strlen(newdir));
     char *real_path;
     
-    /*if (chdir(newdir) != 0 && newdir != NULL) {
-        mx_strdel(&path);
-        return false;
-    }*/
     path = strcpy(path, mx_get_map(map, "PWD"));
     path = strcat(path, "/");
     path = strcat(path, newdir);
@@ -90,9 +86,9 @@ static bool check_link_newdir(t_map **map, char *newdir) {
     char *real_path;
     bool result;
 
-    path = mx_strcpy(path, real_pwd);
-    path = mx_strcat(path, "/");
-    path = mx_strcat(path, newdir);
+    path = strcpy(path, real_pwd);
+    path = strcat(path, "/");
+    path = strcat(path, newdir);
     mx_strdel(&pwd);
     mx_strdel(&real_pwd);
     real_path = realpath(path, NULL);
