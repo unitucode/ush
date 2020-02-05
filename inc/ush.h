@@ -86,7 +86,15 @@ char *mx_replace_escape(char *arg, char *escape, char new, bool in_q);
 char *mx_replace_env(char *arg);
 void mx_get_name(char *var, char **name);
 void mx_delete_names(char **name1, char **name2, t_list *node);
+bool mx_check_semicolons(char **commands, int *code);
 
+char *mx_parse_path(char *pwd, char *newdir, t_map **map);
+char *mx_clear_slashes_end(char *str);
+void mx_change_dir(char *newdir, t_map **map);
+void mx_cd_flags(char *flag, t_map **map, char *newdir);
+void mx_change_map(t_map **map, char *newdir);
+
+int mx_echo(char **args);
 int mx_unset(char **args);
 int mx_export(char **args);
 int mx_pwd(char **flags);

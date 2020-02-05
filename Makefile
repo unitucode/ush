@@ -32,6 +32,9 @@ SRC = mx_ush.c \
 	mx_split_commands.c \
 	mx_preinterpretate.c \
 	mx_handle_command.c \
+	mx_parse_path.c \
+	mx_clear_slashes_end.c \
+	mx_cd_flags.c \
 	mx_get_var_list.c \
 	mx_init_var_lists.c \
 	mx_print_var_list.c \
@@ -45,7 +48,9 @@ SRC = mx_ush.c \
 	mx_replace_env.c \
 	mx_get_name.c \
 	mx_delete_names.c \
-	# mx_cd.c \
+	mx_echo.c \
+	mx_check_semicolons.c \
+	mx_cd.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

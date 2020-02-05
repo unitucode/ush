@@ -9,9 +9,13 @@ char *mx_parse_path(char *path, char *newdir, t_map **map) {
     char *temp;
     
     if (newdir == NULL)
-        return getenv("HOME");
+        return strdup(getenv("HOME"));
+    if (mx_strcmp(newdir, "/") == 0)
+        return strdup(newdir);
     if (mx_strcmp(newdir, "~OLDPWD") == 0)
         return mx_get_map(map, "OLDPWD");
+    if (newdir[0] == '/')
+        return mx_clear_slashes_end(newdir);
     temp = make_bad_path(path, newdir);
     path = check_path(temp);
     mx_strdel(&temp);
@@ -25,13 +29,13 @@ static char *check_path(char *path) {
     for (int i = 0; split_path[i]; i++) {
         if (mx_strcmp(split_path[i], ".") == 0) {
             mx_strdel(&split_path[i]);
-            split_path[i] = mx_strdup("null0");
+            split_path[i] = strdup("null0");
         }
         if (mx_strcmp(split_path[i], "..") == 0) {
             mx_strdel(&split_path[i]);
             mx_strdel(&split_path[i - 1]);
-            split_path[i] = mx_strdup("null0");
-            split_path[i - 1] = mx_strdup("null0");
+            split_path[i] = strdup("null0");
+            split_path[i - 1] = strdup("null0");
         }
     }
     result = collect_path(split_path);
@@ -41,13 +45,14 @@ static char *check_path(char *path) {
 
 static char *collect_path(char **split_path) {
     int size = count_size_of_path(split_path);
-    char *path = mx_strnew(size + 1);
+    char *path = mx_strnew(size);
     
     path[0] = '/';
     for (int i = 0; split_path[i]; i++) {
         if (strcmp(split_path[i], "null0") != 0) {
         path = strcat(path, split_path[i]);
-        path = strcat(path, "/");
+        if (split_path[i + 1] && mx_strcmp(split_path[i + 1], "null0") != 0)
+            path = strcat(path, "/");
         }
     }
     return path;
