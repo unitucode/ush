@@ -43,6 +43,8 @@ SRC = mx_ush.c \
 	mx_replace_special.c \
 	mx_replace_escape.c \
 	mx_replace_env.c \
+	mx_get_name.c \
+	mx_delete_names.c \
 	# mx_cd.c \
 
 INCLUDE = -I $(LBMXD) \

@@ -36,8 +36,8 @@
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 
 typedef enum e_var_list {
-    shell,
-    exp
+    SHELL,
+    EXP
 } t_var_list;
 
 typedef struct s_prompt {
@@ -84,6 +84,8 @@ bool mx_isescape_char(char *command, int i);
 char *mx_replace_special(char *argument);
 char *mx_replace_escape(char *arg, char *escape, char new, bool in_q);
 char *mx_replace_env(char *arg);
+void mx_get_name(char *var, char **name);
+void mx_delete_names(char **name1, char **name2, t_list *node);
 
 int mx_unset(char **args);
 int mx_export(char **args);
