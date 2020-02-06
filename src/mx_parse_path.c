@@ -47,6 +47,10 @@ static char *collect_path(char **split_path) {
     int size = count_size_of_path(split_path);
     char *path = mx_strnew(size);
     
+    if (strcmp(split_path[0], "null0") == 0) {
+        mx_strdel(&path);
+        return "/";
+    }
     path[0] = '/';
     for (int i = 0; split_path[i]; i++) {
         if (strcmp(split_path[i], "null0") != 0) {
