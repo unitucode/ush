@@ -1,5 +1,18 @@
 #include "ush.h"
 
+static bool check_dir(char *path, char *file) {
+    DIR *dir = opendir(path);
+    struct dirent *entry;
+
+    if (dir)
+        while ((entry = readdir(dir)) != NULL)
+            if (entry->d_type == DT_REG
+                && strcmp(entry->d_name, file) == 0) {
+                return 1;
+            }
+    return 0;
+}
+
 static bool search_exe(char *file, int mode) {
     char **paths = mx_strsplit(getenv("PATH"), ':');
     bool retval = 1;
@@ -15,19 +28,6 @@ static bool search_exe(char *file, int mode) {
     if (retval)
         fprintf(stderr, "%s not found\n", file);
     return retval;
-}
-
-static bool check_dir(char *path, char *file) {
-    DIR *dir = opendir(path);
-    struct dirent *entry;
-
-    if (dir)
-        while ((entry = readdir(dir)) != NULL)
-            if (entry->d_type == DT_REG
-                && strcmp(entry->d_name, file) == 0) {
-                return 1;
-            }
-    return 0;
 }
 
 static int parse_flags(char **flags, int *mode) {
