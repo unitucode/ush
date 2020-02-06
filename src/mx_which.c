@@ -1,22 +1,5 @@
 #include "ush.h"
 
-static bool search_exe(char *file, int mode);
-static bool check_dir(char *path, char *file);
-static int parse_flags(char **flags, int *mode);
-
-int mx_which(char **args) {
-    bool end_status = 0;
-    int mode = 0;
-    int first_arg_index = parse_flags(args, &mode);
-
-    if (first_arg_index != -1)
-        for (int i = first_arg_index; args[i]; i++)
-            end_status = end_status | search_exe(args[i], mode);
-    else
-        end_status = 1;
-    return end_status;
-}
-
 static bool search_exe(char *file, int mode) {
     char **paths = mx_strsplit(getenv("PATH"), ':');
     bool retval = 1;
@@ -67,4 +50,17 @@ static int parse_flags(char **flags, int *mode) {
     if (flags[i] == NULL)
         return -1;
     return i;
+}
+
+int mx_which(char **args) {
+    bool end_status = 0;
+    int mode = 0;
+    int first_arg_index = parse_flags(args, &mode);
+
+    if (first_arg_index != -1)
+        for (int i = first_arg_index; args[i]; i++)
+            end_status = end_status | search_exe(args[i], mode);
+    else
+        end_status = 1;
+    return end_status;
 }
