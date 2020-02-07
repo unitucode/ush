@@ -32,12 +32,7 @@ static char *check_path(char *path) {
             split_path[i] = strdup("null0");
         }
         if (mx_strcmp(split_path[i], "..") == 0) {
-            mx_strdel(&split_path[i]);
-            if (i > 0) {
-                mx_strdel(&split_path[i - 1]);
-                split_path[i - 1] = strdup("null0");
-            }
-            split_path[i] = strdup("null0");
+            mx_make_null_index(split_path, i);
         }
     }
     result = collect_path(split_path);
