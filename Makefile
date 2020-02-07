@@ -50,6 +50,7 @@ SRC = mx_ush.c \
 	mx_echo.c \
 	mx_check_semicolons.c \
 	mx_cd.c \
+	mx_var_list_delete.c \
 	mx_make_null_index.c \
 
 INCLUDE = -I $(LBMXD) \
