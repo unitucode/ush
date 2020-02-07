@@ -55,7 +55,7 @@ static int check_on_flags(char *flag, char *newdir, t_map **map) {
     else if (strcmp(flag, "-") == 0 && newdir == NULL)
         mx_change_dir("~OLDPWD", map);
     else if ((strcmp(flag, "-") == 0 && newdir != NULL)
-            || flag[0] == '-')
+            || (flag[0] == '-' && newdir != NULL))
         fprintf(stderr, "cd: string not in pwd: %s\n", flag); 
     else if (strcmp(flag, "/") == 0)
         mx_change_dir(flag, map);
