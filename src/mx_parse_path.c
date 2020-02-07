@@ -14,8 +14,10 @@ char *mx_parse_path(char *path, char *newdir, t_map **map) {
         return strdup(newdir);
     if (mx_strcmp(newdir, "~OLDPWD") == 0)
         return mx_get_map(map, "OLDPWD");
-    if (newdir[0] == '/')
-        return mx_clear_slashes_end(newdir);
+    if (newdir[0] == '/') {
+        temp = check_path(newdir);
+        return temp;
+    }
     temp = make_bad_path(path, newdir);
     path = check_path(temp);
     mx_strdel(&temp);
