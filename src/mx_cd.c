@@ -39,7 +39,7 @@ void mx_change_dir(char *newdir, t_map **map) {
     else
         result = chdir(newdir);
     if (result < 0) {
-        fprintf(stderr, "cd: %s :", newdir);
+        fprintf(stderr, "cd: %s", newdir);
         perror(" ");
     }
     else {

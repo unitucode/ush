@@ -33,7 +33,6 @@ SRC = mx_ush.c \
 	mx_preinterpretate.c \
 	mx_handle_command.c \
 	mx_parse_path.c \
-	mx_clear_slashes_end.c \
 	mx_cd_flags.c \
 	mx_get_var_list.c \
 	mx_init_var_lists.c \

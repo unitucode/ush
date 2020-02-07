@@ -91,7 +91,6 @@ bool mx_check_semicolons(char **commands, int *code);
 void mx_var_list_delete(t_var_list key, char *del_name);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
-char *mx_clear_slashes_end(char *str);
 char **mx_make_null_index(char **split, int index);
 void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
