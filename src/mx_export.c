@@ -16,7 +16,7 @@ static bool parse_error(char *arg) {
 static void add_var_to_lists(char *arg) {
     mx_var_list_insert(SHELL, arg);
     mx_var_list_insert(EXP, arg);
-    mx_strdel(&arg);  // MAYBE LEAK HERE !!!
+    mx_strdel(&arg);
 }
 
 static void export_var_to_lists(char *arg) {

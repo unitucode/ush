@@ -15,7 +15,7 @@ static char **get_sorted_environ() {
 
     for (len = 0; environ[len]; len++) {
     }
-    sorted_environ = malloc((len + 1) * sizeof(char *));
+    sorted_environ = malloc((len + 1) * sizeof (char *));
     copy_environ(sorted_environ, environ);
     mx_bubble_sort(sorted_environ, len);
     return sorted_environ;

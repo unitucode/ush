@@ -1,22 +1,5 @@
 #include "ush.h"
 
-static bool parse_flags(char **flags, bool *mode);
-
-int mx_pwd(char **flags) {
-    t_map **map = mx_get_lenv();
-    bool mode = 0;
-    char *pwd = mx_get_map(map, "PWD");
-
-    if (!parse_flags(flags, &mode)) {
-        if (mode)
-            puts(realpath(pwd, NULL));
-        else
-            puts(pwd);
-        return 0;
-    }
-    return 1;
-}
-
 // parse_flags return 1 if any error cases, else 0
 static bool parse_flags(char **flags, bool *mode) {
     bool flag_stop = 0;
@@ -40,8 +23,18 @@ static bool parse_flags(char **flags, bool *mode) {
     }
     return 0;
 }
-// t_map **map = mx_get_lenv();
-// *map = mx_create_map(20);
 
-// mx_put_map(map, "PWD", strdup(getenv("PWD")));
-// mx_get_map(map, "PWD");
+int mx_pwd(char **flags) {
+    t_map **map = mx_get_lenv();
+    bool mode = 0;
+    char *pwd = mx_get_map(map, "PWD");
+
+    if (!parse_flags(flags, &mode)) {
+        if (mode)
+            puts(realpath(pwd, NULL));
+        else
+            puts(pwd);
+        return 0;
+    }
+    return 1;
+}

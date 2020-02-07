@@ -16,11 +16,22 @@ static void replace_var(t_list **list, t_list *node) {
     mx_strdel(&del);
 }
 
+static void shift_nods(t_list **current, t_list **prev, t_list **node) {
+    t_list *tmp = NULL;
+
+    if ((*current) == NULL)
+        (*prev)->next = *node;
+    else {
+        tmp = *current;
+        (*prev)->next = *node;
+        (*prev)->next->next = tmp;
+    }
+}
+
 static void push_mid(t_list **list, t_list **node,
                      char *arg_name, char **var_name) {
     t_list *current = *list;
     t_list *prev = NULL;
-    t_list *tmp = NULL;
 
     while (current)
         if (strcmp(*var_name, arg_name) < 0) {
@@ -36,13 +47,7 @@ static void push_mid(t_list **list, t_list **node,
         }
         else
             break ;
-    if (current == NULL)
-        prev->next = *node;
-    else {
-        tmp = current;
-        prev->next = *node;
-        prev->next->next = tmp;
-    }
+    shift_nods(&current, &prev, node);
 }
 
 void mx_var_list_insert(t_var_list key, char *arg) {
