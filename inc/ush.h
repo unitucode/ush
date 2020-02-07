@@ -34,6 +34,7 @@
 #define MX_ESCAPE_CHARS "\\\"ntva$ "
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
+#define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 
 typedef enum e_var_list {
     SHELL,
@@ -87,6 +88,7 @@ char *mx_replace_env(char *arg);
 void mx_get_name(char *var, char **name);
 void mx_delete_names(char **name1, char **name2, t_list *node);
 bool mx_check_semicolons(char **commands, int *code);
+void mx_var_list_delete(t_var_list key, char *del_name);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char *mx_clear_slashes_end(char *str);
