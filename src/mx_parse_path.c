@@ -33,9 +33,11 @@ static char *check_path(char *path) {
         }
         if (mx_strcmp(split_path[i], "..") == 0) {
             mx_strdel(&split_path[i]);
-            (i > 0) ? mx_strdel(&split_path[i - 1]) : 0;
+            if (i > 0) {
+                mx_strdel(&split_path[i - 1]);
+                split_path[i - 1] = strdup("null0");
+            }
             split_path[i] = strdup("null0");
-            (i > 0) ? split_path[i - 1] = strdup("null0") : 0;
         }
     }
     result = collect_path(split_path);
