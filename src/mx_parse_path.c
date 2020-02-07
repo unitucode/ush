@@ -33,9 +33,9 @@ static char *check_path(char *path) {
         }
         if (mx_strcmp(split_path[i], "..") == 0) {
             mx_strdel(&split_path[i]);
-            mx_strdel(&split_path[i - 1]);
+            (i > 0) ? mx_strdel(&split_path[i - 1]) : 0;
             split_path[i] = strdup("null0");
-            split_path[i - 1] = strdup("null0");
+            (i > 0) ? split_path[i - 1] = strdup("null0") : 0;
         }
     }
     result = collect_path(split_path);
@@ -46,10 +46,14 @@ static char *check_path(char *path) {
 static char *collect_path(char **split_path) {
     int size = count_size_of_path(split_path);
     char *path = mx_strnew(size);
-    
-    if (strcmp(split_path[0], "null0") == 0) {
+    bool null_path = true;
+
+    for (int i = 0; split_path[i]; i++)
+        if (strcmp(split_path[i], "null0") != 0)
+            null_path = false;
+    if (null_path) {
         mx_strdel(&path);
-        return "/";
+        return strdup("/");
     }
     path[0] = '/';
     for (int i = 0; split_path[i]; i++) {
