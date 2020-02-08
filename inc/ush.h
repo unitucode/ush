@@ -97,7 +97,6 @@ char *mx_replace_env(char *arg);
 void mx_get_name(char *var, char **name);
 void mx_delete_names(char **name1, char **name2, t_list *node);
 bool mx_check_semicolons(char **commands, int *code);
-<<<<<<< HEAD
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
@@ -108,9 +107,7 @@ void mx_skip_expansion(char *command, unsigned int *i);
 void mx_skip_quotes(char *command, unsigned int *i, char c);
 char **mx_parse_command(char *command, int *code);
 bool mx_check_substitutions(char *command);
-=======
 void mx_var_list_delete(t_var_list key, char *del_name);
->>>>>>> ba103da08eedb5fe063153453ccbbe7e1ce55dc3
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);

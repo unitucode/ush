@@ -87,7 +87,7 @@ static char *get_var(char *cmd, unsigned int *i) {
     }
     result = strndup(cmd + save, *i - save);
     printf("result = %s\n", result);
-    env = mx_get_var_val(exp, result);
+    env = mx_get_var_val(EXP, result);
     printf("env = %s\n", env);
     mx_strdel(&result);
     return env;
