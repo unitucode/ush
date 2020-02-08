@@ -4,7 +4,9 @@ static int check_on_flags(char *flag, char *newdir, t_map **map);
 //static void do_on_flags(int flag, char *newdir, t_map **map);
 //static void change_map(t_map **map, char *newdir);
 
-int mx_cd(char **split, t_map **map) {
+int mx_cd(char **split) {
+    t_map **map = mx_get_lenv();
+
     if (split == NULL)
         mx_change_dir(NULL, map);
     if (strcmp(split[0], "-P") == 0 || strcmp(split[0], "-s") == 0) {
@@ -37,7 +39,7 @@ void mx_change_dir(char *newdir, t_map **map) {
     else
         result = chdir(newdir);
     if (result < 0) {
-        fprintf(stderr, "cd: %s :", newdir);
+        fprintf(stderr, "cd: %s", newdir);
         perror(" ");
     }
     else {

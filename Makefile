@@ -33,7 +33,6 @@ SRC = mx_ush.c \
 	mx_preinterpretate.c \
 	mx_handle_command.c \
 	mx_parse_path.c \
-	mx_clear_slashes_end.c \
 	mx_cd_flags.c \
 	mx_get_var_list.c \
 	mx_init_var_lists.c \
@@ -46,10 +45,13 @@ SRC = mx_ush.c \
 	mx_replace_special.c \
 	mx_replace_escape.c \
 	mx_replace_env.c \
+	mx_get_name.c \
+	mx_delete_names.c \
 	mx_echo.c \
 	mx_check_semicolons.c \
 	mx_check_substitutions.c \
 	mx_cd.c \
+<<<<<<< HEAD
 	mx_issubstitution.c \
 	mx_exec.c \
 	mx_create_process.c \
@@ -61,6 +63,10 @@ SRC = mx_ush.c \
 	mx_parse_command.c \
 	mx_true.c \
 	mx_false.c \
+=======
+	mx_var_list_delete.c \
+	mx_make_null_index.c \
+>>>>>>> ba103da08eedb5fe063153453ccbbe7e1ce55dc3
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

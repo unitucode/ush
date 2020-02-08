@@ -36,10 +36,11 @@
 #define MX_ESCAPE_CHARS "\\\"\'ntva$` "
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
+#define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 
 typedef enum e_var_list {
-    shell,
-    exp
+    SHELL,
+    EXP
 } t_var_list;
 
 typedef struct s_process {
@@ -93,7 +94,10 @@ bool mx_isescape_char(char *command, int i);
 char *mx_replace_special(char *argument);
 char *mx_replace_escape(char *arg, char *escape, char new, bool in_q);
 char *mx_replace_env(char *arg);
+void mx_get_name(char *var, char **name);
+void mx_delete_names(char **name1, char **name2, t_list *node);
 bool mx_check_semicolons(char **commands, int *code);
+<<<<<<< HEAD
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
@@ -104,9 +108,12 @@ void mx_skip_expansion(char *command, unsigned int *i);
 void mx_skip_quotes(char *command, unsigned int *i, char c);
 char **mx_parse_command(char *command, int *code);
 bool mx_check_substitutions(char *command);
+=======
+void mx_var_list_delete(t_var_list key, char *del_name);
+>>>>>>> ba103da08eedb5fe063153453ccbbe7e1ce55dc3
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
-char *mx_clear_slashes_end(char *str);
+char **mx_make_null_index(char **split, int index);
 void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
@@ -117,5 +124,5 @@ int mx_echo(char **args);
 int mx_unset(char **args);
 int mx_export(char **args);
 int mx_pwd(char **flags);
-int mx_cd(char **args, t_map **map);
+int mx_cd(char **args);
 int mx_which(char **args);
