@@ -1,56 +1,49 @@
 #include "ush.h"
 
-static unsigned int get_count_commands(char *commands);
-static unsigned int get_next_command(char *command);
+static t_list *split(char *command);
+static int get_next_command(char *command);
 
 char **mx_split_commands(char *command) {
-    unsigned int c_commands = get_count_commands(command);
-    char **commands = malloc(sizeof(char *) * (c_commands + 1));
+    t_list *commands = split(command);
+    size_t size = mx_list_size(commands);
+    char **cmds = malloc(sizeof(char *) * (size + 1));
     unsigned int index = 0;
-    unsigned int last_word = 0;
 
-    commands[c_commands] = NULL;
-    for (unsigned int i = 0; i < c_commands; i++) {
-        index = get_next_command(command);
-        commands[i] = strndup(command, index);
-        last_word = index + 1;
-        command += last_word;
+    cmds[size] = NULL;
+    for (t_list *cur = commands; cur; cur = cur->next) {
+        cmds[index++] = strdup(cur->data);
     }
+    mx_del_list(&commands);
+    return cmds;
+}
+
+static t_list *split(char *command) {
+    t_list *commands = NULL;
+    int len = 0;
+    char *tmp_cmd = mx_strtrim(command);
+    char *save = tmp_cmd;
+    
+    for (unsigned int i = 0; len != -1; i++) {
+        len = get_next_command(tmp_cmd);
+        mx_push_back(&commands, strndup(tmp_cmd, len));
+        if ((tmp_cmd[len] == ';' && !tmp_cmd[len + 1]) || !tmp_cmd[len])
+            break;
+        tmp_cmd += len + 1;
+    }
+    mx_strdel(&save);
     return commands;
 }
 
-
-static unsigned int get_next_command(char *command) {
-    bool s_q = false;
-    bool g_a = false;
-    
-    for (unsigned int i = 0; command[i]; i++) {
-        if (command[i] == ';' && !s_q && !g_a)
+static int get_next_command(char *command) {
+    for (unsigned int i = 0; i < strlen(command); i++) {
+        mx_skip_quotes(command, &i, '`');
+        mx_skip_quotes(command, &i, '\'');
+        mx_skip_quotes(command, &i, '\"');
+        mx_skip_expansion(command, &i);
+        if (command[i] == ';')
             return i;
         if (!command[i + 1] && command[i] != ';')
             return i + 1;
-        if (command[i] == MX_D_QUOTES && !mx_isescape_char(command, i)) {
-            s_q = !s_q;
-        }
-        if (command[i] == MX_GRAVE_ACCENT && !s_q)
-            g_a = !g_a;
     }
-    return 0;
-}
-
-static unsigned int get_count_commands(char *command) {
-    bool s_q = false;
-    bool g_a = false;
-    unsigned int result = 0;
-
-    for (unsigned int i = 0; command[i]; i++) {
-        if ((command[i] == ';' && !s_q && !g_a) || !command[i + 1])
-            result++;
-        if (command[i] == MX_D_QUOTES && !mx_isescape_char(command, i)) {
-            s_q = !s_q;
-        }
-        if (command[i] == MX_GRAVE_ACCENT && !s_q)
-            g_a = !g_a;
-    }
-    return result;
+    return -1;
 }

@@ -60,3 +60,20 @@ static unsigned int get_len_spec(char *spec) {
     }
     return i;
 }
+
+// void mx_replace_env(char **arguments) {
+//     unsigned int i = 0;
+
+//     while (arguments[i]) {
+//         replace_env(arguments[i]);
+//         i++;
+//     }
+// }
+
+// static void replace_env(char *argument) {
+//     int index = 0;
+
+//     while ((index = mx_get_char_index(argument, '$')) != -1) {
+        
+//     }
+// }
