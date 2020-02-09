@@ -14,6 +14,7 @@
 #include <stdbool.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
+#include <spawn.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
@@ -30,8 +31,9 @@
 #define MX_NON_PRINTABLE "[\x03\x0a]"
 #define MX_NEW_LINE_CHARS "^[\x03\x0a]$"
 #define MX_D_QUOTES '\"'
+#define MX_S_QUOTES '\''
 #define MX_GRAVE_ACCENT '`'
-#define MX_ESCAPE_CHARS "\\\"ntva$ "
+#define MX_ESCAPE_CHARS "\\\"\'ntva$` "
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
@@ -40,6 +42,13 @@ typedef enum e_var_list {
     SHELL,
     EXP
 } t_var_list;
+
+typedef struct s_process {
+    posix_spawn_file_actions_t actions;
+    posix_spawnattr_t attrs;
+    pid_t pid;
+    sigset_t signals;
+} t_process;
 
 typedef struct s_prompt {
     unsigned int index;
@@ -68,7 +77,7 @@ void mx_rcmd(char *dst, char *src, size_t size, unsigned int *index);
 t_map **mx_get_lenv();
 char *mx_str_prompt();
 void mx_handle_cursor(t_prompt *prompt);
-char **mx_interpretate(char *command);
+char **mx_interpretate(char *command, int *code);
 bool mx_check_quotes(char *command);
 char **mx_split_commands(char *command);
 void mx_print_sh_error(char *process, char *message);
@@ -88,6 +97,16 @@ char *mx_replace_env(char *arg);
 void mx_get_name(char *var, char **name);
 void mx_delete_names(char **name1, char **name2, t_list *node);
 bool mx_check_semicolons(char **commands, int *code);
+bool mx_issubstitution(char *arg);
+int mx_exec(t_process *process, char *filename, char **argv, char **env);
+t_process *mx_create_process(int fd);
+t_list *mx_handle_substitution(t_list *arguments);
+void mx_parse_substitution(t_list **result, char *substitution);
+bool mx_remove_subchar(char *substitution);
+void mx_skip_expansion(char *command, unsigned int *i);
+void mx_skip_quotes(char *command, unsigned int *i, char c);
+char **mx_parse_command(char *command, int *code);
+bool mx_check_substitutions(char *command);
 void mx_var_list_delete(t_var_list key, char *del_name);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
@@ -96,6 +115,8 @@ void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 
+int mx_true();
+int mx_false();
 int mx_echo(char **args);
 int mx_unset(char **args);
 int mx_export(char **args);

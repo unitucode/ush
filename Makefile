@@ -49,7 +49,19 @@ SRC = mx_ush.c \
 	mx_delete_names.c \
 	mx_echo.c \
 	mx_check_semicolons.c \
+	mx_check_substitutions.c \
 	mx_cd.c \
+	mx_issubstitution.c \
+	mx_exec.c \
+	mx_create_process.c \
+	mx_handle_substitution.c \
+	mx_parse_substitution.c \
+	mx_remove_subchar.c \
+	mx_skip_expansion.c \
+	mx_skip_quotes.c \
+	mx_parse_command.c \
+	mx_true.c \
+	mx_false.c \
 	mx_var_list_delete.c \
 	mx_make_null_index.c \
 	mx_source.c \
