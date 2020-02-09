@@ -102,3 +102,4 @@ int mx_export(char **args);
 int mx_pwd(char **flags);
 int mx_cd(char **args);
 int mx_which(char **args);
+char **mx_source(char *str);
