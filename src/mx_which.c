@@ -12,7 +12,7 @@ static bool type_check(struct dirent *entry, char *path) {
 
         stat(abs_real_path, &buff);
         mx_strdel(&abs_real_path);
-        return S_ISREG(buff.st_mode);
+        return MX_ISREG(buff.st_mode);
     }
     return 0;
 }

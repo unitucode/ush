@@ -38,6 +38,8 @@
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 
+#define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
+
 typedef enum e_var_list {
     SHELL,
     EXP
