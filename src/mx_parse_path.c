@@ -21,7 +21,9 @@ char *mx_parse_path(char *path, char *newdir, t_map **map) {
     temp = make_bad_path(path, newdir);
     path = check_path(temp);
     mx_strdel(&temp);
-    return path;
+    temp = mx_strndup(path, mx_strlen(path) - 1);
+    mx_strdel(&path);
+    return temp;
 }
 
 static char *check_path(char *path) {
@@ -55,13 +57,11 @@ static char *collect_path(char **split_path) {
         return strdup("/");
     }
     path[0] = '/';
-    for (int i = 0; split_path[i]; i++) {
+    for (int i = 0; split_path[i]; i++)
         if (strcmp(split_path[i], "null0") != 0) {
-        path = strcat(path, split_path[i]);
-        if (split_path[i + 1] && mx_strcmp(split_path[i + 1], "null0") != 0)
+            path = strcat(path, split_path[i]);
             path = strcat(path, "/");
         }
-    }
     return path;
 }
 

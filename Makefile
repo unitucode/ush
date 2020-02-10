@@ -64,6 +64,7 @@ SRC = mx_ush.c \
 	mx_false.c \
 	mx_var_list_delete.c \
 	mx_make_null_index.c \
+	mx_source.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
