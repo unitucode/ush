@@ -10,7 +10,7 @@ char *mx_get_var_val(t_var_list key, char *var) {
         if (strncmp(current->data, search, len) != 0)
             current = current->next;
         else
-            break ;
+            break;
     mx_strdel(&search);
     if (current == NULL)
         return NULL;

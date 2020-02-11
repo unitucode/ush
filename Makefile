@@ -8,6 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_check_brackets.c \
 	mx_get_input.c \
     mx_export.c \
 	mx_unset.c \
@@ -66,6 +67,8 @@ SRC = mx_ush.c \
 	mx_make_null_index.c \
 	mx_source.c \
 	mx_put_pwd.c \
+	mx_env.c \
+	mx_env_copy.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

@@ -7,8 +7,7 @@ void mx_handle_command(char *command, int *code) {
     if (*code || !commands)
         return;
     for (unsigned int i = 0; commands[i]; i++) {
-        arguments = mx_interpretate(commands[i], code); // arg for one command;
-        if (*code)
+        if (!(arguments = mx_interpretate(commands[i], code)))
             return;
         printf("cmd---\n");
         for (unsigned int i = 0; arguments[i]; i++) {

@@ -38,6 +38,8 @@
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 
+#define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
+
 typedef enum e_var_list {
     SHELL,
     EXP
@@ -93,10 +95,11 @@ bool mx_check_escape(char *command);
 bool mx_isescape_char(char *command, int i);
 char *mx_replace_special(char *argument);
 char *mx_replace_escape(char *arg, char *escape, char new, bool in_q);
-char *mx_replace_env(char *arg);
+char *mx_replace_env(char *arg, int *code);
 void mx_get_name(char *var, char **name);
 void mx_delete_names(char **name1, char **name2, t_list *node);
 bool mx_check_semicolons(char **commands, int *code);
+bool mx_check_brackets(char *command);
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
@@ -115,6 +118,7 @@ void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
+char **mx_env_copy(char **environ);
 
 int mx_true();
 int mx_false();
@@ -124,4 +128,5 @@ int mx_export(char **args);
 int mx_pwd(char **flags);
 int mx_cd(char **args);
 int mx_which(char **args);
+int mx_env();
 char **mx_source(char *str);
