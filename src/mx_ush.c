@@ -18,6 +18,7 @@ int main() {
     return 0;
 }
 
+
 // static void test() { // create a new process;
 //     t_process *process = mx_create_process(1);
 //     char *argv[20] = {"ls", "-R", "/", NULL};
