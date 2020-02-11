@@ -6,7 +6,12 @@ static void main_cycle();
 static void init();
 static void deinit();
 
-int main() {
+int main(int argc, char **argv) {
+    if (argc > 1) {
+        fprintf(stderr, "%s: illegal option -- %s\n", MX_SHELL_NAME, argv[1]);
+        fprintf(stderr, "usage: %s ./ush\n", MX_SHELL_NAME);
+        return 1;
+    }
     init();
     // test();
     main_cycle();
@@ -55,10 +60,19 @@ static void init() {
     // TODO
     mx_init_var_lists();
     t_map **map = mx_get_lenv();
+    char path[PATH_MAX];
     *map = mx_create_map(40);
+
+    getcwd(path, sizeof(path));
     mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD"))); //NULL if first pwd
     mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
-    mx_put_map(map, strdup("$?"), mx_itoa(0));
+    mx_put_map(map, strdup("?"), mx_itoa(0));
+    mx_put_map(map, strdup("#"), mx_itoa(0));
+    mx_put_map(map, strdup("0"), strdup(MX_SHELL_NAME));
+    mx_put_map(map, strdup("_"), strdup(path));
+    mx_put_map(map, strdup("$"), mx_itoa(getpid()));
+    mx_put_map(map, strdup("*"), strdup(""));
+    mx_put_map(map, strdup("@"), strdup(""));
     sigset_t mask;
     sigfillset(&mask);
     sigprocmask(SIG_SETMASK, &mask, NULL);
