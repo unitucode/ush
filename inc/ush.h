@@ -116,6 +116,8 @@ char **mx_make_null_index(char **split, int index);
 void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
+void mx_put_pwd(char *pwd, char *oldpwd);
+char **mx_env_copy(char **environ);
 
 int mx_true();
 int mx_false();
@@ -125,4 +127,5 @@ int mx_export(char **args);
 int mx_pwd(char **flags);
 int mx_cd(char **args);
 int mx_which(char **args);
+int mx_env();
 char **mx_source(char *str);

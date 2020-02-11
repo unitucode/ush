@@ -36,19 +36,21 @@ static bool search_exe(char *file, int mode) {
     char **paths = mx_strsplit(getenv("PATH"), ':');
     bool retval = 1;
 
-    for (int i = 0; paths[i]; i++)
-        if (check_dir(paths[i], file)) {
-            if (mode != 2)
-                printf("%s/%s\n", paths[i], file);
-            retval = 0;
-            if (mode == 0) {
-                mx_del_strarr(&paths);
-                return 0;
+    if (paths) {
+        for (int i = 0; paths[i]; i++)
+            if (check_dir(paths[i], file)) {
+                if (mode != 2)
+                    printf("%s/%s\n", paths[i], file);
+                retval = 0;
+                if (mode == 0) {
+                    mx_del_strarr(&paths);
+                    return 0;
+                }
             }
-        }
-    if (retval)
-        fprintf(stderr, "%s not found\n", file);
-    mx_del_strarr(&paths);
+        if (retval)
+            fprintf(stderr, "%s not found\n", file);
+        mx_del_strarr(&paths);
+    }
     return retval;
 }
 
