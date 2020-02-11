@@ -9,14 +9,24 @@ char **mx_interpretate(char *command, int *code) {
     // t_list *tmp_arguments = split_arguments(command);
     // t_list *subs_arguments = mx_handle_substitution(tmp_arguments);
     // char **arguments = replace_all(subs_arguments);
-    *code = 1;
-    command = mx_replace_special(command);
-    printf("command = %s\n", command);
+    if (!(command = mx_replace_env(command, code))) {
+        fprintf(stderr, "%s: bad substitution\n", MX_SHELL_NAME);
+        return NULL; // arg for one command;
+    }
+    printf("command = (%s)\n", command);
     // mx_del_list(&tmp_arguments);
     // mx_del_list(&subs_arguments);
     // return arguments;
     return NULL;
 }
+
+// static void parse(char *command, int *code) {
+//     char *result = mx_strnew(ARG_MAX);
+//     unsigned int len = strlen(command);
+
+//     strcpy(result, command);
+//     result = mx_replace_env(result);
+// }
 
 // static void parse_arguments(t_list *arguments) {
 //     t_list *tmp = arguments;
