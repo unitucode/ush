@@ -53,10 +53,17 @@ char *mx_replace_special(char *command) {
     unsigned int r_i = 0;
     char *var = NULL;
     bool s_quotes = false;
+    bool g_quotes = false;
 
     for (unsigned int i = 0; i < strlen(command); i++) {
-        if (!s_quotes) {
-            if (command[i] == '$' && !mx_isescape_char(command, i)) {
+        if (command[i] == MX_GRAVE_ACCENT && !mx_isescape_char(command, i) && !s_quotes) {
+            g_quotes = !g_quotes;
+        }
+        if (command[i] == MX_S_QUOTES && !mx_isescape_char(command, i)) {
+            s_quotes = !s_quotes;
+        }
+        if (!s_quotes && !g_quotes) {
+            while (command[i] == '$' && !mx_isescape_char(command, i)) {
                 i++;
                 var = get_var(command, &i);
                 if (var) {
@@ -64,13 +71,16 @@ char *mx_replace_special(char *command) {
                     r_i += strlen(var);
                     mx_strdel(&var);
                 }
+                else {
+                    break;
+                }
             }
         }
-        if (command[i] == MX_S_QUOTES && !mx_isescape_char(command, i)) {
-            s_quotes = !s_quotes;
-        }
-        result[r_i++] = command[i];
+        if (!(command[i] == MX_D_QUOTES && !mx_isescape_char(command, i)) &&
+            !(command[i] == MX_S_QUOTES && !mx_isescape_char(command, i)))
+            result[r_i++] = command[i]; 
     }
+    mx_strdel(&command);
     return result;
 }
 
@@ -85,10 +95,13 @@ static char *get_var(char *cmd, unsigned int *i) {
             *i += 1;
         }
     }
+    else {
+        *i -= 1;
+        return NULL;
+    }
     result = strndup(cmd + save, *i - save);
-    printf("result = %s\n", result);
-    env = mx_get_var_val(EXP, result);
-    printf("env = %s\n", env);
+    if (mx_get_var_val(EXP, result))
+        env = strdup(mx_get_var_val(EXP, result));
     mx_strdel(&result);
     return env;
 }

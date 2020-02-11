@@ -54,6 +54,7 @@ static void deinit() {
 
 static void init() {
     // TODO
+    mx_init_var_lists();
     t_map **map = mx_get_lenv();
     *map = mx_create_map(40);
     mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD"))); //NULL if first pwd
