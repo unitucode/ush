@@ -55,7 +55,7 @@ static int check_on_flags(char *flag, char *newdir, t_map **map) {
     else if (strcmp(flag, "-") == 0 && newdir == NULL)
         mx_change_dir("~OLDPWD", map);
     else if ((strcmp(flag, "-") == 0 && newdir != NULL)
-            || flag[0] == '-')
+            || (flag[0] == '-' && newdir != NULL))
         fprintf(stderr, "cd: string not in pwd: %s\n", flag); 
     else if (strcmp(flag, "/") == 0)
         mx_change_dir(flag, map);
@@ -70,9 +70,10 @@ void mx_change_map(t_map **map, char *newdir) {
     
     if (strcmp(newdir, "~OLDPWD") != 0) {
         tmp = mx_strcpy(tmp, mx_get_map(map, "PWD"));
-        result_path = mx_parse_path(tmp, newdir, map);     
-        mx_put_map(map, "OLDPWD", strdup(mx_get_map(map, "PWD")));            
-        mx_put_map(map, "PWD", strdup(result_path));                          
+        result_path = mx_parse_path(tmp, newdir, map);
+        mx_put_map(map, "OLDPWD", strdup(mx_get_map(map, "PWD")));
+        mx_put_map(map, "PWD", strdup(result_path));
+        mx_put_pwd(result_path, mx_get_map(map, "OLDPWD"));
         mx_strdel(&result_path);
         mx_strdel(&tmp);
     }
@@ -81,5 +82,6 @@ void mx_change_map(t_map **map, char *newdir) {
         tmp = strdup(mx_get_map(map, "OLDPWD"));
         mx_put_map(map, "OLDPWD", strdup(mx_get_map(map, "PWD")));
         mx_put_map(map, "PWD", tmp);
+        mx_put_pwd(tmp, mx_get_map(map, "OLDPWD"));
     }
 }
