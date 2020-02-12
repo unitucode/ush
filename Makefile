@@ -8,6 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_replace_tilde.c \
 	mx_check_brackets.c \
 	mx_get_input.c \
     mx_export.c \

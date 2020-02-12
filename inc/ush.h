@@ -112,6 +112,7 @@ void mx_skip_quotes(char *command, unsigned int *i, char c);
 char **mx_parse_command(char *command, int *code);
 bool mx_check_substitutions(char *command);
 void mx_var_list_delete(t_var_list key, char *del_name);
+char *mx_replace_tilde(char *arg);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);

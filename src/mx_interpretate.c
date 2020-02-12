@@ -13,6 +13,10 @@ char **mx_interpretate(char *command, int *code) {
         fprintf(stderr, "%s: bad substitution\n", MX_SHELL_NAME);
         return NULL; // arg for one command;
     }
+    command = mx_replace_tilde(command);
+    if (!(command = mx_replace_subsitution(command, code))) {
+        fprintf(stderr, "%s: ")
+    }
     printf("command = (%s)\n", command);
     // mx_del_list(&tmp_arguments);
     // mx_del_list(&subs_arguments);
