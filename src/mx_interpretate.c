@@ -9,18 +9,30 @@ char **mx_interpretate(char *command, int *code) {
     // t_list *tmp_arguments = split_arguments(command);
     // t_list *subs_arguments = mx_handle_substitution(tmp_arguments);
     // char **arguments = replace_all(subs_arguments);
+    t_list *arguments = NULL;
     if (!(command = mx_replace_env(command, code))) {
         fprintf(stderr, "%s: bad substitution\n", MX_SHELL_NAME);
         return NULL; // arg for one command;
     }
     command = mx_replace_tilde(command);
-    if (!(command = mx_replace_subsitution(command, code))) {
-        fprintf(stderr, "%s: ")
-    }
+    // if (!(command = mx_replace_subsitution(command, code))) {
+    //     fprintf(stderr, "%s: ", MX_SHELL_NAME);
+    //     return NULL;
+    // }
+    arguments = mx_split_command(command);
     printf("command = (%s)\n", command);
     // mx_del_list(&tmp_arguments);
     // mx_del_list(&subs_arguments);
     // return arguments;
+    int len = mx_list_size(arguments);
+    char **result = malloc(sizeof(char *) * (len + 1));
+    result[len] = NULL;
+    for (int i = 0; i < len; i++) {
+        result[i] = strdup(arguments->data);
+        printf("result = %s\n", result[i]);
+        arguments = arguments->next;
+    }
+    printf("exit\n");
     return NULL;
 }
 
