@@ -48,19 +48,19 @@ static int exec_our(char *command, char **argv, int fd) {
     pid_t pid;
 
     if (strcmp(command, "unset") == 0)
-        return mx_unset(&argv[1]);
+        return mx_unset(++(argv));
     if (strcmp(command, "export") == 0)
-        return mx_export(&argv[1], fd);
+        return mx_export(++(argv), fd);
     pid = fork();
     if (pid == 0) {
         if (strcmp(command, "pwd") == 0)
-            exit(mx_pwd(&argv[1], fd));
+            exit(mx_pwd(++(argv), fd));
         if (strcmp(command, "cd") == 0)
-            exit(mx_cd(&argv[1]));
+            exit(mx_cd(++(argv)));
         if (strcmp(command, "echo") == 0)
-            exit(mx_cd(&argv[1]));
+            exit(mx_cd(++(argv)));
         if (strcmp(command, "which") == 0)
-            exit(mx_which(&argv[1], fd));
+            exit(mx_which(++(argv), fd));
     }
     return -1;
 }

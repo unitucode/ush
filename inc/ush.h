@@ -37,6 +37,7 @@
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
+#define MX_SPEC_ENV "$?#*@_0"
 
 #define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
 
@@ -112,6 +113,8 @@ char **mx_parse_command(char *command, int *code);
 bool mx_check_substitutions(char *command);
 void mx_var_list_delete(t_var_list key, char *del_name);
 void mx_exec_command(char **argv, int fd);
+char *mx_replace_tilde(char *arg);
+t_list *mx_split_command(char *command);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
