@@ -10,6 +10,7 @@ static bool parse_error(char *arg) {
         fprintf(stderr, "export: not an identifier: %s\n", arg_name);
     else
         fprintf(stderr, "export: not valid in this context: %s\n", arg_name);
+    mx_strdel(&arg_name);
     return 1;
 }
 
@@ -42,21 +43,20 @@ static void export_var_to_lists(char *arg) {
     mx_delete_names(&var_name, &arg_name, NULL);
 }
 
-int mx_export(char **args) {
+int mx_export(char **args, int fd) {
     bool args_stop = 0;
 
     if (args[0] == NULL)
-        mx_print_var_list(EXP);
+        mx_print_var_list(EXP, fd);
     else
         for (int i = 0; args[i] && !args_stop; i++)
-            if (mx_match(args[i], MX_EXPORT_ARG)) {
+            if (mx_match(args[i], MX_EXPORT_ARG))
                 if (!mx_match(args[i], "="))
                     export_var_to_lists(args[i]);
                 else {
                     putenv(args[i]);
                     add_var_to_lists(strdup(args[i]));
                 }
-            }
             else
                 args_stop = parse_error(args[i]);
     return 0;
