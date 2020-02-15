@@ -105,8 +105,7 @@ bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
 t_list *mx_handle_substitution(t_list *arguments);
-void mx_parse_substitution(t_list **result, char *substitution);
-bool mx_remove_subchar(char *substitution);
+void mx_remove_subchar(char *substitution);
 void mx_skip_expansion(char *command, unsigned int *i);
 void mx_skip_quotes(char *command, unsigned int *i, char c);
 char **mx_parse_command(char *command, int *code);
@@ -114,6 +113,8 @@ bool mx_check_substitutions(char *command);
 void mx_var_list_delete(t_var_list key, char *del_name);
 char *mx_replace_tilde(char *arg);
 t_list *mx_split_command(char *command);
+char *mx_replace_substitution(char *arg, int *code);
+bool mx_get_sub(char *arg, char *sub, bool is_quotes, int *code);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);

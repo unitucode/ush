@@ -54,7 +54,6 @@ static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len) {
     }
     if (arg[index] == '/' || isspace(arg[index]) || !arg[index]) {
         result = getenv("HOME");
-        printf("result = %s\n", result);
         if (result) {
             return strdup(result);
         }
@@ -66,7 +65,7 @@ static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len) {
         }
         tmp_name = strndup(arg + save, index - save);
         dir_name = mx_strjoin("/Users/", tmp_name);
-        if (!(dir = opendir(dir_name)) || !strcmp(tmp_name, ".") || !strcmp(tmp_name, "..")) {
+        if (!(dir = opendir(dir_name)) || !strcmp(tmp_name, ".") || !strcmp(tmp_name, "..") || !strcmp(tmp_name, "Shared")) {
             mx_strdel(&tmp_name);
             mx_strdel(&dir_name);
             return strndup(arg, 1);

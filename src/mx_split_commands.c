@@ -36,9 +36,9 @@ static t_list *split(char *command) {
 
 static int get_next_command(char *command) {
     for (unsigned int i = 0; i < strlen(command); i++) {
-        mx_skip_quotes(command, &i, '`');
-        mx_skip_quotes(command, &i, '\'');
-        mx_skip_quotes(command, &i, '\"');
+        mx_skip_quotes(command, &i, MX_GRAVE_ACCENT);
+        mx_skip_quotes(command, &i, MX_S_QUOTES);
+        mx_skip_quotes(command, &i, MX_D_QUOTES);
         mx_skip_expansion(command, &i);
         if (command[i] == ';')
             return i;
