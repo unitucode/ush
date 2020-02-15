@@ -20,7 +20,7 @@ char **mx_split_commands(char *command) {
 static t_list *split(char *command) {
     t_list *commands = NULL;
     int len = 0;
-    char *tmp_cmd = mx_strtrim(command);
+    char *tmp_cmd = strdup(command);
     char *save = tmp_cmd;
     
     for (unsigned int i = 0; len != -1; i++) {

@@ -105,7 +105,7 @@ bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
 t_list *mx_handle_substitution(t_list *arguments);
-void mx_remove_subchar(char *substitution);
+bool mx_remove_subchar(char *substitution);
 void mx_skip_expansion(char *command, unsigned int *i);
 void mx_skip_quotes(char *command, unsigned int *i, char c);
 char **mx_parse_command(char *command, int *code);
