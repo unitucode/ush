@@ -24,16 +24,16 @@ static bool parse_flags(char **flags, bool *mode) {
     return 0;
 }
 
-int mx_pwd(char **flags) {
+int mx_pwd(char **flags, int fd) {
     t_map **map = mx_get_lenv();
     bool mode = 0;
     char *pwd = mx_get_map(map, "PWD");
 
     if (!parse_flags(flags, &mode)) {
         if (mode)
-            puts(realpath(pwd, NULL));
+            dprintf(fd, "%s\n", realpath(pwd, NULL));
         else
-            puts(pwd);
+            dprintf(fd, "%s\n", pwd);
         return 0;
     }
     return 1;
