@@ -32,7 +32,7 @@ static bool check_dir(char *path, char *file) {
     return 0;
 }
 
-static bool search_exe(char *file, int mode) {
+static bool search_exe(char *file, int mode, int fd) {
     char **paths = mx_strsplit(getenv("PATH"), ':');
     bool retval = 1;
 
@@ -40,7 +40,7 @@ static bool search_exe(char *file, int mode) {
         for (int i = 0; paths[i]; i++)
             if (check_dir(paths[i], file)) {
                 if (mode != 2)
-                    printf("%s/%s\n", paths[i], file);
+                    dprintf(fd, "%s/%s\n", paths[i], file);
                 retval = 0;
                 if (mode == 0) {
                     mx_del_strarr(&paths);
@@ -76,14 +76,14 @@ static int parse_flags(char **flags, int *mode) {
     return i;
 }
 
-int mx_which(char **args) {
+int mx_which(char **args, int fd) {
     bool end_status = 0;
     int mode = 0;
     int first_arg_index = parse_flags(args, &mode);
 
     if (first_arg_index != -1)
         for (int i = first_arg_index; args[i]; i++)
-            end_status = end_status | search_exe(args[i], mode);
+            end_status = end_status | search_exe(args[i], mode, fd);
     else
         end_status = 1;
     return end_status;

@@ -29,8 +29,8 @@ char *mx_replace_env(char *arg, int *code) {
             mx_strdel(&env);
         }
     }
-    strcat(result, arg + index);
-    mx_strdel(&arg);
+    strcat(result, arg + save);
+    // mx_strdel(&arg);
     return result;
 }
 

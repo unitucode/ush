@@ -8,6 +8,10 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_replace_sub.c \
+	mx_replace_substitution.c \
+	mx_split_command.c \
+	mx_replace_tilde.c \
 	mx_check_brackets.c \
 	mx_get_input.c \
     mx_export.c \
@@ -56,7 +60,6 @@ SRC = mx_ush.c \
 	mx_exec.c \
 	mx_create_process.c \
 	mx_handle_substitution.c \
-	mx_parse_substitution.c \
 	mx_remove_subchar.c \
 	mx_skip_expansion.c \
 	mx_skip_quotes.c \
@@ -71,6 +74,7 @@ SRC = mx_ush.c \
 	mx_env_copy.c \
 	mx_processes_on_pause.c \
 	mx_fg.c \
+	mx_exec_command.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
@@ -80,7 +84,7 @@ INCS = $(addprefix $(INCD)/, $(INC))
 SRCS = $(addprefix $(SRCD)/, $(SRC))
 OBJS = $(addprefix $(OBJD)/, $(SRC:%.c=%.o))
 	
-CFLAGS = -std=c99 $(addprefix -W, all extra error pedantic)
+CFLAGS = -std=c99 -g $(addprefix -W, all extra error pedantic)
 CC = clang
 
 all: $(NAME)

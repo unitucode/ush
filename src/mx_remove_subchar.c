@@ -14,17 +14,5 @@ bool mx_remove_subchar(char *substitution) {
         memmove(substitution, substitution + 2, len - 2);
         return false;
     }
-    return true;
+    return false;
 }
-
-// static char *replace_arg_quotes(char *arg) {
-//     unsigned int len = strlen(arg);
-
-//     if (arg[len - 1] == '\"' && !mx_isescape_char(arg, len - 1)) {
-//         arg[len - 1] = '\0';
-//     }
-//     if (arg[0] == '\"' && !mx_isescape_char(arg, 0)) {
-//         memmove(arg, arg + 1, len - 1);
-//     }
-//     return arg;
-// }
