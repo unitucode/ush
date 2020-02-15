@@ -8,7 +8,8 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
                          &process->actions, &process->attrs, argv, env);
     if (waitpid(process->pid, &status, WUNTRACED) != -1) {
         if (WIFSTOPPED(status)) {
-            printf("stopped");
+            mx_push_back(mx_get_list_procs(), process);
+            mx_printstr("exit\n");
         }
         printf("exit %d\n", status);
     }

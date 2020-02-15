@@ -121,6 +121,11 @@ void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
 char **mx_env_copy(char **environ);
 
+t_list **mx_get_list_procs();
+void mx_pop_process(int id);
+int mx_get_process_id_by_pid(pid_t pid);
+pid_t mx_get_process_pid_by_id(int id);
+
 int mx_true();
 int mx_false();
 int mx_echo(char **args);
@@ -131,3 +136,4 @@ int mx_cd(char **args);
 int mx_which(char **args);
 int mx_env();
 char **mx_source(char *str);
+int mx_fg(char **args);
