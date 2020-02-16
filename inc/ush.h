@@ -107,7 +107,6 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
 void mx_del_process(t_process **process);
 t_list *mx_handle_substitution(t_list *arguments);
-void mx_parse_substitution(t_list **result, char *substitution);
 bool mx_remove_subchar(char *substitution);
 void mx_skip_expansion(char *command, unsigned int *i);
 void mx_skip_quotes(char *command, unsigned int *i, char c);
@@ -118,6 +117,8 @@ void mx_exec_command(char **argv, int fd);
 char *mx_replace_tilde(char *arg);
 t_list *mx_split_command(char *command);
 bool mx_find_command(char *path, char *command, char **filename);
+char *mx_replace_substitution(char *arg, int *code);
+bool mx_get_sub(char *arg, char *sub, bool is_quotes, int *code);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
@@ -129,6 +130,11 @@ void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
 char **mx_env_copy(char **environ);
 
+t_list **mx_get_list_procs();
+void mx_pop_process(int id);
+int mx_get_process_id_by_pid(pid_t pid);
+pid_t mx_get_process_pid_by_id(int id);
+
 int mx_true();
 int mx_false();
 int mx_echo(char **args);
@@ -139,3 +145,4 @@ int mx_cd(char **args);
 int mx_which(char **args, int fd);
 int mx_env(char **argv, int fd);
 char **mx_source(char *str);
+int mx_fg(char **args);

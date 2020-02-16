@@ -30,7 +30,7 @@ char *mx_replace_env(char *arg, int *code) {
         }
     }
     strcat(result, arg + save);
-    mx_strdel(&arg);
+    // mx_strdel(&arg);
     return result;
 }
 
