@@ -6,12 +6,13 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
     mx_disable_canon();
     status = posix_spawn(&process->pid, filename,
                          &process->actions, &process->attrs, argv, env);
-    if (waitpid(process->pid, &status, WUNTRACED) != -1) {
-        if (WIFSTOPPED(status)) {
-            printf("stopped");
-        }
-        printf("exit %d\n", status);
-    }
+    waitpid(process->pid, &status, WUNTRACED);
+    // if (waitpid(process->pid, &status, WUNTRACED) != -1) {
+    //     if (WIFSTOPPED(status)) {
+    //         printf("stopped");
+    //     }
+    //     printf("exit %d\n", status);
+    // }
     mx_enable_canon();
     return status;
 }

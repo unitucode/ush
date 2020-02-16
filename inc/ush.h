@@ -37,6 +37,7 @@
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
+#define MX_ENV_FLAG_I "^-(i*|i+.*|-.+)$"
 #define MX_SPEC_ENV "$?#*@_0"
 
 #define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
@@ -104,6 +105,7 @@ bool mx_check_brackets(char *command);
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
+void mx_del_process(t_process **process);
 t_list *mx_handle_substitution(t_list *arguments);
 void mx_parse_substitution(t_list **result, char *substitution);
 bool mx_remove_subchar(char *substitution);
@@ -115,9 +117,12 @@ void mx_var_list_delete(t_var_list key, char *del_name);
 void mx_exec_command(char **argv, int fd);
 char *mx_replace_tilde(char *arg);
 t_list *mx_split_command(char *command);
+bool mx_find_command(char *path, char *command, char **filename);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
+bool mx_is_our_command(char *command);
+bool mx_is_our_builtin(char *command);
 void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
@@ -132,5 +137,5 @@ int mx_export(char **args, int fd);
 int mx_pwd(char **flags, int fd);
 int mx_cd(char **args);
 int mx_which(char **args, int fd);
-int mx_env();
+int mx_env(char **argv, int fd);
 char **mx_source(char *str);

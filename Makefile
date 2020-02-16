@@ -72,6 +72,9 @@ SRC = mx_ush.c \
 	mx_env.c \
 	mx_env_copy.c \
 	mx_exec_command.c \
+	mx_is_our.c \
+	mx_find_command.c \
+	mx_del_process.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
