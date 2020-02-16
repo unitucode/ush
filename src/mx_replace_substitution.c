@@ -19,7 +19,7 @@ char *mx_replace_substitution(char *arg, int *code) {
         sub = get_substitution(&open_sub, &close_sub, &i, arg);
         if (sub) {
             strncat(result, arg + save, open_sub - save);
-            if (!mx_get_sub(result, sub, is_quotes, code)) {
+            if (!mx_get_sub(result, sub, code)) {
                 *code = 1;
                 return NULL;
             }

@@ -1,6 +1,9 @@
 #include "ush.h"
 
-bool mx_get_sub(char *arg, char *sub, bool is_quotes, int *code) {
+static char *get_output(char **arguments);
+static void append(char **result, char *buf);
+
+bool mx_get_sub(char *arg, char *sub, int *code) {
     char **arguments = NULL;
     char *output = NULL;
     char **commands = NULL;
@@ -18,15 +21,12 @@ bool mx_get_sub(char *arg, char *sub, bool is_quotes, int *code) {
             mx_strdel(&sub);
             continue;
         }
-        printf("sub---\n");
-        for (unsigned int i = 0; arguments[i]; i++) {
-            printf("arg = %s\n", arguments[i]);
-        }
-        printf("sub---\n");
-        if (is_quotes)
-            output = strdup(".+."); // todo command;
-        else
-            output = strdup(".-.");
+        // printf("sub---\n");
+        // for (unsigned int i = 0; arguments[i]; i++) {
+        //     printf("arg = %s\n", arguments[i]);
+        // }
+        // printf("sub---\n");
+        output = get_output(arguments);
         strcat(arg, output);
         mx_strdel(&output);
         mx_del_strarr(&arguments);
@@ -34,4 +34,29 @@ bool mx_get_sub(char *arg, char *sub, bool is_quotes, int *code) {
     mx_strdel(&sub);
     mx_del_strarr(&commands);
     return true;
+}
+
+static char *get_output(char **arguments) {
+    int fds[2];
+    char *output = NULL;
+    size_t bytes = 0;
+    char buf[128];
+
+    pipe(fds);
+    mx_exec_command(arguments, fds[1]);
+    close(fds[1]);
+    while ((bytes = read(fds[0], buf, sizeof(buf) - 1)) > 0) {
+        buf[bytes] = '\0';
+        append(&output, buf);
+    }
+    close(fds[0]);
+    return output;
+}
+
+static void append(char **result, char *buf) {
+    char *tmp_str = mx_strjoin(*result, buf);
+
+    mx_strdel(result);
+    *result = mx_strdup(tmp_str);
+    mx_strdel(&tmp_str);
 }
