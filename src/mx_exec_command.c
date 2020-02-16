@@ -1,24 +1,19 @@
 #include "ush.h"
 
 static int exec_our(char *command, char **argv, int fd) {
-    pid_t pid;
-
     if (strcmp(command, "unset") == 0)
         return mx_unset(&argv[1]);
     if (strcmp(command, "export") == 0)
         return mx_export(&argv[1], fd);
-    pid = fork();
-    if (pid == 0) {
-        if (strcmp(command, "pwd") == 0)
-            exit(mx_pwd(&argv[1], fd));
-        if (strcmp(command, "cd") == 0)
-            exit(mx_cd(&argv[1]));
-        if (strcmp(command, "echo") == 0)
-            exit(mx_cd(&argv[1]));
-        if (strcmp(command, "which") == 0)
-            exit(mx_which(&argv[1], fd));
-    }
-    return -1;
+    if (strcmp(command, "pwd") == 0)
+        return mx_pwd(&argv[1], fd);
+    if (strcmp(command, "cd") == 0)
+        return mx_cd(&argv[1]);
+    if (strcmp(command, "echo") == 0)
+        return mx_cd(&argv[1]);
+    if (strcmp(command, "which") == 0)
+        return mx_which(&argv[1], fd);
+    return -1337;
 }
 
 void mx_exec_command(char **argv, int fd) {
@@ -32,6 +27,7 @@ void mx_exec_command(char **argv, int fd) {
 
         mx_exec(process, filename, argv, environ);
         mx_strdel(&filename);
+        mx_del_process(&process);
     }
     else
         fprintf(stderr, "%s: command not found: %s\n",
