@@ -77,7 +77,11 @@ static void init() {
     sigfillset(&mask);
     sigprocmask(SIG_SETMASK, &mask, NULL);
     //
-    setenv("MX_PROMPT", "u$h> ", 0);
+    // setenv("MX_PROMPT", "u$h> ", 0);
+    // mx_var_list_insert(SHELL, "MX_PROMPT=u$h> ");
+    // mx_var_list_insert(EXP, "MX_PROMPT=u$h> ");
+    char *args[3] = {"MX_PROMPT=ush> ", NULL};
+    mx_export(args, 1);
     tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);
     mx_enable_canon();

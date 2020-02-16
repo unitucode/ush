@@ -11,7 +11,7 @@ void mx_get_input(t_prompt *prompt, int *code) {
     while (read(STDIN_FILENO, prompt->buff, 4)
            && prompt->index < ARG_MAX
            && handle_key(prompt, code)) {
-        printf("\r%s%s", mx_str_prompt(), prompt->command);
+        printf("%s%s", mx_str_prompt(), prompt->command);
         mx_handle_cursor(prompt);
         memset(prompt->buff, '\0', sizeof(prompt->buff));
     }
