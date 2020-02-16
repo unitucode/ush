@@ -10,11 +10,12 @@ void mx_handle_command(char *command, int *code) {
         if (!(arguments = mx_interpretate(commands[i], code))) {
             continue;
         }
-        printf("cmd---\n");
-        for (int j = 0; arguments[j]; j++) {
-            printf("arg = (%s)\n", arguments[j]);
-        }
-        printf("cmd---\n");
+        // printf("cmd---\n");
+        // for (int j = 0; arguments[j]; j++) {
+        //     printf("arg = (%s)\n", arguments[j]);
+        // }
+        // printf("cmd---\n");
+        mx_exec_command(arguments, 1);
         mx_del_strarr(&arguments);
     }
     mx_del_strarr(&commands);
