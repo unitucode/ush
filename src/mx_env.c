@@ -1,15 +1,16 @@
 #include "ush.h"
 
 static void print_env_illop (char option) {
-    fprintf(stderr, "env: illegal option -- %c\n", args[0][i]);
+    fprintf(stderr, "env: illegal option -- %c\n", option);
     fprintf(stderr, "usage: env [-i] [-P utilpath] [-u name]\n");
     fprintf(stderr, "\t\t   [name=value ...] [utility [argument ...]]\n");
 }
 
 static int parse_flag(char **args) {
-    if (args[0][0] = '-') {
+    if (args[0][0] == '-') {
         for (int i = 1; args[0][i]; i++) {
             if (args[0][i] == 'P' || args[0][i] == 'u')
+                return 1;
             else if (args[0][i] != 'i' || args[0][i] != '-') {
                 print_env_illop(args[0][i]);
             }
@@ -28,7 +29,7 @@ static int parse_flags(char **argv, char **path, char ***environ) {
             flag_stop = 1;
         else {
             if (mx_match(argv[i], "^-(i*|i+.*|-.+)$"))
-                mx_strdel(environ);
+                mx_strdel(*environ);
             parse_flag(&argv[i]);
         }
         i++;
