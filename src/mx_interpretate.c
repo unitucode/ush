@@ -42,7 +42,7 @@ static char *get_formated_arg(char *str) {
             is_quotes = !is_quotes;
             i++;
         }
-        if (mx_isescape_char(str, i) && !is_quotes) {
+        if (mx_isescape_char(str, i + 1) && !is_quotes) {
             i++;
         }
         result[index++] = str[i];

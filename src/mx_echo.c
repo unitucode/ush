@@ -1,58 +1,79 @@
 #include "ush.h"
 
-static char *replace_escape(char *arg);
+static char *replace_escape(char *arg, bool *is_nl);
 static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv);
-static void copy(char *result, char *replace);
-static void print_nl(bool is_nl);
+static char *replace_octal(char *arg);
 
-int mx_echo(char **args) {
+int mx_echo(char **args, int fd) {
     bool is_nl = true;
-    bool is_e = true;
+    bool is_e = false;
     unsigned int index = 0;
     char *output = NULL;
 
     index = set_flags(&is_nl, &is_e, args);
     while (args[index]) {
         if (is_e)
-            output = replace_escape(args[index]);
+            output = replace_escape(args[index], &is_nl);
         else
             output = strdup(args[index]);
-        printf("%s", output);
+        dprintf(fd, "%s", output);
         mx_strdel(&output);
         index++;
         if (args[index])
-            printf(" ");
+            dprintf(fd, " ");
     }
-    print_nl(is_nl);
+    if (is_nl)
+        dprintf(fd, "\n");
     return 0;
 }
 
-static void print_nl(bool is_nl) {
-    if (is_nl)
-        printf("\n");
-    else
-        printf("\x1b[0;47;30m%%\x1b[0m\n");
-}
-
-static char *replace_escape(char *arg) {
-    char *replace = mx_replace_substr(arg, "\x0a", "\\n");
+static char *replace_escape(char *arg, bool *is_nl) {
+    char *save = NULL;
+    int index = 0;
     char *result = mx_strnew(ARG_MAX);
 
-    copy(result, replace);
-    replace = mx_replace_substr(result, "\x09", "\\t");
-    copy(result, replace);
-    replace = mx_replace_substr(result, "\x0b", "\\v");
-    copy(result, replace);
-    replace = mx_replace_substr(result, "\x07", "\\a");
-    copy(result, replace);
-    replace = mx_replace_substr(result, "\x09", "\\t");
-    copy(result, replace);
+    if ((index = mx_get_substr_index(arg, "\\c")) >= 0) {
+        save = arg;
+        strncpy(result, arg, index);
+        *is_nl = false;
+    }
+    else
+        strcpy(result, arg);
+    result = mx_replace_escape(result, "\\a", '\x07', true);
+    result = mx_replace_escape(result, "\\b", '\x08', true);
+    result = mx_replace_escape(result, "\\f", '\x0c', true);
+    result = mx_replace_escape(result, "\\n", '\x0a', true);
+    result = mx_replace_escape(result, "\\r", '\x0d', true);
+    result = mx_replace_escape(result, "\\t", '\x09', true);
+    result = mx_replace_escape(result, "\\v", '\x0b', true);
+    result = mx_replace_escape(result, "\\\\", '\\', true);
+    result = replace_octal(result);
     return result;
 }
 
-static void copy(char *result, char *replace) {
-    strcpy(result, replace);
-    mx_strdel(&replace);
+static char *replace_octal(char *arg) {
+    char *result = mx_strnew(strlen(arg));
+    int index = 0;
+    int num_size = 0;
+    char *octal_num = NULL;
+    char *save = arg;
+
+    while ((index = mx_get_substr_index(arg, "\\0")) >= 0) {
+        strncat(result, arg, index);
+        index += 1;
+        while (arg[index] >= '0' && arg[index] <= '7' && arg[index]) {
+            num_size++;
+            index++;
+        }
+        octal_num = strndup(arg + index - num_size, num_size);
+        result[strlen(result)] = (char)strtol(octal_num, NULL, 8);
+        mx_strdel(&octal_num);
+        arg += index;
+        num_size = 0;
+    }
+    strcat(result, arg);
+    mx_strdel(&save);
+    return result;
 }
 
 static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
@@ -62,9 +83,9 @@ static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
         if (mx_match(argv[index], "^-[nEe]+$")) {
             for (unsigned int i = 0; i < strlen(argv[index]); i++) {
                 if (argv[index][i] == 'E')
-                    *is_e = true;
-                if (argv[index][i] == 'e')
                     *is_e = false;
+                if (argv[index][i] == 'e')
+                    *is_e = true;
                 if (argv[index][i] == 'n')
                     *is_nl = false;
             }
