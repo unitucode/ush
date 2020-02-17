@@ -1,15 +1,29 @@
 #include "ush.h"
 
-static int check_on_flags(char *flag, char *newdir, t_map **map);
-//static void do_on_flags(int flag, char *newdir, t_map **map);
-//static void change_map(t_map **map, char *newdir);
+static int check_on_flags(char *flag, char *newdir, t_map **map) {
+    if (strcmp(flag, "-P") == 0 || strcmp(flag, "-sP") == 0 ||
+    strcmp(flag, "-Ps") == 0)
+        mx_cd_flags(flag, map, newdir);
+    else if (strcmp(flag, "-s") == 0)
+        mx_cd_flags("-s", map, newdir);
+    else if (strcmp(flag, "-") == 0 && newdir == NULL)
+        mx_change_dir("~OLDPWD", map);
+    else if ((strcmp(flag, "-") == 0 && newdir != NULL)
+            || (flag[0] == '-' && newdir != NULL))
+        fprintf(stderr, "cd: string not in pwd: %s\n", flag); 
+    else if (strcmp(flag, "/") == 0)
+        mx_change_dir(flag, map);
+    else
+        return 0;
+    return 1;
+}
 
 int mx_cd(char **split) {
     t_map **map = mx_get_lenv();
 
-    if (split == NULL)
+    if (!mx_arr_size(split))
         mx_change_dir(NULL, map);
-    if (strcmp(split[0], "-P") == 0 || strcmp(split[0], "-s") == 0) {
+    else if (strcmp(split[0], "-P") == 0 || strcmp(split[0], "-s") == 0) {
         if (chdir(split[1]) != 0) {
             mx_change_dir(split[1], map);
             return 0;
@@ -17,7 +31,7 @@ int mx_cd(char **split) {
         else
             chdir("..");
     }
-    if (check_on_flags(split[0], split[1], map) == 0) {
+    else if (check_on_flags(split[0], split[1], map) == 0) {
         mx_change_dir(split[0], map);
     }
     return 1;
@@ -42,26 +56,8 @@ void mx_change_dir(char *newdir, t_map **map) {
         fprintf(stderr, "cd: %s", newdir);
         perror(" ");
     }
-    else {
-        mx_change_map(map, newdir);
-    }
-}
-
-static int check_on_flags(char *flag, char *newdir, t_map **map) {
-    if (strcmp(flag, "-P") == 0)
-        mx_cd_flags("-P", map, newdir);
-    else if (strcmp(flag, "-s") == 0)
-        mx_cd_flags("-s", map, newdir);
-    else if (strcmp(flag, "-") == 0 && newdir == NULL)
-        mx_change_dir("~OLDPWD", map);
-    else if ((strcmp(flag, "-") == 0 && newdir != NULL)
-            || (flag[0] == '-' && newdir != NULL))
-        fprintf(stderr, "cd: string not in pwd: %s\n", flag); 
-    else if (strcmp(flag, "/") == 0)
-        mx_change_dir(flag, map);
     else
-        return 0;
-    return 1;
+        mx_change_map(map, newdir);
 }
 
 void mx_change_map(t_map **map, char *newdir) {

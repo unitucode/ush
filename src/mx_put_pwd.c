@@ -10,4 +10,8 @@ void mx_put_pwd(char *pwd, char *oldpwd) {
     mx_var_list_insert(SHELL, new_oldpwd);
     mx_var_list_insert(EXP, new_oldpwd);
     putenv(new_oldpwd);
+    mx_strdel(&new_pwd);
+    new_pwd = NULL;
+    mx_strdel(&new_oldpwd);
+    new_oldpwd = NULL;
 }

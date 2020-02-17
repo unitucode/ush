@@ -9,6 +9,7 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
     waitpid(process->pid, &status, WUNTRACED);
     // if (waitpid(process->pid, &status, WUNTRACED) != -1) {
     //     if (WIFSTOPPED(status)) {
+    //         mx_push_back(mx_get_list_procs(), process);
     //         printf("stopped");
     //     }
     //     printf("exit %d\n", status);
