@@ -1,11 +1,16 @@
 #include "ush.h"
 
 static bool check_link_newdir(t_map **map, char *newdir);
-static void cd_flag_s(t_map **map, char *newdir);
+static int cd_flag_s(t_map **map, char *newdir);
 static void flag_p_full_path(t_map **map, char *newdir);
 static bool check_link_full_path(t_map **map, char *newdir);
 
 void mx_cd_flags(char *flag, t_map **map, char *newdir) {
+    if (strcmp(flag, "-Ps") == 0 || strcmp(flag, "-sP") == 0) {
+        if (cd_flag_s(map, newdir) == 1)
+            flag = "-P";
+            newdir = ".";
+    }
     if (strcmp(flag, "-P") == 0) {
         if (newdir == NULL)
             mx_change_dir(newdir, map);
@@ -18,7 +23,7 @@ void mx_cd_flags(char *flag, t_map **map, char *newdir) {
         else
             flag_p_full_path(map, newdir); 
         }
-    if (strcmp(flag, "-s") == 0)
+    else if (strcmp(flag, "-s") == 0)
         cd_flag_s(map, newdir);
 }
 
@@ -62,21 +67,26 @@ static void flag_p_full_path(t_map **map, char *newdir) {
         mx_change_dir(newdir, map);
 }
 
-static void cd_flag_s(t_map **map, char *newdir) {
+static int cd_flag_s(t_map **map, char *newdir) {
     if (newdir == NULL)
         mx_change_dir(NULL, map);
     else if (newdir[0] == '/') {
         if (strcmp(newdir, realpath(newdir, NULL)) == 0)
             mx_change_dir(newdir, map);
-        else
+        else {
             fprintf(stderr, "cd: %s: is not a directory.\n", newdir);
+            return 0;
+        }
     }
     else {
-        if (check_link_newdir(map, newdir))
+        if (check_link_newdir(map, newdir)) {
             fprintf(stderr, "cd: %s: is not a directory.\n", newdir);
+            return 0;
+        }
         else
             mx_change_dir(newdir, map);
     }
+    return 1;
 }
 
 static bool check_link_newdir(t_map **map, char *newdir) {

@@ -1,8 +1,9 @@
 #include "ush.h"
 
 static int check_on_flags(char *flag, char *newdir, t_map **map) {
-    if (strcmp(flag, "-P") == 0)
-        mx_cd_flags("-P", map, newdir);
+    if (strcmp(flag, "-P") == 0 || strcmp(flag, "-sP") == 0 ||
+    strcmp(flag, "-Ps") == 0)
+        mx_cd_flags(flag, map, newdir);
     else if (strcmp(flag, "-s") == 0)
         mx_cd_flags("-s", map, newdir);
     else if (strcmp(flag, "-") == 0 && newdir == NULL)
