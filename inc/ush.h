@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <spawn.h>
+#include <wordexp.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
