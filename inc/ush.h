@@ -137,7 +137,7 @@ pid_t mx_get_process_pid_by_id(int id);
 
 int mx_true();
 int mx_false();
-int mx_echo(char **args);
+int mx_echo(char **args, int fd);
 int mx_unset(char **args);
 int mx_export(char **args, int fd);
 int mx_pwd(char **flags, int fd);

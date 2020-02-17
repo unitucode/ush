@@ -12,7 +12,7 @@ static int exec_our(char *command, char **argv, int fd) {
     if (strcmp(command, "which") == 0)
         return mx_which(&argv[1], fd);
     if (strcmp(command, "echo") == 0)
-        return mx_cd(&argv[1], fd);
+        return mx_echo(&argv[1], fd);
     if (strcmp(command, "env") == 0)
         return mx_env(&argv[1], fd);
     if (strcmp(command, "fg") == 0)
