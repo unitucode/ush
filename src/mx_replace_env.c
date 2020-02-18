@@ -39,8 +39,6 @@ static char *check_spec_char(char *arg, unsigned int *len, unsigned int var_len)
     char key[2];
     unsigned int l_s = var_len ? var_len : get_len_spec(arg);
 
-    if (l_s > 1)
-        return NULL;
     for (unsigned int i = 0; i < strlen(MX_SPEC_ENV); i++) {
         if (*arg == MX_SPEC_ENV[i]) {
             strncpy(key, arg, 1);
@@ -48,6 +46,8 @@ static char *check_spec_char(char *arg, unsigned int *len, unsigned int var_len)
             return strdup(mx_get_map(map, key));
         }
     }
+    if (l_s > 1)
+        return NULL;
     return NULL;
 }
 

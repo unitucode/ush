@@ -8,7 +8,8 @@ bool mx_is_our_command(char *command) {
         || strcmp(command, "which") == 0
         || strcmp(command, "export") == 0
         || strcmp(command, "unset") == 0
-        || strcmp(command, "fg") == 0) {
+        || strcmp(command, "fg") == 0
+        || strcmp(command, "exit") == 0) {
         return 1;
     }
     return 0;

@@ -17,6 +17,8 @@ static int exec_our(char *command, char **argv, int fd) {
         // return mx_env(&argv[1], fd);
     if (strcmp(command, "fg") == 0)
         return mx_fg(&argv[1], fd);
+    if (strcmp(command, "exit") == 0)
+        mx_exit(&argv[1]);
     return 1;
 }
 

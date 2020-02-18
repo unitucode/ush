@@ -142,6 +142,7 @@ void mx_pop_process(int id);
 int mx_get_process_id_by_pid(pid_t pid);
 pid_t mx_get_process_pid_by_id(int id);
 
+void mx_exit(char **args);
 int mx_true();
 int mx_false();
 int mx_echo(char **args, int fd);

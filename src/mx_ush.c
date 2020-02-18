@@ -22,7 +22,7 @@ static void main_cycle() {
     t_prompt *prompt = malloc(sizeof(t_prompt));
     extern char **environ;
 
-    while (strcmp(prompt->command, "exit") && result != -1) {
+    while (result != -1) {
         mx_get_input(prompt, &result);
         printf("\r\n");
 
