@@ -79,6 +79,10 @@ SRC = mx_ush.c \
 	mx_find_command.c \
 	mx_del_process.c \
 	mx_env.c \
+	mx_putenv.c \
+	mx_clearenv.c \
+	mx_env_fill.c \
+	mx_print_env_error.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
