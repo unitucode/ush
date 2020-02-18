@@ -50,6 +50,7 @@ typedef enum e_var_list {
 } t_var_list;
 
 typedef struct s_process {
+    int status;
     posix_spawn_file_actions_t actions;
     posix_spawnattr_t attrs;
     pid_t pid;
@@ -121,6 +122,7 @@ t_list *mx_split_command(char *command);
 bool mx_find_command(char *path, char *command, char **filename);
 char *mx_replace_substitution(char *arg, int *code);
 bool mx_get_sub(char *arg, char *sub, int *code);
+t_process *mx_get_process_by_id(int id);
 bool mx_check_chars(char *command);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
@@ -141,6 +143,8 @@ t_list **mx_get_list_procs();
 void mx_pop_process(int id);
 int mx_get_process_id_by_pid(pid_t pid);
 pid_t mx_get_process_pid_by_id(int id);
+
+void outputList();
 
 void mx_exit(char **args);
 int mx_true();
