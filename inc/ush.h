@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <spawn.h>
+#include <wordexp.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
@@ -34,6 +35,7 @@
 #define MX_S_QUOTES '\''
 #define MX_GRAVE_ACCENT '`'
 #define MX_ESCAPE_CHARS "\\\"\'ntva$` "
+#define MX_FORBIDDEN_CHARS "|&><"
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
@@ -120,6 +122,7 @@ bool mx_find_command(char *path, char *command, char **filename);
 char *mx_replace_substitution(char *arg, int *code);
 bool mx_get_sub(char *arg, char *sub, int *code);
 t_process *mx_get_process_by_id(int id);
+bool mx_check_chars(char *command);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
@@ -129,7 +132,11 @@ void mx_change_dir(char *newdir, t_map **map, int fd);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
-char **mx_env_copy(char **environ);
+char **mx_env_copy();
+int mx_print_env_error(char option, bool error);
+void mx_putenv(char *var);
+void mx_clearenv();
+void mx_env_fill(char **src);
 
 t_list **mx_get_list_procs();
 void mx_pop_process(int id);

@@ -23,14 +23,18 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-// static void test() { // create a new process;
-//     t_process *process = mx_create_process(1);
-//     char *argv[20] = {"ls", "-R", "/", NULL};
-//     extern char **environ;
-//     mx_exec(process, "/bin/ls", argv, environ);
-//     sleep(3);
-//     printf("kill\n");
-//     kill(process->pid, SIGCONT);
+    
+// static void test() {
+//     wordexp_t p;
+//     char **w;
+//     size_t i;
+
+//    int result = wordexp("echo `ls; lsf`", &p, WRDE_SHOWERR);
+//     w = p.we_wordv;
+//     for (i = 0; i < p.we_wordc; i++)
+//         printf("%s\n", w[i]);
+//     printf("code = %d\n", result);
+//     wordfree(&p);
 // }
 
 static void main_cycle() {
@@ -73,9 +77,9 @@ static void init() {
     mx_put_map(map, strdup("$"), mx_itoa(getpid()));
     mx_put_map(map, strdup("*"), strdup(""));
     mx_put_map(map, strdup("@"), strdup(""));
-    sigset_t mask;
-    sigfillset(&mask);
-    sigprocmask(SIG_SETMASK, &mask, NULL);
+    // sigset_t mask;
+    // sigfillset(&mask);
+    // sigprocmask(SIG_SETMASK, &mask, NULL);
     //
     // setenv("MX_PROMPT", "u$h> ", 0);
     // mx_var_list_insert(SHELL, "MX_PROMPT=u$h> ");
