@@ -4,6 +4,7 @@ void mx_exit(char **args) {
     int code = 0;
 
     mx_disable_canon();
+    system("leaks -q ush");
     if (!*args) {
         exit(code);
     }
