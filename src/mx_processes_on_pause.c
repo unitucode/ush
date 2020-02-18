@@ -48,7 +48,6 @@ int mx_get_process_id_by_pid(pid_t pid) {
 
 pid_t mx_get_process_pid_by_id(int id) {
     t_list *current = *mx_get_list_procs();
-    // t_list *current = *cur;
     int i = 1;
 
     if (id < 1)

@@ -30,11 +30,11 @@ int mx_fg(char **args, int fd) {
     // outputList();
     if (pid == -1) {
         fprintf(stderr, "fg: %s: no such job\n", args[0]);
-        return -1;
+        return 0;
     }
     if (kill(pid, SIGCONT) < 0) {
         fprintf(stderr, "fg: %d: job not found\n", pid);
-        return -1;
+        return 0;
     }
     tcsetpgrp(0, pid);
     // dprintf(fd, "[%d] + %d continued %s\n", id, pid, "test");
@@ -42,5 +42,5 @@ int mx_fg(char **args, int fd) {
     fd++;
     status++;
     id++;
-    return 0;
+    return 1;
 }
