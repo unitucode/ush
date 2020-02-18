@@ -119,6 +119,7 @@ t_list *mx_split_command(char *command);
 bool mx_find_command(char *path, char *command, char **filename);
 char *mx_replace_substitution(char *arg, int *code);
 bool mx_get_sub(char *arg, char *sub, int *code);
+t_process *mx_get_process_by_id(int id);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
