@@ -62,6 +62,7 @@ void mx_handle_command(char *command, int *code) {
     if (*code || !commands)
         return;
     while (commands[i]) {
+        commands[i] = mx_replace_env(commands[i], code);
         exec_command(commands[i], code);
         i++;
     }
