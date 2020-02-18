@@ -89,7 +89,6 @@ static void get_parameter_sub(int *o_sub, int *c_sub, unsigned int *i, char *arg
                 break;
             }
         }
-
         *i += 1;
     }
 }
