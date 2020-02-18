@@ -8,10 +8,14 @@ char *mx_replace_tilde(char *arg) {
     unsigned int save = 0;
     unsigned int len = 0;
     char *sub = NULL;
+    bool is_quotes = false;
 
     for (; mx_get_char_index(&arg[index], '~') >= 0; index++) {
+        if (arg[index] == MX_D_QUOTES && !mx_isescape_char(arg, index))
+            is_quotes = !is_quotes;
+        if (!is_quotes)
+            mx_skip_quotes(arg, &index, MX_S_QUOTES);
         mx_skip_quotes(arg, &index, MX_GRAVE_ACCENT);
-        mx_skip_quotes(arg, &index, MX_S_QUOTES);
         mx_skip_expansion(arg, &index);
         if ((arg[index] == '~' && !mx_isescape_char(arg, index)) && ((index > 0 && isspace(arg[index - 1]) && !mx_isescape_char(arg, index - 1)) || (index == 0))) {
             strncat(result, arg + save, index - save);
@@ -68,7 +72,7 @@ static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len) {
         if (!(dir = opendir(dir_name)) || !strcmp(tmp_name, ".") || !strcmp(tmp_name, "..") || !strcmp(tmp_name, "Shared")) {
             mx_strdel(&tmp_name);
             mx_strdel(&dir_name);
-            return strdup("");
+            return strndup(arg + save - 1, 1);
         }
         closedir(dir);
         *len += index - save;

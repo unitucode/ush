@@ -35,14 +35,18 @@ static char *get_formated_arg(char *str) {
     char *result = mx_strnew(ARG_MAX);
     unsigned int len = strlen(str);
     unsigned int index = 0;
-    bool is_quotes = false;
+    bool is_quotes[2];
 
     for (unsigned int i = 0; i < len; i++) {
-        if ((str[i] == MX_S_QUOTES || str[i] == MX_D_QUOTES) && !mx_isescape_char(str, i)) {
-            is_quotes = !is_quotes;
-            i++;
+        if ((str[i] == MX_S_QUOTES) && !mx_isescape_char(str, i) && !is_quotes[1]) {
+            is_quotes[0] = !is_quotes[0];
+            continue;
         }
-        if (mx_isescape_char(str, i + 1) && !is_quotes) {
+        if ((str[i] == MX_D_QUOTES) && !mx_isescape_char(str, i) && !is_quotes[0]) {
+            is_quotes[1] = !is_quotes[1];
+            continue;
+        }
+        if (mx_isescape_char(str, i + 1) && !is_quotes[0] && !is_quotes[1]) {
             i++;
         }
         result[index++] = str[i];
