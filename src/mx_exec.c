@@ -1,21 +1,19 @@
 #include "ush.h"
 
 int mx_exec(t_process *process, char *filename, char **argv, char **env) {
-    int status = 0;
+    t_list **list = mx_get_list_procs();
 
     mx_disable_canon();
-    status = posix_spawn(&process->pid, filename,
+    process->status = posix_spawn(&process->pid, filename,
                          &process->actions, &process->attrs, argv, env);
-    waitpid(process->pid, &status, WUNTRACED);
-    // if (waitpid(process->pid, &status, WUNTRACED) != -1) {
-    //     if (WIFSTOPPED(status)) {
-    //         mx_push_back(mx_get_list_procs(), process);
-    //         printf("stopped");
-    //     }
-    //     printf("exit %d\n", status);
-    // }
+    // waitpid(process->pid, &status, WUNTRACED);
+    if (waitpid(process->pid, &process->status, WUNTRACED) != -1) {
+        if (WIFSTOPPED(process->status)) {
+            mx_push_back(list, process);
+        }
+    }
     mx_enable_canon();
-    return status;
+    return process->status;
 }
 
 // static void test() { // create a new process;
