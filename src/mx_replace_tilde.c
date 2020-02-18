@@ -68,7 +68,7 @@ static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len) {
         if (!(dir = opendir(dir_name)) || !strcmp(tmp_name, ".") || !strcmp(tmp_name, "..") || !strcmp(tmp_name, "Shared")) {
             mx_strdel(&tmp_name);
             mx_strdel(&dir_name);
-            return strndup(arg, 1);
+            return strdup("");
         }
         closedir(dir);
         *len += index - save;
