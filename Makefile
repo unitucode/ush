@@ -9,7 +9,6 @@ LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
 	mx_check_chars.c \
-	mx_replace_sub.c \
 	mx_replace_substitution.c \
 	mx_split_command.c \
 	mx_replace_tilde.c \
@@ -83,6 +82,8 @@ SRC = mx_ush.c \
 	mx_env_fill.c \
 	mx_print_env_error.c \
 	mx_get_list_procs.c \
+	mx_replace_sub.c \
+	mx_exit.c \
 	# mx_env.c \
 
 INCLUDE = -I $(LBMXD) \
