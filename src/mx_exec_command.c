@@ -13,8 +13,8 @@ static int exec_our(char *command, char **argv, int fd) {
         return mx_which(&argv[1], fd);
     if (strcmp(command, "echo") == 0)
         return mx_echo(&argv[1], fd);
-    if (strcmp(command, "env") == 0)
-        return mx_env(&argv[1], fd);
+    // if (strcmp(command, "env") == 0)
+        // return mx_env(&argv[1], fd);
     if (strcmp(command, "fg") == 0)
         return mx_fg(&argv[1], fd);
     return -1337;
