@@ -50,6 +50,7 @@ typedef enum e_var_list {
 } t_var_list;
 
 typedef struct s_process {
+    int status;
     posix_spawn_file_actions_t actions;
     posix_spawnattr_t attrs;
     pid_t pid;
@@ -142,6 +143,8 @@ t_list **mx_get_list_procs();
 void mx_pop_process(int id);
 int mx_get_process_id_by_pid(pid_t pid);
 pid_t mx_get_process_pid_by_id(int id);
+
+void outputList();
 
 int mx_true();
 int mx_false();
