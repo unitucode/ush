@@ -18,7 +18,7 @@ void outputList() {
         printf("#%d pid = %d\n", i, ((t_process *)current->data)->pid);
         current = current->next;
     }
-    mx_printstr("==================\nEND\n==================\n");
+    mx_printstr("=================\nEND\n=================\n");
 }
 
 int mx_fg(char **args, int fd) {
@@ -27,7 +27,7 @@ int mx_fg(char **args, int fd) {
     int status = 0;
     // t_process *process = mx_get_process_by_id(id);
     
-    // outputList();
+    //outputList();
     if (pid == -1) {
         fprintf(stderr, "fg: %s: no such job\n", args[0]);
         return 0;

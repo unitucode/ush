@@ -9,7 +9,8 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
     // waitpid(process->pid, &status, WUNTRACED);
     if (waitpid(process->pid, &process->status, WUNTRACED) != -1) {
         if (WIFSTOPPED(process->status)) {
-            mx_push_back(list, process);
+            mx_push_front(list, process);
+            outputList();
         }
     }
     mx_enable_canon();
