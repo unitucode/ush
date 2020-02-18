@@ -34,6 +34,6 @@ void mx_exec_command(char **argv, int fd) {
         mx_del_process(&process);
     }
     else
-        fprintf(stderr, "%s: command not found: %s\n",
+        fprintf(stderr, "%s: No such file or directory: %s\n",
                 MX_SHELL_NAME, argv[0]);
 }

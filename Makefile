@@ -82,6 +82,8 @@ SRC = mx_ush.c \
 	mx_clearenv.c \
 	mx_env_fill.c \
 	mx_print_env_error.c \
+	mx_env_parse_vars.c \
+	mx_env_parse_flags.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/ioctl.h>
 #include <spawn.h>
+#include <libgen.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
@@ -38,6 +39,7 @@
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 #define MX_ENV_FLAG_I "^-(i*|i+.*|-.+)$"
+#define MX_ENV_VAR "^.+=.*$"
 #define MX_SPEC_ENV "$?#*@_0"
 
 #define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
@@ -129,10 +131,12 @@ void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
 char **mx_env_copy();
-int mx_print_env_error(char option, bool error);
+int mx_print_env_error(char option, char *err_arg, int error);
 void mx_putenv(char *var);
 void mx_clearenv();
 void mx_env_fill(char **src);
+void mx_env_parse_vars(char **argv, char **path, int *idx, char **env);
+int mx_env_parse_flags(char **argv, char **path, int *idx);
 
 t_list **mx_get_list_procs();
 void mx_pop_process(int id);

@@ -14,6 +14,16 @@ static bool check_dir(char *path, char *file) {
     return retval;
 }
 
+static void check_in_abspath(char *command, char **filename, bool *retval) {
+    char *dir_name = dirname(command);
+    char *base_name = basename(command);
+
+    if (check_dir(dir_name, base_name)) {
+        *retval = 1;
+        *filename = mx_strdup(command);
+    }
+}
+
 bool mx_find_command(char *path, char *command, char **filename) {
     char **paths = mx_strsplit(path, ':');
     bool retval = 0;
@@ -28,5 +38,7 @@ bool mx_find_command(char *path, char *command, char **filename) {
             }
         mx_del_strarr(&paths);
     }
+    if (!retval)
+        check_in_abspath(command, filename, &retval);
     return retval;
 }
