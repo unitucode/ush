@@ -115,7 +115,7 @@ void mx_skip_quotes(char *command, unsigned int *i, char c);
 char **mx_parse_command(char *command, int *code);
 bool mx_check_substitutions(char *command);
 void mx_var_list_delete(t_var_list key, char *del_name);
-void mx_exec_command(char **argv, int fd);
+int mx_exec_command(char **argv, int fd);
 char *mx_replace_tilde(char *arg);
 t_list *mx_split_command(char *command);
 bool mx_find_command(char *path, char *command, char **filename);

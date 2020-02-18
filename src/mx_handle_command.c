@@ -33,7 +33,7 @@ static void fork_command(char *command) {
             wordfree(&word);
         exit(result_code);
     }
-    mx_exec_command(word.we_wordv, 1);
+    result_code = mx_exec_command(word.we_wordv, 1);
     wordfree(&word);
     exit(result_code);
 }
@@ -58,12 +58,16 @@ static void exec_command(char *command, int *code) {
 void mx_handle_command(char *command, int *code) {
     char **commands = mx_parse_command(command, code);
     unsigned int i = 0;
+    t_map **map = mx_get_lenv();
 
-    if (*code || !commands)
+    if (*code || !commands) {
+        mx_put_map(map, "?", mx_itoa(*code));
         return;
+    }
     while (commands[i]) {
         commands[i] = mx_replace_env(commands[i], code);
         exec_command(commands[i], code);
+        mx_put_map(map, "?", mx_itoa(*code));
         i++;
     }
     mx_del_strarr(&commands);
