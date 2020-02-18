@@ -8,7 +8,8 @@ static void copy_environ(char **copy, char **environ) {
     }
 }
 
-char **mx_env_copy(char **environ) {
+char **mx_env_copy() {
+    extern char **environ;
     char **env_copy = NULL;
     int len;
 

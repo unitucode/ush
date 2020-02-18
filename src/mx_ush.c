@@ -73,9 +73,9 @@ static void init() {
     mx_put_map(map, strdup("$"), mx_itoa(getpid()));
     mx_put_map(map, strdup("*"), strdup(""));
     mx_put_map(map, strdup("@"), strdup(""));
-    sigset_t mask;
-    sigfillset(&mask);
-    sigprocmask(SIG_SETMASK, &mask, NULL);
+    // sigset_t mask;
+    // sigfillset(&mask);
+    // sigprocmask(SIG_SETMASK, &mask, NULL);
     //
     // setenv("MX_PROMPT", "u$h> ", 0);
     // mx_var_list_insert(SHELL, "MX_PROMPT=u$h> ");

@@ -1,18 +1,5 @@
 #include "ush.h"
 
-static void reputenv(char *var) {
-    static char name[1024];
-    static char val[1024];
-    char *received_name = mx_get_var_info(var, 0);
-    char *received_val = mx_get_var_info(var, 1);
-
-    sprintf(name, "%s", received_name);
-    sprintf(val, "%s", received_val);
-    setenv(name, val, 1);
-    mx_strdel(&received_name);
-    mx_strdel(&received_val);
-}
-
 static bool parse_error(char *arg) {
     char *arg_name = mx_get_var_info(arg, 0);
 
@@ -44,7 +31,7 @@ static void export_var_to_lists(char *arg) {
     while (current) {
         if (strcmp(arg_name, var_name) == 0) {
             mx_var_list_insert(EXP, current->data);
-            reputenv(current->data);
+            mx_putenv(current->data);
             break ;
         }
         current = current->next;
@@ -68,7 +55,7 @@ int mx_export(char **args, int fd) {
                 if (!mx_match(args[i], "="))
                     export_var_to_lists(args[i]);
                 else {
-                    reputenv(args[i]);
+                    mx_putenv(args[i]);
                     add_var_to_lists(strdup(args[i]));
                 }
             else

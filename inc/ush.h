@@ -128,7 +128,11 @@ void mx_change_dir(char *newdir, t_map **map);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
-char **mx_env_copy(char **environ);
+char **mx_env_copy();
+int mx_print_env_error(char option, bool error);
+void mx_putenv(char *var);
+void mx_clearenv();
+void mx_env_fill(char **src);
 
 t_list **mx_get_list_procs();
 void mx_pop_process(int id);
