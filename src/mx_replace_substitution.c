@@ -13,9 +13,10 @@ char *mx_replace_substitution(char *arg, int *code) {
     char *result = mx_strnew(ARG_MAX);
 
     for (unsigned int i = 0; i < strlen(arg); i++) {
-        mx_skip_quotes(arg, &i, MX_S_QUOTES);
         if (arg[i] == MX_D_QUOTES && !mx_isescape_char(arg, i))
             is_quotes = !is_quotes;
+        if (!is_quotes)
+            mx_skip_quotes(arg, &i, MX_S_QUOTES);
         sub = get_substitution(&open_sub, &close_sub, &i, arg);
         if (sub) {
             strncat(result, arg + save, open_sub - save);
