@@ -9,7 +9,7 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
     // waitpid(process->pid, &status, WUNTRACED);
     if (waitpid(process->pid, &process->status, WUNTRACED) != -1) {
         if (WIFSTOPPED(process->status)) {
-            mx_push_front(list, process);
+            mx_push_back(list, process);
             outputList();
         }
     }
@@ -32,7 +32,7 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
 //     posix_spawnattr_init(&attr);
 //     posix_spawnattr_setsigdefault(&attr, &set);
 //     posix_spawnattr_setflags(&attr, POSIX_SPAWN_SETSIGDEF | POSIX_SPAWN_SETSIGMASK);
-//     status = posix_spawn(&pid, "/bin/ls", NULL, &attr, argv, environ);
+//     status = posix_spawn(&pid, "/bin/ls", NULL, &a`ttr, argv, environ);
 //     if (status) {
 //         printf("ERROR: posix_spawn: %s\n", strerror(status));
 //         exit(EXIT_FAILURE);
