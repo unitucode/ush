@@ -17,6 +17,12 @@ static int exec_builtin(char *command, char **argv, int fd) {
         return mx_env(&argv[1], fd);
     if (strcmp(command, "fg") == 0)
         return mx_fg(&argv[1], fd);
+    if (strcmp(command, "color") == 0)
+        return mx_color(&argv[1]);
+    if (strcmp(command, "true") == 0)
+        return mx_true();
+    if (strcmp(command, "false") == 0)
+        return mx_false();
     if (strcmp(command, "exit") == 0)
         mx_exit(&argv[1]);
     return 1;

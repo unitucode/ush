@@ -154,6 +154,7 @@ pid_t mx_get_process_pid_by_id(int id);
 
 void outputList();
 
+int mx_color(char **args);
 void mx_exit(char **args);
 int mx_true();
 int mx_false();
