@@ -16,6 +16,7 @@
 #include <sys/ioctl.h>
 #include <spawn.h>
 #include <libgen.h>
+#include <wordexp.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
@@ -35,6 +36,7 @@
 #define MX_S_QUOTES '\''
 #define MX_GRAVE_ACCENT '`'
 #define MX_ESCAPE_CHARS "\\\"\'ntva$` "
+#define MX_FORBIDDEN_CHARS "|&><"
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
@@ -115,12 +117,13 @@ void mx_skip_quotes(char *command, unsigned int *i, char c);
 char **mx_parse_command(char *command, int *code);
 bool mx_check_substitutions(char *command);
 void mx_var_list_delete(t_var_list key, char *del_name);
-void mx_exec_command(char **argv, int fd);
+int mx_exec_command(char **argv, int fd);
 char *mx_replace_tilde(char *arg);
 t_list *mx_split_command(char *command);
 bool mx_find_command(char *path, char *command, char **filename);
 char *mx_replace_substitution(char *arg, int *code);
 bool mx_get_sub(char *arg, char *sub, int *code);
+bool mx_check_chars(char *command);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
@@ -143,6 +146,7 @@ void mx_pop_process(int id);
 int mx_get_process_id_by_pid(pid_t pid);
 pid_t mx_get_process_pid_by_id(int id);
 
+void mx_exit(char **args);
 int mx_true();
 int mx_false();
 int mx_echo(char **args, int fd);

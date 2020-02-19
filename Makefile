@@ -8,7 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
-	mx_replace_sub.c \
+	mx_check_chars.c \
 	mx_replace_substitution.c \
 	mx_split_command.c \
 	mx_replace_tilde.c \
@@ -77,13 +77,15 @@ SRC = mx_ush.c \
 	mx_is_our.c \
 	mx_find_command.c \
 	mx_del_process.c \
-	mx_env.c \
 	mx_putenv.c \
 	mx_clearenv.c \
 	mx_env_fill.c \
 	mx_print_env_error.c \
 	mx_env_parse_vars.c \
 	mx_env_parse_flags.c \
+	mx_replace_sub.c \
+	mx_exit.c \
+	mx_env.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

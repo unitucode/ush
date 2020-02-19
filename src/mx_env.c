@@ -8,12 +8,14 @@ static void env_deinit(char ***env, char **path, char **filename) {
     mx_strdel(filename);
 }
 
-static void exec_process(char *filename, char **argv, int fd) {
+static int exec_process(char *filename, char **argv, int fd) {
     extern char **environ;
     t_process *process = mx_create_process(fd);
+    int retval = mx_exec(process, filename, argv, environ);
 
-    printf("EXIT_STATUS: %d\n", mx_exec(process, filename, argv, environ));
+    printf("EXIT_STATUS: %d\n", retval);
     mx_del_process(&process);
+    return retval;
 }
 
 int mx_env(char **argv, int fd) {
@@ -27,10 +29,8 @@ int mx_env(char **argv, int fd) {
         mx_env_parse_vars(argv, &path, &i, env);
         if (argv[i] == NULL)
             mx_print_env(fd);
-        else if (mx_find_command(path, argv[i], &filename)) {
-            puts("WORK");
-            exec_process(filename, &argv[i], fd);
-        }
+        else if (mx_find_command(path, argv[i], &filename))
+            retval = exec_process(filename, &argv[i], fd);
         else {
             fprintf(stderr, "env: %s: No such file or directory\n", argv[i]);
             retval = 127;
