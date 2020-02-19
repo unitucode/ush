@@ -25,7 +25,6 @@ static void main_cycle() {
     while (result != -1) {
         mx_get_input(prompt, &result);
         printf("\r\n");
-
         mx_handle_command(prompt->command, &result);
     }
     mx_d_del_list(&prompt->history_head);

@@ -45,6 +45,7 @@
 #define MX_ENV_VAR "^.+=.*$"
 #define MX_SPEC_ENV "$?#*@_0"
 
+#define MX_WIFSTOPPED(m) (_WSTATUS(m) == _WSTOPPED && WSTOPSIG(m) != 0x13)
 #define MX_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #define MX_WAIT_TO_INT(w) (*(int *) & (w))
 #define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
@@ -55,6 +56,8 @@ typedef enum e_var_list {
 } t_var_list;
 
 typedef struct s_process {
+    int pos;
+    char *command;
     int status;
     posix_spawn_file_actions_t actions;
     posix_spawnattr_t attrs;
