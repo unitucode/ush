@@ -3,6 +3,8 @@
 t_process *mx_create_process(int fd) {
     t_process *process = malloc(sizeof(t_process));
 
+    process->command = NULL;
+    process->pos = 0;
     sigemptyset(&process->signals);
     sigaddset(&process->signals, SIGINT);
     if (fd == 1)

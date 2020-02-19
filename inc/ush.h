@@ -57,6 +57,7 @@ typedef enum e_var_list {
 } t_var_list;
 
 typedef struct s_process {
+    int pos;
     char *command;
     int status;
     posix_spawn_file_actions_t actions;
