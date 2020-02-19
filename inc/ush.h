@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
+#include <errno.h>
 #include <string.h>
 #include <curses.h>
 #include <limits.h>
@@ -13,11 +14,12 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <sys/stat.h>
-#include <sys/ioctl.h>
 #include <spawn.h>
 #include <libgen.h>
 #include <wordexp.h>
+#include <glob.h>
 #include "inc/libmx.h"
+
 
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h> "
@@ -45,6 +47,8 @@
 #define MX_SPEC_ENV "$?#*@_0"
 
 #define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
+#define MX_WAIT_TO_INT(w) (*(int *)&(w))
+#define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
 
 typedef enum e_var_list {
     SHELL,
@@ -52,6 +56,7 @@ typedef enum e_var_list {
 } t_var_list;
 
 typedef struct s_process {
+    int status;
     posix_spawn_file_actions_t actions;
     posix_spawnattr_t attrs;
     pid_t pid;
@@ -108,6 +113,7 @@ bool mx_check_semicolons(char **commands, int *code);
 bool mx_check_brackets(char *command);
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
+int mx_env_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
 void mx_del_process(t_process **process);
 t_list *mx_handle_substitution(t_list *arguments);
@@ -123,12 +129,12 @@ t_list *mx_split_command(char *command);
 bool mx_find_command(char *path, char *command, char **filename);
 char *mx_replace_substitution(char *arg, int *code);
 bool mx_get_sub(char *arg, char *sub, int *code);
+t_process *mx_get_process_by_id(int id);
 bool mx_check_chars(char *command);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
-bool mx_is_our_command(char *command);
-bool mx_is_our_builtin(char *command);
+bool mx_is_builtin(char *command);
 void mx_change_dir(char *newdir, t_map **map, int fd);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
@@ -145,6 +151,8 @@ t_list **mx_get_list_procs();
 void mx_pop_process(int id);
 int mx_get_process_id_by_pid(pid_t pid);
 pid_t mx_get_process_pid_by_id(int id);
+
+void outputList();
 
 void mx_exit(char **args);
 int mx_true();

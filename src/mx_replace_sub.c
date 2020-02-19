@@ -11,7 +11,7 @@ bool mx_get_sub(char *arg, char *sub, int *code) {
     if (mx_remove_subchar(sub)) {
         commands = mx_parse_command(sub, code);
     }
-    if (*code || !commands) 
+    if (*code || !commands)
         return false;
     for (unsigned int i = 0; commands[i]; i++) {
         commands[i] = mx_replace_escape(commands[i], "\\\\",  '\\', true);
@@ -21,11 +21,6 @@ bool mx_get_sub(char *arg, char *sub, int *code) {
             mx_strdel(&sub);
             continue;
         }
-        // printf("sub---\n");
-        // for (unsigned int i = 0; arguments[i]; i++) {
-        //     printf("arg = %s\n", arguments[i]);
-        // }
-        // printf("sub---\n");
         output = get_output(arguments, strlen(arg));
         if (output) {
             strcat(arg, output);

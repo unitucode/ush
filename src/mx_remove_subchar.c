@@ -12,7 +12,7 @@ bool mx_remove_subchar(char *substitution) {
         && substitution[len - 1] == ')') {
         substitution[len - 1] = '\0';
         memmove(substitution, substitution + 2, len - 2);
-        return false;
+        return true;
     }
     return false;
 }

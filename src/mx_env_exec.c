@@ -1,6 +1,6 @@
 #include "ush.h"
 
-int mx_exec(t_process *process, char *filename, char **argv, char **env) {
+int mx_env_exec(t_process *process, char *filename, char **argv, char **env) {
     t_list **list = mx_get_list_procs();
     int retval = 0;
 

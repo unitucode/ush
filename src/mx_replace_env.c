@@ -11,10 +11,14 @@ char *mx_replace_env(char *arg, int *code) {
     char *env = NULL;
     unsigned int index = 0;
     unsigned int save = 0;
+    bool is_quotes = false;
 
     for (; mx_get_char_index(&arg[index], '$') >= 0; index++) {
+        if (arg[index] == MX_D_QUOTES && !mx_isescape_char(arg, index))
+            is_quotes = !is_quotes;
+        if (!is_quotes)
+            mx_skip_quotes(arg, &index, MX_S_QUOTES);
         mx_skip_quotes(arg, &index, MX_GRAVE_ACCENT);
-        mx_skip_quotes(arg, &index, MX_S_QUOTES);
         mx_skip_expansion(arg, &index);
         if (arg[index] == '$' && !mx_isescape_char(arg, index)) {
             strncat(result, arg + save, index - save);
@@ -30,7 +34,6 @@ char *mx_replace_env(char *arg, int *code) {
         }
     }
     strcat(result, arg + save);
-    // mx_strdel(&arg);
     return result;
 }
 
@@ -98,7 +101,7 @@ static char *get_spec_sub(char *arg, unsigned int index, unsigned int *len) {
         *len = 1;
         return strdup("");
     }
-    return strndup(arg, 1);
+    return strndup(arg + index - 1, 1);
 }
 
 static unsigned int get_len_spec(char *spec) {

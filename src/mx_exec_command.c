@@ -1,6 +1,6 @@
 #include "ush.h"
 
-static int exec_our(char *command, char **argv, int fd) {
+static int exec_builtin(char *command, char **argv, int fd) {
     if (strcmp(command, "export") == 0)
         return mx_export(&argv[1], fd);
     if (strcmp(command, "unset") == 0)
@@ -26,8 +26,8 @@ int mx_exec_command(char **argv, int fd) {
     char *filename = NULL;
     int result = 0;
 
-    if (mx_is_our_command(argv[0]))
-        return exec_our(argv[0], argv, fd);
+    if (mx_is_builtin(argv[0]))
+        return exec_builtin(argv[0], argv, fd);
     else if (mx_find_command(getenv("PATH"), argv[0], &filename)) {
         t_process *process = mx_create_process(fd);
         extern char **environ;
