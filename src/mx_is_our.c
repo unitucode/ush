@@ -9,7 +9,10 @@ bool mx_is_our_command(char *command) {
         || strcmp(command, "export") == 0
         || strcmp(command, "unset") == 0
         || strcmp(command, "fg") == 0
-        || strcmp(command, "exit") == 0) {
+        || strcmp(command, "exit") == 0
+        || strcmp(command, "true") == 0
+        || strcmp(command, "false") == 0
+        || strcmp(command, "color") == 0) {
         return 1;
     }
     return 0;

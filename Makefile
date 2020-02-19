@@ -8,6 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_color.c \
 	mx_check_chars.c \
 	mx_replace_substitution.c \
 	mx_split_command.c \
