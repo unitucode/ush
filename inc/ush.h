@@ -20,7 +20,6 @@
 #include <glob.h>
 #include "inc/libmx.h"
 
-
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h> "
 #define MX_UP_ARROW "\x1b\x5b\x41"
@@ -46,8 +45,8 @@
 #define MX_ENV_VAR "^.+=.*$"
 #define MX_SPEC_ENV "$?#*@_0"
 
-#define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
-#define MX_WAIT_TO_INT(w) (*(int *)&(w))
+#define MX_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#define MX_WAIT_TO_INT(w) (*(int *) & (w))
 #define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
 
 typedef enum e_var_list {

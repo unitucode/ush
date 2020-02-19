@@ -10,7 +10,8 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
                                   argv, env);
     if (process->status) {
         retval = 126;
-        fprintf(stderr, "env: %s: %s\n", filename, strerror(process->status));
+        fprintf(stderr, "%s: %s: %s\n", filename, strerror(process->status),
+                MX_SHELL_NAME);
     }
     if (waitpid(process->pid, &process->status, WUNTRACED) != -1)
         if (WIFSTOPPED(process->status))

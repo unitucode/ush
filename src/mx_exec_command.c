@@ -28,23 +28,32 @@ static int exec_builtin(char *command, char **argv, int fd) {
     return 1;
 }
 
+static int print_exec_error(char *error_name) {
+    if (mx_match(error_name, "/"))
+        fprintf(stderr, "%s: %s: No such file or directory\n",
+                MX_SHELL_NAME, error_name);
+    else
+        fprintf(stderr, "%s: %s: command not found\n",
+                MX_SHELL_NAME, error_name);
+    return 127;
+}
+
 int mx_exec_command(char **argv, int fd) {
     char *filename = NULL;
-    int result = 0;
+    int retval = 0;
 
     if (mx_is_builtin(argv[0]))
         return exec_builtin(argv[0], argv, fd);
     else if (mx_find_command(getenv("PATH"), argv[0], &filename)) {
-        t_process *process = mx_create_process(fd);
         extern char **environ;
+        t_process *process = mx_create_process(fd);
 
-        result = mx_exec(process, filename, argv, environ);
-        mx_strdel(&filename);
+        retval = mx_exec(process, filename, argv, environ);
+        printf("EXIT_STATUS: %d\n", retval);
         mx_del_process(&process);
-        return result;
+        mx_strdel(&filename);
     }
     else
-        fprintf(stderr, "%s: No such file or directory: %s\n",
-                MX_SHELL_NAME, argv[0]);
-    return 1;
+        retval = print_exec_error(argv[0]);
+    return retval;
 }
