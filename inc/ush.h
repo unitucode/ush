@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
+#include <errno.h>
 #include <string.h>
 #include <curses.h>
 #include <limits.h>
@@ -15,7 +16,10 @@
 #include <sys/stat.h>
 #include <spawn.h>
 #include <libgen.h>
+#include <wordexp.h>
+#include <glob.h>
 #include "inc/libmx.h"
+
 
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h> "
@@ -39,10 +43,13 @@
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 #define MX_ENV_FLAG_I "^-(i*|i+.*|-.+)$"
+#define MX_ENV_VAR "^.+=.*$"
 #define MX_SPEC_ENV "$?#*@_0"
 
-#define MX_ISREG(m) (((m) & S_IFMT) == S_IFREG)
 #define MX_WIFSTOPPED(m) (_WSTATUS(m) == _WSTOPPED && WSTOPSIG(m) != 0x13)
+#define MX_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#define MX_WAIT_TO_INT(w) (*(int *) & (w))
+#define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
 
 typedef enum e_var_list {
     SHELL,
@@ -108,6 +115,7 @@ bool mx_check_semicolons(char **commands, int *code);
 bool mx_check_brackets(char *command);
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
+int mx_env_exec(t_process *process, char *filename, char **argv, char **env);
 t_process *mx_create_process(int fd);
 void mx_del_process(t_process **process);
 t_list *mx_handle_substitution(t_list *arguments);
@@ -128,17 +136,18 @@ bool mx_check_chars(char *command);
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
-bool mx_is_our_command(char *command);
-bool mx_is_our_builtin(char *command);
+bool mx_is_builtin(char *command);
 void mx_change_dir(char *newdir, t_map **map, int fd);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
 char **mx_env_copy();
-int mx_print_env_error(char option, bool error);
+int mx_print_env_error(char option, char *err_arg, int error);
 void mx_putenv(char *var);
 void mx_clearenv();
 void mx_env_fill(char **src);
+void mx_env_parse_vars(char **argv, char **path, int *idx, char **env);
+int mx_env_parse_flags(char **argv, char **path, int *idx);
 
 t_list **mx_get_list_procs();
 void mx_pop_process(int id);
