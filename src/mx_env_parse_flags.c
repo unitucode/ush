@@ -50,7 +50,7 @@ int parse_flag(char **args, char **path, int *idx) {
         else if (args[0][i] != 'i' && args[0][i] != '-')
             return mx_print_env_error(args[0][i], NULL, 0);
         if (retval || i == -1)
-            break ;
+            break;
     }
     return retval;
 }
@@ -60,7 +60,7 @@ int mx_env_parse_flags(char **argv, char **path, int *idx) {
     bool flag_stop = 0;
     extern char **environ;
 
-    for (*idx = 0; argv[*idx] && !flag_stop && !retval;) {
+    for (*idx = 0; argv[*idx] && !flag_stop && !retval; ) {
         if (argv[*idx][0] == '-' && strcmp(argv[*idx], "--") != 0) {
             if (mx_match(argv[*idx], MX_ENV_FLAG_I))
                 mx_clearenv();

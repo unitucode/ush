@@ -1,54 +1,23 @@
 #include "ush.h"
 
-static char *replace_escape(char *arg, bool *is_nl);
-static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv);
-static char *replace_octal(char *arg);
-
-int mx_echo(char **args, int fd) {
-    bool is_nl = true;
-    bool is_e = false;
+static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
     unsigned int index = 0;
-    char *output = NULL;
 
-    index = set_flags(&is_nl, &is_e, args);
-    while (args[index]) {
-        if (is_e)
-            output = replace_escape(args[index], &is_nl);
+    while (argv[index]) {
+        if (mx_match(argv[index], "^-[nEe]+$"))
+            for (unsigned int i = 0; i < strlen(argv[index]); i++) {
+                if (argv[index][i] == 'E')
+                    *is_e = false;
+                if (argv[index][i] == 'e')
+                    *is_e = true;
+                if (argv[index][i] == 'n')
+                    *is_nl = false;
+            }
         else
-            output = strdup(args[index]);
-        dprintf(fd, "%s", output);
-        mx_strdel(&output);
+            break;
         index++;
-        if (args[index])
-            dprintf(fd, " ");
     }
-    if (is_nl)
-        dprintf(fd, "\n");
-    return 0;
-}
-
-static char *replace_escape(char *arg, bool *is_nl) {
-    char *save = NULL;
-    int index = 0;
-    char *result = mx_strnew(ARG_MAX);
-
-    if ((index = mx_get_substr_index(arg, "\\c")) >= 0) {
-        save = arg;
-        strncpy(result, arg, index);
-        *is_nl = false;
-    }
-    else
-        strcpy(result, arg);
-    result = mx_replace_escape(result, "\\a", '\x07', true);
-    result = mx_replace_escape(result, "\\b", '\x08', true);
-    result = mx_replace_escape(result, "\\f", '\x0c', true);
-    result = mx_replace_escape(result, "\\n", '\x0a', true);
-    result = mx_replace_escape(result, "\\r", '\x0d', true);
-    result = mx_replace_escape(result, "\\t", '\x09', true);
-    result = mx_replace_escape(result, "\\v", '\x0b', true);
-    result = mx_replace_escape(result, "\\\\", '\\', true);
-    result = replace_octal(result);
-    return result;
+    return index;
 }
 
 static char *replace_octal(char *arg) {
@@ -76,24 +45,49 @@ static char *replace_octal(char *arg) {
     return result;
 }
 
-static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
-    unsigned int index = 0;
+static char *replace_escape(char *arg, bool *is_nl) {
+    char *save = NULL;
+    int index = 0;
+    char *result = mx_strnew(ARG_MAX);
 
-    while (argv[index]) {
-        if (mx_match(argv[index], "^-[nEe]+$")) {
-            for (unsigned int i = 0; i < strlen(argv[index]); i++) {
-                if (argv[index][i] == 'E')
-                    *is_e = false;
-                if (argv[index][i] == 'e')
-                    *is_e = true;
-                if (argv[index][i] == 'n')
-                    *is_nl = false;
-            }
-        }
-        else {
-            break;
-        }
-        index++;
+    if ((index = mx_get_substr_index(arg, "\\c")) >= 0) {
+        save = arg;
+        strncpy(result, arg, index);
+        *is_nl = false;
     }
-    return index;
+    else
+        strcpy(result, arg);
+    result = mx_replace_escape(result, "\\a", '\x07', true);
+    result = mx_replace_escape(result, "\\b", '\x08', true);
+    result = mx_replace_escape(result, "\\f", '\x0c', true);
+    result = mx_replace_escape(result, "\\n", '\x0a', true);
+    result = mx_replace_escape(result, "\\r", '\x0d', true);
+    result = mx_replace_escape(result, "\\t", '\x09', true);
+    result = mx_replace_escape(result, "\\v", '\x0b', true);
+    result = mx_replace_escape(result, "\\\\", '\\', true);
+    result = replace_octal(result);
+    return result;
+}
+
+int mx_echo(char **args, int fd) {
+    bool is_nl = true;
+    bool is_e = false;
+    unsigned int index = 0;
+    char *output = NULL;
+
+    index = set_flags(&is_nl, &is_e, args);
+    while (args[index]) {
+        if (is_e)
+            output = replace_escape(args[index], &is_nl);
+        else
+            output = strdup(args[index]);
+        dprintf(fd, "%s", output);
+        mx_strdel(&output);
+        index++;
+        if (args[index])
+            dprintf(fd, " ");
+    }
+    if (is_nl)
+        dprintf(fd, "\n");
+    return 0;
 }
