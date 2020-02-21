@@ -73,8 +73,6 @@ SRC = mx_ush.c \
 	mx_source.c \
 	mx_put_pwd.c \
 	mx_env_copy.c \
-	mx_processes_on_pause.c \
-	mx_fg.c \
 	mx_exec_command.c \
 	mx_is_builtin.c \
 	mx_find_command.c \
@@ -89,6 +87,7 @@ SRC = mx_ush.c \
 	mx_replace_sub.c \
 	mx_exit.c \
 	mx_env.c \
+	# mx_fg.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

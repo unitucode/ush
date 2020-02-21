@@ -54,11 +54,13 @@ static void init() {
     mx_put_map(map, strdup("$"), mx_itoa(getpid()));
     mx_put_map(map, strdup("*"), strdup(""));
     mx_put_map(map, strdup("@"), strdup(""));
-    sigset_t mask;
-    sigfillset(&mask);
-    sigprocmask(SIG_SETMASK, &mask, NULL);
+    // sigset_t mask;
+    // sigfillset(&mask);
+    // sigprocmask(SIG_SETMASK, &mask, NULL);
     char *args[3] = {"MX_PROMPT=ush> ", NULL};
     mx_export(args, 1);
+    mx_var_list_insert(SHELL,
+                       "PATH=/bin:/usr/bin:/usr/local/bin:/usr/sbin:/sbin");
     tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);
     mx_enable_canon();

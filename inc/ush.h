@@ -146,7 +146,7 @@ int mx_print_env_error(char option, char *err_arg, int error);
 void mx_putenv(char *var);
 void mx_clearenv();
 void mx_env_fill(char **src);
-void mx_env_parse_vars(char **argv, char **path, int *idx, char **env);
+void mx_env_parse_vars(char **argv, char **path, int *idx);
 int mx_env_parse_flags(char **argv, char **path, int *idx);
 
 t_list **mx_get_list_procs();

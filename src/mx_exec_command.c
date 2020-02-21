@@ -9,8 +9,8 @@ static int exec_builtin2(char *command, char **argv, int fd) {
         return mx_echo(&argv[1], fd);
     if (strcmp(command, "env") == 0)
         return mx_env(&argv[1], fd);
-    if (strcmp(command, "fg") == 0)
-        return mx_fg(&argv[1], fd);
+    // if (strcmp(command, "fg") == 0)
+    //     return mx_fg(&argv[1], fd);
     return 1;
 }
 
@@ -48,7 +48,8 @@ int mx_exec_command(char **argv, int fd) {
 
     if (mx_is_builtin(argv[0]))
         return exec_builtin1(argv[0], argv, fd);
-    else if (mx_find_command(getenv("PATH"), argv[0], &filename)) {
+    else if (mx_find_command(mx_get_var_val(SHELL, "PATH"),
+                             argv[0], &filename)) {
         extern char **environ;
         t_process *process = mx_create_process(fd);
 
