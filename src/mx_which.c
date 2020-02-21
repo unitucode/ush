@@ -81,6 +81,10 @@ int mx_which(char **args, int fd) {
     int mode = 0;
     int first_arg_index = parse_flags(args, &mode);
 
+    if (args[0] == NULL) {
+        fprintf(stderr, "usage: which [-as] program ...\n");
+        return 1;
+    }
     if (first_arg_index != -1)
         for (int i = first_arg_index; args[i]; i++)
             end_status = end_status | search_exe(args[i], mode, fd);

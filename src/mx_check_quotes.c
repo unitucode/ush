@@ -4,7 +4,7 @@ bool mx_check_quotes(char *command) {
     size_t len = strlen(command);
     bool s_quotes = false;
     bool d_quotes = false;
-    
+
     for (unsigned int i = 0; i < len; i++) {
         mx_skip_quotes(command, &i, '`');
         mx_skip_expansion(command, &i);

@@ -5,9 +5,8 @@ static int check_argument(char **args);
 int mx_color(char **args) {
     int color = 0;
 
-    if (check_argument(args)) {
+    if (check_argument(args))
         return 1;
-    }
     color = args[0][0] - '0';
     if (color > 7 || color < 0) {
         fprintf(stderr, "color: no such color [%d]\n", color);

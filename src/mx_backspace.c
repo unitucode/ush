@@ -1,7 +1,6 @@
 #include "ush.h"
 
 void mx_backspace(unsigned int times) {
-    for (unsigned int i = 0; i < times; i++) {
+    for (unsigned int i = 0; i < times; i++)
         printf("\b\x1b[0K");
-    }
 }
