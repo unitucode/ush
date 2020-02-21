@@ -27,7 +27,7 @@ static int check_argument(char **args) {
         return 1;
     }
     if (strlen(args[0]) > 1 || !isnumber(args[0][0])) {
-        fprintf(stderr, "color: invalid argument [%s]\n", args[0]);
+        fprintf(stderr, "color: invalid argument: %s\n", args[0]);
         return 1;
     }
     return 0;

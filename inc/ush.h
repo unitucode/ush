@@ -20,7 +20,6 @@
 #include <glob.h>
 #include "inc/libmx.h"
 
-
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h> "
 #define MX_UP_ARROW "\x1b\x5b\x41"
@@ -58,7 +57,7 @@ typedef enum e_var_list {
 
 typedef struct s_process {
     int pos;
-    char *command;
+    char **cmd;
     int status;
     posix_spawn_file_actions_t actions;
     posix_spawnattr_t attrs;
@@ -134,6 +133,9 @@ char *mx_replace_substitution(char *arg, int *code);
 bool mx_get_sub(char *arg, char *sub, int *code);
 t_process *mx_get_process_by_id(int id);
 bool mx_check_chars(char *command);
+void mx_del_node_list(t_list **list, t_process **process);
+void mx_init();
+void mx_deinit();
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);

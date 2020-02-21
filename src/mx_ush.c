@@ -1,8 +1,6 @@
 #include "ush.h"
 
 static void main_cycle();
-static void init();
-static void deinit();
 
 int main(int argc, char **argv) {
     if (argc > 1) {
@@ -10,9 +8,9 @@ int main(int argc, char **argv) {
         fprintf(stderr, "usage: %s ./ush\n", MX_SHELL_NAME);
         return 1;
     }
-    init();
+    mx_init();
     main_cycle();
-    deinit();
+    mx_deinit();
     system("leaks -q ush");
     return 0;
 }
@@ -32,13 +30,13 @@ static void main_cycle() {
     
 }
 
-static void deinit() {
+void mx_deinit() {
     mx_disable_canon();
     t_map **map = mx_get_lenv();
     mx_del_map(map);
 }
 
-static void init() {
+void mx_init() {
     mx_init_var_lists();
     t_map **map = mx_get_lenv();
     char path[PATH_MAX];
@@ -47,8 +45,8 @@ static void init() {
     getcwd(path, sizeof(path));
     mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD")));
     mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
-    mx_put_map(map, strdup("?"), mx_itoa(0));
-    mx_put_map(map, strdup("#"), mx_itoa(0));
+    mx_put_map(map, strdup("?"), strdup("0"));
+    mx_put_map(map, strdup("#"), strdup("0"));
     mx_put_map(map, strdup("0"), strdup(MX_SHELL_NAME));
     mx_put_map(map, strdup("_"), strdup(path));
     mx_put_map(map, strdup("$"), mx_itoa(getpid()));
