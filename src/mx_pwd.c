@@ -28,16 +28,12 @@ int mx_pwd(char **flags, int fd) {
     t_map **map = mx_get_lenv();
     bool mode = 0;
     char *pwd = mx_get_map(map, "PWD");
-<<<<<<< HEAD
     t_list **all_processes = mx_get_list_procs();
 
     for (t_list *cur = *all_processes; cur; cur = cur->next) {
         printf("[%d] = process pid[%d]\n", ((t_process *)cur->data)->pos, ((t_process *)cur->data)->pid);
     }
     
-=======
-
->>>>>>> 9793ba78e7c5acbd29734738f4e9eb64db327a88
     if (!parse_flags(flags, &mode)) {
         if (mode)
             dprintf(fd, "%s\n", realpath(pwd, NULL));

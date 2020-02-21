@@ -3,14 +3,10 @@
 void mx_exit(char **args) {
     int code = 0;
     system("leaks -q ush");
-<<<<<<< HEAD
     mx_deinit();
     if (!*args) {
-=======
-    mx_disable_canon();
-    if (!*args)
->>>>>>> 9793ba78e7c5acbd29734738f4e9eb64db327a88
         exit(code);
+    }
     if (mx_arr_size(args) > 1) {
         fprintf(stderr, "exit: too many arguments\n");
         exit(1);
