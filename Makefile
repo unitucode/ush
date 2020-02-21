@@ -88,7 +88,7 @@ SRC = mx_ush.c \
 	mx_replace_sub.c \
 	mx_exit.c \
 	mx_env.c \
-	# mx_fg.c \
+	mx_fg.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
