@@ -1,33 +1,33 @@
 #include "ush.h"
 
 static int exec_builtin2(char *command, char **argv, int fd) {
-    if (strcmp(command, "pwd") == 0)
+    if (!strcmp(command, "pwd"))
         return mx_pwd(&argv[1], fd);
-    if (strcmp(command, "cd") == 0)
+    if (!strcmp(command, "cd"))
         return mx_cd(&argv[1], fd);
-    if (strcmp(command, "echo") == 0)
+    if (!strcmp(command, "echo"))
         return mx_echo(&argv[1], fd);
-    if (strcmp(command, "env") == 0)
+    if (!strcmp(command, "env"))
         return mx_env(&argv[1], fd);
-    if (strcmp(command, "fg") == 0)
+    if (!strcmp(command, "fg"))
         return mx_fg(&argv[1], fd);
     return 1;
 }
 
 static int exec_builtin1(char *command, char **argv, int fd) {
-    if (strcmp(command, "export") == 0)
+    if (!strcmp(command, "export"))
         return mx_export(&argv[1], fd);
-    if (strcmp(command, "which") == 0)
+    if (!strcmp(command, "which"))
         return mx_which(&argv[1], fd);
-    if (strcmp(command, "unset") == 0)
+    if (!strcmp(command, "unset"))
         return mx_unset(&argv[1]);
-    if (strcmp(command, "color") == 0)
+    if (!strcmp(command, "color"))
         return mx_color(&argv[1]);
-    if (strcmp(command, "false") == 0)
+    if (!strcmp(command, "false"))
         return mx_false();
-    if (strcmp(command, "true") == 0)
+    if (!strcmp(command, "true"))
         return mx_true();
-    if (strcmp(command, "exit") == 0)
+    if (!strcmp(command, "exit"))
         mx_exit(&argv[1]);
     return exec_builtin2(command, argv, fd);
 }

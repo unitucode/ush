@@ -57,6 +57,7 @@ void mx_init() {
     sigprocmask(SIG_SETMASK, &mask, NULL);
     char *args[3] = {"MX_PROMPT=ush> ", NULL};
     mx_export(args, 1);
+    mx_increment_shlvl();
     mx_var_list_insert(SHELL,
                        "PATH=/bin:/usr/bin:/usr/local/bin:/usr/sbin:/sbin");
     tcgetattr(STDIN_FILENO, mx_get_tty());
