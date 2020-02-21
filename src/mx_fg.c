@@ -14,7 +14,7 @@ int mx_fg(char **args, int fd) {
         return 1;
     process = get_process(args[0]);
     // if (process)
-    //     printf("process = %s\n", ((t_process *)process->data)->cmd[0]);
+    //   printf("process = %s\n", ((t_process *)process->data)->cmd[0]);
     fd++;
     if (process) {
         f_process = (t_process *)process->data;
