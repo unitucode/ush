@@ -13,6 +13,8 @@ static char **get_sorted_environ() {
     extern char **environ;
     int len;
 
+    if (*environ == NULL)
+        mx_putenv("SHLVL=0");
     for (len = 0; environ[len]; len++) {
     }
     sorted_environ = malloc((len + 1) * sizeof (char *));
@@ -26,9 +28,9 @@ void mx_init_var_lists() {
     t_list **exp_list = mx_get_var_list(EXP);
     char **sorted_environ = get_sorted_environ();
 
-    for (int i = 0; sorted_environ[i]; i++) {
-        mx_push_back(shell_list, strdup(sorted_environ[i]));
-        mx_push_back(exp_list, strdup(sorted_environ[i]));
-    }
-    mx_del_strarr(&sorted_environ);
+        for (int i = 0; sorted_environ[i]; i++) {
+            mx_push_back(shell_list, strdup(sorted_environ[i]));
+            mx_push_back(exp_list, strdup(sorted_environ[i]));
+        }
+        mx_del_strarr(&sorted_environ);
 }

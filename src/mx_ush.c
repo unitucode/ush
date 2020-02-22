@@ -38,20 +38,7 @@ void mx_deinit() {
 
 void mx_init() {
     mx_init_var_lists();
-    t_map **map = mx_get_lenv();
-    char path[PATH_MAX];
-    *map = mx_create_map(40);
-
-    getcwd(path, sizeof(path));
-    mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD")));
-    mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
-    mx_put_map(map, strdup("?"), strdup("0"));
-    mx_put_map(map, strdup("#"), strdup("0"));
-    mx_put_map(map, strdup("0"), strdup(MX_SHELL_NAME));
-    mx_put_map(map, strdup("_"), strdup(path));
-    mx_put_map(map, strdup("$"), mx_itoa(getpid()));
-    mx_put_map(map, strdup("*"), strdup(""));
-    mx_put_map(map, strdup("@"), strdup(""));
+    mx_map_vars_init();
     sigset_t mask;
     sigfillset(&mask);
     sigprocmask(SIG_SETMASK, &mask, NULL);

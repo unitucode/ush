@@ -135,6 +135,7 @@ t_process *mx_get_process_by_id(int id);
 bool mx_check_chars(char *command);
 void mx_del_node_list(t_list **list, t_process **process);
 void mx_init();
+void mx_map_vars_init();
 void mx_deinit();
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
