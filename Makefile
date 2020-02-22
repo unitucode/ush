@@ -92,6 +92,7 @@ SRC = mx_ush.c \
 	mx_increment_shlvl.c \
 	mx_init_map_vars.c \
 	mx_init_signals.c \
+	mx_exec_copy_argv.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

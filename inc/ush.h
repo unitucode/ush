@@ -115,6 +115,7 @@ bool mx_check_brackets(char *command);
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
 int mx_env_exec(t_process *process, char *filename, char **argv, char **env);
+char **mx_exec_copy_argv(char **argv);
 t_process *mx_create_process(int fd);
 void mx_del_process(t_process **process);
 t_list *mx_handle_substitution(t_list *arguments);
