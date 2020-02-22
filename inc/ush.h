@@ -99,7 +99,6 @@ void mx_print_sh_error(char *process, char *message);
 int mx_preinterpretate(char *command);
 void mx_handle_command(char *command, int *code);
 t_list **mx_get_var_list(t_var_list key);
-void mx_init_var_lists();
 void mx_print_var_list(t_var_list key, int fd);
 void mx_var_list_insert(t_var_list key, char *arg);
 char *mx_get_var_info(char *arg, bool info_type);
@@ -135,7 +134,9 @@ t_process *mx_get_process_by_id(int id);
 bool mx_check_chars(char *command);
 void mx_del_node_list(t_list **list, t_process **process);
 void mx_init();
-void mx_map_vars_init();
+void mx_init_var_lists();
+void mx_init_map_vars();
+void mx_init_signals();
 void mx_deinit();
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
