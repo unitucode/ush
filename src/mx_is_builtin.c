@@ -12,13 +12,9 @@ bool mx_is_builtin(char *command) {
         || strcmp(command, "color") == 0
         || strcmp(command, "false") == 0
         || strcmp(command, "which") == 0
-<<<<<<< HEAD
         || strcmp(command, "echo") == 0
         || strcmp(command, "jobs") == 0
         || strcmp(command, "fg") == 0) {
-=======
-        || strcmp(command, "export") == 0) {
->>>>>>> 06c6bfff59d3a80382b068b10f19fd94c34fe8fc
         return 1;
     }
     return 0;

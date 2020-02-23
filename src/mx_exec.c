@@ -1,20 +1,13 @@
 #include "ush.h"
 
-<<<<<<< HEAD
 static char *argv_to_str(char **argv);
 
-=======
->>>>>>> 06c6bfff59d3a80382b068b10f19fd94c34fe8fc
 int mx_exec(t_process *process, char *filename, char **argv, char **env) {
     t_list **list = mx_get_list_procs();
     t_list *tmp = *list;
     int retval = 0;
 
-<<<<<<< HEAD
     process->cmd = argv_to_str(argv);
-=======
-    process->cmd = mx_exec_copy_argv(argv);
->>>>>>> 06c6bfff59d3a80382b068b10f19fd94c34fe8fc
     mx_disable_canon();
     process->status = posix_spawn(&process->pid, filename, &process->actions,
                                   &process->attrs, argv, env);
@@ -45,7 +38,6 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
     mx_enable_canon();
     return retval;
 }
-<<<<<<< HEAD
 
 static char *argv_to_str(char **argv) {
     char str[ARG_MAX] = "";
@@ -58,5 +50,3 @@ static char *argv_to_str(char **argv) {
     }
     return strdup(str);
 }
-=======
->>>>>>> 06c6bfff59d3a80382b068b10f19fd94c34fe8fc
