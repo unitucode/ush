@@ -40,6 +40,7 @@
 #define MX_FORBIDDEN_CHARS "|&><"
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
+#define MX_ENV_NAME "^[A-Za-z_]+[A-Za-z0-9_]*$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 #define MX_ENV_FLAG_I "^-(i*|i+.*|-.+)$"
 #define MX_ENV_VAR "^.+=.*$"
@@ -50,12 +51,14 @@
 #define MX_WAIT_TO_INT(w) (*(int *) & (w))
 #define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
 
-typedef enum e_var_list {
+typedef enum e_var_list
+{
     SHELL,
     EXP
-} t_var_list;
+}            t_var_list;
 
-typedef struct s_process {
+typedef struct s_process
+{
     int fd;
     int pos;
     char *cmd;
@@ -65,9 +68,10 @@ typedef struct s_process {
     pid_t pid;
     pid_t gpid;
     sigset_t signals;
-} t_process;
+}              t_process;
 
-typedef struct s_prompt {
+typedef struct s_prompt
+{
     unsigned int index;
     unsigned int cursor_index;
     bool end;
@@ -77,7 +81,7 @@ typedef struct s_prompt {
     char buff[5];
     char command[ARG_MAX + 1];
     char tmp_command[ARG_MAX + 1];
-} t_prompt;
+}              t_prompt;
 
 void mx_get_input(t_prompt * prompt, int *code);
 struct termios *mx_get_tty();
@@ -138,6 +142,7 @@ bool mx_check_chars(char *command);
 void mx_del_node_list(t_list **list, t_process **process);
 void mx_enable_signals(t_process *process);
 void mx_disable_signals(t_process *process);
+void mx_continue_process(t_process *process, t_list **all_processes, int fd);
 void mx_kill_process();
 void mx_print_color(int color);
 void mx_init();
@@ -170,7 +175,7 @@ pid_t mx_get_process_pid_by_id(int id);
 void outputList();
 
 int mx_color(char **args);
-int mx_jobs(int fd);
+int mx_jobs(char **args, int fd);
 void mx_exit(char **args);
 int mx_true();
 int mx_false();

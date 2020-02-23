@@ -4,7 +4,7 @@ static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
     unsigned int index = 0;
 
     while (argv[index]) {
-        if (mx_match(argv[index], "^-[nEe]+$"))
+        if (mx_match(argv[index], "^-[nEe]+$")) {
             for (unsigned int i = 0; i < strlen(argv[index]); i++) {
                 if (argv[index][i] == 'E')
                     *is_e = false;
@@ -13,6 +13,7 @@ static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
                 if (argv[index][i] == 'n')
                     *is_nl = false;
             }
+        }
         else
             break;
         index++;
@@ -29,11 +30,8 @@ static char *replace_octal(char *arg) {
 
     while ((index = mx_get_substr_index(arg, "\\0")) >= 0) {
         strncat(result, arg, index);
-        index += 1;
-        while (arg[index] >= '0' && arg[index] <= '7' && arg[index]) {
+        while (arg[++index] >= '0' && arg[index] <= '7' && arg[index])
             num_size++;
-            index++;
-        }
         octal_num = strndup(arg + index - num_size, num_size);
         result[strlen(result)] = (char)strtol(octal_num, NULL, 8);
         mx_strdel(&octal_num);

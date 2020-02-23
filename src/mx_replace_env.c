@@ -69,12 +69,12 @@ static char *get_brace_sub(char *arg, unsigned int index, unsigned int *len) {
         mx_strdel(&var);
         return strdup("");
     }
-    else if (!mx_match(var, "^[A-Za-z_]+[A-Za-z0-9_]*$") && strlen(var)) {
+    else if (!mx_match(var, MX_ENV_NAME) && strlen(var)) {
         mx_strdel(&var);
         return NULL;
     }
     *len = strlen(var) + 2;
-    env = getenv(var);
+    env = mx_get_var_val(SHELL, var);
     mx_strdel(&var);
     return env ? strdup(env) : strdup("");
 }
@@ -92,7 +92,7 @@ static char *get_spec_sub(char *arg, unsigned int index, unsigned int *len) {
     if (isalpha(arg[index]) || arg[index] == '_') {
         *len = get_len_spec(arg + index);
         var = strndup(arg + index, *len);
-        env = getenv(var);
+        env = mx_get_var_val(SHELL, var);
         *len = strlen(var);
         mx_strdel(&var);
         return env ? strdup(env) : strdup("");

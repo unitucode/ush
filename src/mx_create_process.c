@@ -1,5 +1,15 @@
 #include "ush.h"
 
+static void set_signals(sigset_t *signals, int fd) {
+    sigfillset(signals);
+    sigdelset(signals, SIGINT);
+    sigdelset(signals, SIGQUIT);
+    sigdelset(signals, SIGCONT);
+    sigdelset(signals, SIGCHLD);
+    if (fd == 1)
+        sigdelset(signals, SIGTSTP);
+}
+
 t_process *mx_create_process(int fd) {
     t_process *process = malloc(sizeof(t_process));
 
@@ -7,13 +17,7 @@ t_process *mx_create_process(int fd) {
     process->pos = 0;
     process->fd = fd;
     process->gpid = 0;
-    sigfillset(&process->signals);
-    sigdelset(&process->signals, SIGINT);
-    sigdelset(&process->signals, SIGQUIT);
-    sigdelset(&process->signals, SIGCONT);
-    sigdelset(&process->signals, SIGCHLD);
-    if (fd == 1)
-        sigdelset(&process->signals, SIGTSTP);
+    set_signals(&process->signals, fd);
     posix_spawnattr_init(&process->attrs);
     posix_spawnattr_setpgroup(&process->attrs, process->gpid);
     posix_spawnattr_setsigmask(&process->attrs, &process->signals);
@@ -22,3 +26,4 @@ t_process *mx_create_process(int fd) {
     posix_spawn_file_actions_adddup2(&process->actions, fd, 1);
     return process;
 }
+

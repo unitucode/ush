@@ -7,11 +7,11 @@ static char *get_formated_arg(char *str) {
     bool is_quotes[2];
 
     for (unsigned int i = 0; i < len; i++) {
-        if ((str[i] == MX_S_QUOTES) && !mx_isescape_char(str, i) && !is_quotes[1]) {
+        if ((str[i] == '\'') && !mx_isescape_char(str, i) && !is_quotes[1]) {
             is_quotes[0] = !is_quotes[0];
             continue;
         }
-        if ((str[i] == MX_D_QUOTES) && !mx_isescape_char(str, i) && !is_quotes[0]) {
+        if ((str[i] == '\"') && !mx_isescape_char(str, i) && !is_quotes[0]) {
             is_quotes[1] = !is_quotes[1];
             continue;
         }
@@ -23,15 +23,28 @@ static char *get_formated_arg(char *str) {
     return result;
 }
 
-char **mx_interpretate(char *command, int *code) {
-    t_list *arguments = NULL;
+static char **get_result(char *command) {
     char **result = NULL;
-    unsigned int i = 0;
+    t_list *arguments = NULL;
     int len = 0;
+    unsigned int i = 0;
 
+    arguments = mx_split_command(command);
+    len = mx_list_size(arguments);
+    result = malloc(sizeof(char*) * (len + 1));
+    result[len] = NULL;
+    for (t_list *cur = arguments; cur; cur = cur->next) {
+        result[i++] = get_formated_arg(cur->data);
+    }
+    mx_del_list(&arguments);
+    mx_strdel(&command);
+    return result;
+}
+
+char **mx_interpretate(char *command, int *code) {
     if (!(command = mx_replace_env(command, code))) {
         fprintf(stderr, "%s: bad substitution\n", MX_SHELL_NAME);
-        return NULL; // arg for one command;
+        return NULL;
     }
     command = mx_replace_tilde(command);
     if (!(command = mx_replace_substitution(command, code))) {
@@ -40,14 +53,5 @@ char **mx_interpretate(char *command, int *code) {
     }
     if (!strlen(command))
         return NULL;
-    arguments = mx_split_command(command);
-    len = mx_list_size(arguments);
-    result = malloc(sizeof(char *) * (len + 1));
-    result[len] = NULL;
-    for (t_list *cur = arguments; cur; cur = cur->next) {
-        result[i++] = get_formated_arg(cur->data);
-    }
-    mx_del_list(&arguments);
-    mx_strdel(&command);
-    return result;
+    return get_result(command);
 }

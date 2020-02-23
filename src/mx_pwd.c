@@ -1,6 +1,5 @@
 #include "ush.h"
 
-// parse_flags return 1 if any error cases, else 0
 static bool parse_flags(char **flags, bool *mode) {
     bool flag_stop = 0;
 
@@ -28,12 +27,7 @@ int mx_pwd(char **flags, int fd) {
     t_map **map = mx_get_lenv();
     bool mode = 0;
     char *pwd = mx_get_map(map, "PWD");
-    t_list **all_processes = mx_get_list_procs();
 
-    for (t_list *cur = *all_processes; cur; cur = cur->next) {
-        printf("[%d] = process pid[%d]\n", ((t_process *)cur->data)->pos, ((t_process *)cur->data)->pid);
-    }
-    
     if (!parse_flags(flags, &mode)) {
         if (mode)
             dprintf(fd, "%s\n", realpath(pwd, NULL));

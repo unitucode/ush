@@ -1,6 +1,20 @@
 #include "ush.h"
 
-static int check_argument(char **args);
+static int check_argument(char **args) {
+    if (!args[0]) {
+        fprintf(stderr, "usage: color [1234567]\n");
+        return 1;
+    }
+    if (mx_arr_size(args) > 1) {
+        fprintf(stderr, "color: too many arguments\n");
+        return 1;
+    }
+    if (strlen(args[0]) > 1 || !isnumber(args[0][0])) {
+        fprintf(stderr, "color: invalid argument: %s\n", args[0]);
+        return 1;
+    }
+    return 0;
+}
 
 int mx_color(char **args) {
     int color = 0;
@@ -28,18 +42,3 @@ void mx_print_color(int color) {
     }
 }
 
-static int check_argument(char **args) {
-    if (!args[0]) {
-        fprintf(stderr, "usage: color [1234567]\n");
-        return 1;
-    }
-    if (mx_arr_size(args) > 1) {
-        fprintf(stderr, "color: too many arguments\n");
-        return 1;
-    }
-    if (strlen(args[0]) > 1 || !isnumber(args[0][0])) {
-        fprintf(stderr, "color: invalid argument: %s\n", args[0]);
-        return 1;
-    }
-    return 0;
-}

@@ -2,8 +2,8 @@
 
 bool mx_is_flag_stop(char *flag) {
     if ((flag[1] == '-' && flag[2] == '\0') 
-         || flag[1] == '\0') {
-        return 1;
+        || flag[1] == '\0') {
+        return true;
     }
-    return 0;
+    return false;
 }

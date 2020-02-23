@@ -28,8 +28,8 @@ static void init_pwd_vars(t_map **map, char *path) {
 void mx_init_map_vars() {
     t_map **map = mx_get_lenv();
     char path[PATH_MAX];
-    *map = mx_create_map(40);
 
+    *map = mx_create_map(40);
     getcwd(path, sizeof(path));
     init_pwd_vars(map, path);
     mx_put_map(map, strdup("?"), strdup("0"));

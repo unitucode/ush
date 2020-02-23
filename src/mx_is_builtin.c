@@ -1,20 +1,21 @@
 #include "ush.h"
 
 bool mx_is_builtin(char *command) {
-    if (strcmp(command, "pwd") == 0
-        || strcmp(command, "cd") == 0
-        || strcmp(command, "fg") == 0
-        || strcmp(command, "env") == 0
-        || strcmp(command, "true") == 0
-        || strcmp(command, "echo") == 0
-        || strcmp(command, "exit") == 0
-        || strcmp(command, "unset") == 0
-        || strcmp(command, "color") == 0
-        || strcmp(command, "false") == 0
-        || strcmp(command, "which") == 0
-        || strcmp(command, "echo") == 0
-        || strcmp(command, "jobs") == 0
-        || strcmp(command, "fg") == 0) {
+    if (!strcmp(command, "pwd")
+        || !strcmp(command, "cd")
+        || !strcmp(command, "fg")
+        || !strcmp(command, "env")
+        || !strcmp(command, "true")
+        || !strcmp(command, "echo")
+        || !strcmp(command, "exit")
+        || !strcmp(command, "unset")
+        || !strcmp(command, "color")
+        || !strcmp(command, "false")
+        || !strcmp(command, "export")
+        || !strcmp(command, "which")
+        || !strcmp(command, "echo")
+        || !strcmp(command, "jobs")
+        || !strcmp(command, "fg")) {
         return 1;
     }
     return 0;
