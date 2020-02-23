@@ -1,52 +1,6 @@
 #include "ush.h"
 
 static char *get_var(char *cmd, unsigned int *i);
-// static char *replace_all_escape(char *arg);
-// static char *replace_arg_quotes(char *arg);
-
-// char *mx_replace_special(char *argument) {
-//     char *tmp_trim = mx_strtrim(argument);
-//     char *arg = mx_strnew(ARG_MAX);
-
-//     strcpy(arg, tmp_trim);
-//     // arg = replace_arg_quotes(arg);
-//     arg = replace_all_escape(arg);
-//     mx_strdel(&tmp_trim);
-//     mx_strdel(&argument);
-//     return arg;
-// }
-
-// static char *replace_arg_quotes(char *arg) {
-//     unsigned int len = strlen(arg);
-
-//     if (arg[len - 1] == '\"' && !mx_isescape_char(arg, len - 1)) {
-//         arg[len - 1] = '\0';
-//     }
-//     if (arg[0] == '\"' && !mx_isescape_char(arg, 0)) {
-//         memmove(arg, arg + 1, len - 1);
-//     }
-//     return arg;
-// }
-
-// static char *replace_all_escape(char *arg) {
-//     char *save = arg;
-//     char *replace = mx_strnew(ARG_MAX);
-//     unsigned int replace_index = 0;
-//     bool g_a = false;
-    
-//     for (unsigned int i = 0; i < strlen(arg); i++) {
-//         if (arg[i + 1] != '\\' && mx_isescape_char(arg, i + 1) && !g_a) {
-//             i++;
-//         }
-//         replace[replace_index] = arg[i];
-//         replace_index++;
-//     }
-//     mx_strdel(&save);
-//     save = mx_replace_substr(replace, "\\\\", "\\");
-//     strcpy(replace, save);
-//     mx_strdel(&save);
-//     return replace;
-// }
 
 char *mx_replace_special(char *command) {
     char *result = mx_strnew(ARG_MAX);

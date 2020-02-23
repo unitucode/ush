@@ -21,13 +21,15 @@ static bool check_dir(char *path, char *file) {
     DIR *dir = opendir(path);
     struct dirent *entry;
 
-    if (dir)
-        while ((entry = readdir(dir)) != NULL)
+    if (dir) {
+        while ((entry = readdir(dir)) != NULL) {
             if (strcmp(entry->d_name, file) == 0)
                 if (type_check(entry, path)) {
                     closedir(dir);
                     return 1;
                 }
+        }
+    }
     closedir(dir);
     return 0;
 }

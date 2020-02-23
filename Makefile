@@ -8,6 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_replace_funcs.c \
 	mx_continue_process.c \
 	mx_jobs.c \
 	mx_del_node_list.c \
@@ -51,7 +52,6 @@ SRC = mx_ush.c \
 	mx_get_var_val.c \
 	mx_check_escape.c \
 	mx_isescape_char.c \
-	mx_replace_special.c \
 	mx_replace_escape.c \
 	mx_replace_env.c \
 	mx_get_name.c \
@@ -95,6 +95,7 @@ SRC = mx_ush.c \
 	mx_init_map_vars.c \
 	mx_init_signals.c \
 	mx_exec_copy_argv.c \
+	# mx_replace_special.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

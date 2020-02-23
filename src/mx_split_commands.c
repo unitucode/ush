@@ -6,7 +6,7 @@ static int get_next_command(char *command);
 char **mx_split_commands(char *command) {
     t_list *commands = split(command);
     size_t size = mx_list_size(commands);
-    char **cmds = malloc(sizeof(char *) * (size + 1));
+    char **cmds = malloc(sizeof(char*) * (size + 1));
     unsigned int index = 0;
 
     cmds[size] = NULL;

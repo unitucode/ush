@@ -143,6 +143,11 @@ void mx_del_node_list(t_list **list, t_process **process);
 void mx_enable_signals(t_process *process);
 void mx_disable_signals(t_process *process);
 void mx_continue_process(t_process *process, t_list **all_processes, int fd);
+void mx_skip_exps_quots(char *arg, unsigned int *index, bool *is_quotes);
+bool mx_replace_env_var(char *result, char *env, unsigned int *index,
+                        unsigned int len);
+void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
+void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
 void mx_kill_process();
 void mx_print_color(int color);
 void mx_init();
