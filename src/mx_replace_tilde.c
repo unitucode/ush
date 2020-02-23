@@ -1,7 +1,7 @@
 #include "ush.h"
 
 static char *get_env(char *var, unsigned int *len, int add, char *arg) {
-    char *result = getenv(var);
+    char *result = mx_get_var_val(SHELL, var);
 
     if (result) {
         *len += add;
