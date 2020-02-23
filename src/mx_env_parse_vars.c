@@ -1,18 +1,5 @@
 #include "ush.h"
 
-// static char *get_saved_path(char **env, char **var_name) {
-//     char *saved_path = NULL;
-
-//     for (int i = 0; env[i]; i++) {
-//         mx_get_name(env[i], var_name);
-//         if (!strcmp((*var_name), "PATH"))
-//             saved_path = mx_get_var_info(env[i], 1);
-//         if (saved_path)
-//             break;
-//     }
-//     return saved_path;
-// }
-
 void mx_env_parse_vars(char **argv, char **path, int *idx) {
     char *var_name = NULL;
 
@@ -26,7 +13,7 @@ void mx_env_parse_vars(char **argv, char **path, int *idx) {
         else
             break;
     }
-    if (!(*path))
+    if (!(*path) && mx_get_var_val(SHELL, "PATH"))
         *path = strdup(mx_get_var_val(SHELL, "PATH"));
     mx_strdel(&var_name);
 }

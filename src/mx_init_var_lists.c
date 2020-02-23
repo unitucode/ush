@@ -13,6 +13,8 @@ static char **get_sorted_environ() {
     extern char **environ;
     int len;
 
+    if (*environ == NULL)
+        mx_putenv("SHLVL=0");
     for (len = 0; environ[len]; len++) {
     }
     sorted_environ = malloc((len + 1) * sizeof (char *));
