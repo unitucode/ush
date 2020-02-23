@@ -12,6 +12,7 @@ bool mx_is_builtin(char *command) {
         || strcmp(command, "false") == 0
         || strcmp(command, "which") == 0
         || strcmp(command, "echo") == 0
+        || strcmp(command, "jobs") == 0
         || strcmp(command, "fg") == 0) {
         return 1;
     }

@@ -56,12 +56,14 @@ typedef enum e_var_list {
 } t_var_list;
 
 typedef struct s_process {
+    int fd;
     int pos;
-    char **cmd;
+    char *cmd;
     int status;
     posix_spawn_file_actions_t actions;
     posix_spawnattr_t attrs;
     pid_t pid;
+    pid_t gpid;
     sigset_t signals;
 } t_process;
 
@@ -134,6 +136,10 @@ bool mx_get_sub(char *arg, char *sub, int *code);
 t_process *mx_get_process_by_id(int id);
 bool mx_check_chars(char *command);
 void mx_del_node_list(t_list **list, t_process **process);
+void mx_enable_signals(t_process *process);
+void mx_disable_signals(t_process *process);
+void mx_kill_process();
+void mx_print_color(int color);
 void mx_init();
 void mx_deinit();
 
@@ -160,6 +166,7 @@ pid_t mx_get_process_pid_by_id(int id);
 void outputList();
 
 int mx_color(char **args);
+int mx_jobs(int fd);
 void mx_exit(char **args);
 int mx_true();
 int mx_false();

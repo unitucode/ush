@@ -32,6 +32,7 @@ static void main_cycle() {
 
 void mx_deinit() {
     mx_disable_canon();
+    mx_kill_process();
     t_map **map = mx_get_lenv();
     mx_del_map(map);
 }

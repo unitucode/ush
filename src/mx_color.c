@@ -12,8 +12,20 @@ int mx_color(char **args) {
         fprintf(stderr, "color: no such color [%d]\n", color);
         return 1;
     }
-    printf("\x1b[0;3%dm", color);
+    mx_print_color(color);
     return 0;
+}
+
+void mx_print_color(int color) {
+    static int st_color = -1;
+
+    if (color != -1) {
+        printf("\x1b[0;3%dm", color);
+        st_color = color;
+    }
+    else if (st_color != -1) {
+        printf("\x1b[0;3%dm", st_color);
+    }
 }
 
 static int check_argument(char **args) {

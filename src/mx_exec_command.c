@@ -11,6 +11,8 @@ static int exec_builtin2(char *command, char **argv, int fd) {
         return mx_env(&argv[1], fd);
     if (strcmp(command, "fg") == 0)
         return mx_fg(&argv[1], fd);
+    if (strcmp(command, "jobs") == 0)
+        return mx_jobs(fd);
     return 1;
 }
 
