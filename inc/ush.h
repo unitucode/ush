@@ -152,6 +152,7 @@ void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
 void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
 char *mx_get_invalid_sub(char **arg, char **result, char **sub);
 void mx_kill_process(void);
+char *mx_get_output_fd(int fd);
 char *mx_check_user_file(char *tmp_name);
 bool mx_check_user(char *user_name);
 void mx_kill_process();
