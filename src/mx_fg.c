@@ -33,21 +33,6 @@ static t_list *get_process_by_id(char *arg, t_list *processes) {
         }
         processes = processes->next;
     }
-<<<<<<< HEAD
-    mx_printstr("=================\nEND\n=================\n");
-}
-
-int mx_fg(char **args, int fd) {
-    pid_t pid = get_process_pid(args[0]);
-    int id = mx_get_process_id_by_pid(pid);
-    int status = 0;
-    // t_process *process = mx_get_process_by_id(id);
-    
-    //outputList();
-    if (pid == -1) {
-        fprintf(stderr, "fg: %s: no such job\n", args[0]);
-        return 0;
-=======
     fprintf(stderr, "fg: %s: no such job\n", arg);
     return NULL;
 }
@@ -79,7 +64,6 @@ static bool check_args(char **args) {
     if (mx_arr_size(args) > 1) {
         fprintf(stderr, "fg: too many arguments\n");
         return false;
->>>>>>> f173e170b4415161bf33cd723bf2731273cfdd8e
     }
     if (args[0][0] != '%' || !args[0][1]) {
         fprintf(stderr, "fg: invalid argument: %s\n", args[0]);
