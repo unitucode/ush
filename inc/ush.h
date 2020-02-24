@@ -148,13 +148,10 @@ bool mx_replace_env_var(char *result, char *env, unsigned int *index,
                         unsigned int len);
 void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
 void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
-<<<<<<< HEAD
 void mx_kill_process(void);
-=======
 char *mx_check_user_file(char *tmp_name);
 bool mx_check_user(char *user_name);
 void mx_kill_process();
->>>>>>> 2cdb04cc4dff747d45e3839753579cfb4b32f77d
 void mx_print_color(int color);
 void mx_init(void);
 void mx_init_var_lists(void);
@@ -197,8 +194,5 @@ int mx_which(char **args, int fd);
 int mx_env(char **argv, int fd);
 char **mx_source(char *str);
 int mx_fg(char **args, int fd);
-<<<<<<< HEAD
 bool mx_check_dir_exists(char *dir);
-=======
 int mx_set(char **argv, int fd);
->>>>>>> 2cdb04cc4dff747d45e3839753579cfb4b32f77d
