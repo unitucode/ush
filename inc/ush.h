@@ -46,9 +46,13 @@
 #define MX_ENV_VAR "^.+=.*$"
 #define MX_SPEC_ENV "$?#*@_0"
 
-#define MX_WIFSTOPPED(m) (_WSTATUS(m) == _WSTOPPED && WSTOPSIG(m) != 0x13)
+#define MX_W_INT(m) (*(int*) & (m))
+#define MX_WSTOPSIG(m) (MX_W_INT(m) >> 8)
+#define MX_WSTATUS(m) (MX_W_INT(m) & 0177)
+#define MX_WIFSTOPPED(m) (MX_WSTATUS(m) == _WSTOPPED &&
+                          MX_WSTOPSIG(m) != 0x13)
 #define MX_ISREG(m) (((m) & S_IFMT) == S_IFREG)
-#define MX_WAIT_TO_INT(w) (*(int *) & (w))
+#define MX_WAIT_TO_INT(m) (*(int *) & (m))
 #define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
 
 typedef enum e_var_list
