@@ -14,19 +14,23 @@ static char *get_dir(char *arg, unsigned int *len,
                      unsigned int index, unsigned int save) {
     char *dir_name = NULL;
     char *tmp_name = NULL;
-    DIR *dir = NULL;
+    char *user_in_file = NULL;
 
     tmp_name = strndup(arg + save, index - save);
     dir_name = mx_strjoin("/Users/", tmp_name);
-    if (!(dir = opendir(dir_name)) || !strcmp(tmp_name, ".")
+    user_in_file = mx_check_user_file(tmp_name);
+    if ((!mx_check_user(tmp_name) && !user_in_file) || !strcmp(tmp_name, ".")
         || !strcmp(tmp_name, "..") || !strcmp(tmp_name, "Shared")) {
         mx_strdel(&tmp_name);
         mx_strdel(&dir_name);
         return strndup(arg + save - 1, 1);
     }
-    closedir(dir);
     *len += index - save;
-    mx_strdel(&tmp_name); 
+    mx_strdel(&tmp_name);
+    if (user_in_file) {
+        mx_strdel(&dir_name);
+        return user_in_file;
+    }
     return dir_name;
 }
 

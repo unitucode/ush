@@ -148,6 +148,8 @@ bool mx_replace_env_var(char *result, char *env, unsigned int *index,
                         unsigned int len);
 void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
 void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
+char *mx_check_user_file(char *tmp_name);
+bool mx_check_user(char *user_name);
 void mx_kill_process();
 void mx_print_color(int color);
 void mx_init();

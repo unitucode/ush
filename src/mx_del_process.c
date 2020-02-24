@@ -10,7 +10,7 @@ void mx_del_process(t_process **process) {
     }
 }
 
-void mx_kill_process() {
+void mx_kill_process(void) {
     t_list **processes = mx_get_list_procs();
     t_process *tmp = NULL;
 
