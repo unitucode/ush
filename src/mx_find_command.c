@@ -7,7 +7,7 @@ static bool check_dir(char *path, char *file) {
 
     if (dir) {
         while ((entry = readdir(dir)) != NULL)
-            if (strcmp(entry->d_name, file) == 0)
+            if (!strcmp(entry->d_name, file))
                 retval = 1;
         closedir(dir);
     }
@@ -34,6 +34,8 @@ bool mx_find_command(char *path, char *command, char **filename) {
             if (check_dir(paths[i], command)) {
                 retval = 1;
                 sprintf(fname, "%s/%s", paths[i], command);
+                if (*filename)
+                    mx_strdel(filename);
                 *filename = strdup(fname);
             }
         mx_del_strarr(&paths);

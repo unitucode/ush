@@ -49,8 +49,8 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
 
     mx_disable_canon();
     if (!run_process(process, filename, argv, env)) {
-        fprintf(stderr, "%s: %s: %s\n", filename, strerror(process->status),
-                MX_SHELL_NAME);
+        fprintf(stderr, "%s: %s: %s\n", MX_SHELL_NAME, filename,
+                strerror(process->status));
         retval = 126;
     }
     else if (waitpid(process->gpid, &process->status, WUNTRACED) != -1) {

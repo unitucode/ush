@@ -50,8 +50,9 @@ int mx_exec_command(char **argv, int fd) {
     char *filename = NULL;
     int retval = 0;
 
-    if (mx_is_builtin(argv[0]))
+    if (mx_is_builtin(argv[0])) {
         return exec_builtin1(argv[0], argv, fd);
+    }
     else if (mx_find_command(mx_get_var_val(SHELL, "PATH"),
                              argv[0], &filename)) {
         extern char **environ;
