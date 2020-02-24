@@ -17,7 +17,7 @@ int mx_unset(char **args) {
     int result = 0;
 
     if (args == NULL) {
-        fprintf(stderr, "unset: not enough arguments\n");
+        fprintf(stderr, "unset: command does not accept any options\n");
         return 1;
     }
     for (int i = 0; args[i]; i++)

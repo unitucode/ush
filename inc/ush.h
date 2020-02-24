@@ -193,3 +193,4 @@ int mx_which(char **args, int fd);
 int mx_env(char **argv, int fd);
 char **mx_source(char *str);
 int mx_fg(char **args, int fd);
+int mx_set(char **argv, int fd);
