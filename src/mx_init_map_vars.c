@@ -25,7 +25,7 @@ static void init_pwd_vars(t_map **map, char *path) {
     }
 }
 
-void mx_init_map_vars() {
+void mx_init_map_vars(void) {
     t_map **map = mx_get_lenv();
     char path[PATH_MAX];
 

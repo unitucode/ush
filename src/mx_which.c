@@ -58,7 +58,7 @@ static bool search_exe(char *file, int mode, int fd) {
 
 static int parse_flags(char **flags, int *mode) {
     bool flag_stop = 0;
-    int i;  // index of first non-flag argument
+    int i;
 
     for (i = 0; flags[i] && flags[i][0] == '-' && !flag_stop; i++) {
         flag_stop = mx_is_flag_stop(flags[i]);

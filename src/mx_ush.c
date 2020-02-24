@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void mx_init() {
+void mx_init(void) {
     mx_putenv("MX_PROMPT=ush> ");
     mx_init_var_lists();
     mx_init_map_vars();
@@ -13,14 +13,14 @@ void mx_init() {
     mx_enable_canon();
 }
 
-void mx_deinit() {
+void mx_deinit(void) {
     mx_disable_canon();
     mx_kill_process();
     t_map **map = mx_get_lenv();
     mx_del_map(map);
 }
 
-static void main_cycle() {
+static void main_cycle(void) {
     int result = 0;
     t_prompt *prompt = malloc(sizeof(t_prompt));
     extern char **environ;

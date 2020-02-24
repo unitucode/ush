@@ -8,7 +8,7 @@ static void copy_environ(char **copy, char **environ) {
     }
 }
 
-static char **get_sorted_environ() {
+static char **get_sorted_environ(void) {
     char **sorted_environ = NULL;
     extern char **environ;
     int len = 0;
@@ -23,7 +23,7 @@ static char **get_sorted_environ() {
     return sorted_environ;
 }
 
-void mx_init_var_lists() {
+void mx_init_var_lists(void) {
     t_list **shell_list = mx_get_var_list(SHELL);
     t_list **exp_list = mx_get_var_list(EXP);
     char **sorted_environ = get_sorted_environ();
