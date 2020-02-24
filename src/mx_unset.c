@@ -16,14 +16,15 @@ static int unset_all(char *var) {
 int mx_unset(char **args) {
     int result = 0;
 
-    if (args == NULL) {
-        fprintf(stderr, "unset: command does not accept any options\n");
-        return 1;
-    }
-    for (int i = 0; args[i]; i++)
+    for (int i = 0; args[i]; i++) {
+        if (mx_match(args[i], "^-")) {
+            fprintf(stderr, "unset: command does not accept any options\n");
+            return 1;
+        }
         if (unset_all(args[i]) == -1 && !result) {
             fprintf(stderr, "unset: %s: invalid parameter name\n", args[i]);
             result = 1;
         }
+    }
     return result;
 }
