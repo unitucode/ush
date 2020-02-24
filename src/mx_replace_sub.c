@@ -24,7 +24,6 @@ static char *get_output(char **arguments, unsigned int len) {
     int fds[2];
     char *output = NULL;
     char *save = NULL;
-
     pipe(fds);
     mx_exec_command(arguments, fds[1]);
     close(fds[1]);

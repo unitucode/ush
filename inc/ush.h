@@ -6,7 +6,6 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-#include <curses.h>
 #include <limits.h>
 #include <termios.h>
 #include <fcntl.h>
@@ -151,6 +150,7 @@ bool mx_replace_env_var(char *result, char *env, unsigned int *index,
                         unsigned int len);
 void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
 void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
+char *mx_get_invalid_sub(char **arg, char **result, char **sub);
 void mx_kill_process(void);
 char *mx_check_user_file(char *tmp_name);
 bool mx_check_user(char *user_name);

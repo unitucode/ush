@@ -33,4 +33,9 @@ void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i) {
         mx_skip_quotes(arg, i, MX_S_QUOTES);
 }
 
-
+char *mx_get_invalid_sub(char **arg, char **result, char **sub) {
+    mx_strdel(arg);
+    mx_strdel(result);
+    mx_strdel(sub);
+    return NULL;
+}
