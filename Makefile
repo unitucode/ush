@@ -8,6 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_replace_tilde_tools.c \
 	mx_replace_funcs.c \
 	mx_continue_process.c \
 	mx_jobs.c \
@@ -95,7 +96,11 @@ SRC = mx_ush.c \
 	mx_init_map_vars.c \
 	mx_init_signals.c \
 	mx_exec_copy_argv.c \
+<<<<<<< HEAD
 	mx_check_dir_exists.c \
+=======
+	mx_set.c \
+>>>>>>> 2cdb04cc4dff747d45e3839753579cfb4b32f77d
 	# mx_replace_special.c \
 
 INCLUDE = -I $(LBMXD) \
