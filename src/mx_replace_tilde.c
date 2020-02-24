@@ -1,83 +1,82 @@
 #include "ush.h"
 
-static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len);
+static char *get_env(char *var, unsigned int *len, int add, char *arg) {
+    char *result = mx_get_var_val(SHELL, var);
 
-char *mx_replace_tilde(char *arg) {
-    char *result = mx_strnew(ARG_MAX);
-    unsigned int index = 0;
-    unsigned int save = 0;
-    unsigned int len = 0;
-    char *sub = NULL;
-    bool is_quotes = false;
-
-    for (; mx_get_char_index(&arg[index], '~') >= 0; index++) {
-        if (arg[index] == MX_D_QUOTES && !mx_isescape_char(arg, index))
-            is_quotes = !is_quotes;
-        if (!is_quotes)
-            mx_skip_quotes(arg, &index, MX_S_QUOTES);
-        mx_skip_quotes(arg, &index, MX_GRAVE_ACCENT);
-        mx_skip_expansion(arg, &index);
-        if ((arg[index] == '~' && !mx_isescape_char(arg, index)) && ((index > 0 && isspace(arg[index - 1]) && !mx_isescape_char(arg, index - 1)) || (index == 0))) {
-            strncat(result, arg + save, index - save);
-            sub = get_tilde_sub(arg, index, &len);
-            strcat(result, sub);
-            index += len;
-            save = index + 1;
-            mx_strdel(&sub);
-        }
+    if (result) {
+        *len += add;
+        return strdup(result);
     }
-    strcat(result, arg + save);
-    mx_strdel(&arg);
-    return result;
+    return strndup(arg, 1);
 }
 
-static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len) {
-    char *result = NULL;
-    unsigned int save = index + 1;
+static char *get_dir(char *arg, unsigned int *len,
+                     unsigned int index, unsigned int save) {
     char *dir_name = NULL;
     char *tmp_name = NULL;
     DIR *dir = NULL;
 
+    tmp_name = strndup(arg + save, index - save);
+    dir_name = mx_strjoin("/Users/", tmp_name);
+    if (!(dir = opendir(dir_name)) || !strcmp(tmp_name, ".")
+        || !strcmp(tmp_name, "..") || !strcmp(tmp_name, "Shared")) {
+        mx_strdel(&tmp_name);
+        mx_strdel(&dir_name);
+        return strndup(arg + save - 1, 1);
+    }
+    closedir(dir);
+    *len += index - save;
+    mx_strdel(&tmp_name); 
+    return dir_name;
+}
+
+static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len) {
+    bool is_last = false;
+    unsigned int save = index + 1;
+
     *len = 0;
     index++;
-    if (arg[index] == '-' && (arg[index + 1] == '/' || (isspace(arg[index + 1]) || !arg[index + 1]))) {
-        result = getenv("OLDPWD");
-        if (result) {
-            *len = 1;
-            return strdup(result);
-        }
-        return strndup(arg, 1);
-    }
-    if (arg[index] == '+' && (arg[index + 1] == '/' || (isspace(arg[index + 1]) || !arg[index + 1]))) {
-        result = getenv("PWD");
-        if (result) {
-            *len = 1;
-            return strdup(result);
-        }
-        return strndup(arg, 1);
-    }
-    if (arg[index] == '/' || isspace(arg[index]) || !arg[index]) {
-        result = getenv("HOME");
-        if (result) {
-            return strdup(result);
-        }
-        return strndup(arg, 1);
-    }
+    is_last = isspace(arg[index + 1]) || !arg[index + 1];
+    if ((arg[index] == '-' && (arg[index + 1] == '/')) || is_last)
+        return get_env("OLDPWD", len, 1, arg);
+    if ((arg[index] == '+' && (arg[index + 1] == '/')) || is_last)
+        return get_env("PWD", len, 1, arg);
+    if (arg[index] == '/' || isspace(arg[index]) || !arg[index])
+        return get_env("HOME", len, 0, arg);
     else if (arg[index]) {
         while (!isspace(arg[index]) && arg[index] != '/' && arg[index]) {
             index++;
         }
-        tmp_name = strndup(arg + save, index - save);
-        dir_name = mx_strjoin("/Users/", tmp_name);
-        if (!(dir = opendir(dir_name)) || !strcmp(tmp_name, ".") || !strcmp(tmp_name, "..") || !strcmp(tmp_name, "Shared")) {
-            mx_strdel(&tmp_name);
-            mx_strdel(&dir_name);
-            return strndup(arg + save - 1, 1);
-        }
-        closedir(dir);
-        *len += index - save;
-        mx_strdel(&tmp_name); 
-        return dir_name;
+        return get_dir(arg, len, index, save);
     }
     return strndup(arg, 1);
+}
+
+static void add_sub(char *result, char *arg, unsigned int *i_s) {
+    char *sub = NULL;
+
+    strncat(result, arg + i_s[1], i_s[0] - i_s[1]);
+    sub = get_tilde_sub(arg, i_s[0], &i_s[2]);
+    strcat(result, sub);
+    i_s[0] += i_s[2];
+    i_s[1] = i_s[0] + 1;
+    mx_strdel(&sub);
+}
+
+char *mx_replace_tilde(char *arg) {
+    char *result = mx_strnew(ARG_MAX);
+    unsigned int i_s[3] = {0, 0, 0};
+    bool is_quotes = false;
+
+    for (; mx_get_char_index(&arg[i_s[0]], '~') >= 0; i_s[0]++) {
+        mx_skip_exps_quots(arg, &i_s[0], &is_quotes);
+        if ((arg[i_s[0]] == '~' && !mx_isescape_char(arg, i_s[0]))
+            && ((i_s[0] > 0 && isspace(arg[i_s[0] - 1])
+            && !mx_isescape_char(arg, i_s[0] - 1)) || (i_s[0] == 0))) {
+            add_sub(result, arg, i_s);
+        }
+    }
+    strcat(result, arg + i_s[1]);
+    mx_strdel(&arg);
+    return result;
 }

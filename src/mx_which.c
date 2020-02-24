@@ -21,19 +21,21 @@ static bool check_dir(char *path, char *file) {
     DIR *dir = opendir(path);
     struct dirent *entry;
 
-    if (dir)
-        while ((entry = readdir(dir)) != NULL)
+    if (dir) {
+        while ((entry = readdir(dir)) != NULL) {
             if (strcmp(entry->d_name, file) == 0)
                 if (type_check(entry, path)) {
                     closedir(dir);
                     return 1;
                 }
-    closedir(dir);
+        }
+        closedir(dir);
+    }
     return 0;
 }
 
 static bool search_exe(char *file, int mode, int fd) {
-    char **paths = mx_strsplit(getenv("PATH"), ':');
+    char **paths = mx_strsplit(mx_get_var_val(SHELL, "PATH"), ':');
     bool retval = 1;
 
     if (paths) {
@@ -47,10 +49,10 @@ static bool search_exe(char *file, int mode, int fd) {
                     return 0;
                 }
             }
-        if (retval)
-            fprintf(stderr, "%s not found\n", file);
         mx_del_strarr(&paths);
     }
+    if (retval)
+        fprintf(stderr, "%s not found\n", file);
     return retval;
 }
 
@@ -81,6 +83,10 @@ int mx_which(char **args, int fd) {
     int mode = 0;
     int first_arg_index = parse_flags(args, &mode);
 
+    if (args[0] == NULL) {
+        fprintf(stderr, "usage: which [-as] program ...\n");
+        return 1;
+    }
     if (first_arg_index != -1)
         for (int i = first_arg_index; args[i]; i++)
             end_status = end_status | search_exe(args[i], mode, fd);

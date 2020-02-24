@@ -1,17 +1,17 @@
 #include "ush.h"
 
 static int check_on_flags(char *flag, char *newdir, t_map **map, int fd) {
-    if (strcmp(flag, "-P") == 0 || strcmp(flag, "-sP") == 0 ||
-    strcmp(flag, "-Ps") == 0)
+    if (!strcmp(flag, "-P") || !strcmp(flag, "-sP") || !strcmp(flag, "-Ps"))
         mx_cd_flags(flag, map, newdir);
-    else if (strcmp(flag, "-s") == 0)
+    else if (!strcmp(flag, "-s"))
         mx_cd_flags("-s", map, newdir);
-    else if (strcmp(flag, "-") == 0 && newdir == NULL)
+    else if (!strcmp(flag, "-") && newdir == NULL)
         mx_change_dir("~OLDPWD", map, fd);
-    else if ((strcmp(flag, "-") == 0 && newdir != NULL)
-            || (flag[0] == '-' && newdir != NULL))
-        fprintf(stderr, "cd: string not in pwd: %s\n", flag); 
-    else if (strcmp(flag, "/") == 0)
+    else if ((!strcmp(flag, "-") && newdir != NULL)
+             || (flag[0] == '-' && newdir != NULL)) {
+        fprintf(stderr, "cd: string not in pwd: %s\n", flag);
+    }
+    else if (!strcmp(flag, "/"))
         mx_change_dir(flag, map, 1);
     else
         return 0;
@@ -23,7 +23,7 @@ int mx_cd(char **split, int fd) {
 
     if (!mx_arr_size(split))
         mx_change_dir(NULL, map, fd);
-    else if (strcmp(split[0], "-P") == 0 || strcmp(split[0], "-s") == 0) {
+    else if (!strcmp(split[0], "-P") || !strcmp(split[0], "-s")) {
         if (chdir(split[1]) != 0) {
             mx_change_dir(split[1], map, fd);
             return 0;
@@ -31,9 +31,8 @@ int mx_cd(char **split, int fd) {
         else
             chdir("..");
     }
-    else if (check_on_flags(split[0], split[1], map, fd) == 0) {
+    else if (!check_on_flags(split[0], split[1], map, fd))
         mx_change_dir(split[0], map, fd);
-    }
     return 1;
 }
 
@@ -46,7 +45,7 @@ void mx_change_dir(char *newdir, t_map **map, int fd) {
         result = chdir(getenv("HOME"));
         newdir = getenv("HOME");
     }
-    else if (strcmp(newdir, "~OLDPWD") == 0) {
+    else if (!strcmp(newdir, "~OLDPWD")) {
         result = chdir(mx_get_map(map, "OLDPWD"));
         dprintf(fd, "%s\n", mx_get_map(map, "OLDPWD"));
     }
@@ -63,7 +62,7 @@ void mx_change_dir(char *newdir, t_map **map, int fd) {
 void mx_change_map(t_map **map, char *newdir) {
     char *tmp = mx_strnew(mx_strlen(mx_get_map(map, "PWD")));
     char *result_path;
-    
+
     if (strcmp(newdir, "~OLDPWD") != 0) {
         tmp = mx_strcpy(tmp, mx_get_map(map, "PWD"));
         result_path = mx_parse_path(tmp, newdir, map);

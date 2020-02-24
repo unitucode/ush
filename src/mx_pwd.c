@@ -1,6 +1,5 @@
 #include "ush.h"
 
-// parse_flags return 1 if any error cases, else 0
 static bool parse_flags(char **flags, bool *mode) {
     bool flag_stop = 0;
 
@@ -38,3 +37,4 @@ int mx_pwd(char **flags, int fd) {
     }
     return 1;
 }
+

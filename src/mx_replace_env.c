@@ -1,40 +1,19 @@
 #include "ush.h"
 
-static char *get_brace_sub(char *arg, unsigned int index, unsigned int *len);
-static char *get_spec_sub(char *arg, unsigned int index, unsigned int *len);
-static unsigned int get_len_spec(char *spec);
-static char *check_spec_char(char *arg, unsigned int *len, unsigned int var_len);
+static unsigned int get_len_spec(char *spec) {
+    unsigned int i = 1;
 
-char *mx_replace_env(char *arg, int *code) {
-    char *result = mx_strnew(ARG_MAX);
-    unsigned int len = 0;
-    char *env = NULL;
-    unsigned int index = 0;
-    unsigned int save = 0;
-    bool is_quotes = false;
-
-    for (; mx_get_char_index(&arg[index], '$') >= 0; index++) {
-        if (arg[index] == MX_D_QUOTES && !mx_isescape_char(arg, index))
-            is_quotes = !is_quotes;
-        if (!is_quotes)
-            mx_skip_quotes(arg, &index, MX_S_QUOTES);
-        mx_skip_quotes(arg, &index, MX_GRAVE_ACCENT);
-        mx_skip_expansion(arg, &index);
-        if (arg[index] == '$' && !mx_isescape_char(arg, index)) {
-            strncat(result, arg + save, index - save);
-            env = get_spec_sub(arg, index, &len);
-            if (!env) {
-                *code = 1;
-                return NULL;
-            }
-            strcat(result, env);
-            index += len;
-            save = index + 1;
-            mx_strdel(&env);
-        }
+    if (isalpha(spec[i]) || spec[i] == '_') {
+        i++;
+        while (isnumber(spec[i]) || isalpha(spec[i]) || spec[i] == '_')
+            i++;
     }
-    strcat(result, arg + save);
-    return result;
+    else if (isnumber(spec[i])) {
+        i++;
+        while (isnumber(spec[i]))
+            i++;
+    }
+    return i;
 }
 
 static char *check_spec_char(char *arg, unsigned int *len, unsigned int var_len) {
@@ -60,22 +39,19 @@ static char *get_brace_sub(char *arg, unsigned int index, unsigned int *len) {
     char *env = NULL;
 
     if ((env = check_spec_char(arg + index + 1, len, strlen(var)))) {
-        *len += 2;
-        mx_strdel(&var);
+        mx_inc_val_var(len, 2, var);
         return env;
     }
     if (mx_match(var, "^[0-9]*$")) {
-        *len = strlen(var) + 2;
-        mx_strdel(&var);
+        mx_inc_val_var(len, strlen(var) + 2, var);
         return strdup("");
     }
-    else if (!mx_match(var, "^[A-Za-z_]+[A-Za-z0-9_]*$") && strlen(var)) {
+    else if (!mx_match(var, MX_ENV_NAME) && strlen(var)) {
         mx_strdel(&var);
         return NULL;
     }
-    *len = strlen(var) + 2;
-    env = getenv(var);
-    mx_strdel(&var);
+    env = mx_get_var_val(SHELL, var);
+    mx_inc_val_var(len, strlen(var) + 2, var);
     return env ? strdup(env) : strdup("");
 }
 
@@ -83,8 +59,6 @@ static char *get_spec_sub(char *arg, unsigned int index, unsigned int *len) {
     char *var = NULL;
     char *env = NULL;
 
-    index++;
-    *len = 0;
     if ((env = check_spec_char(arg + index, len, 0)))
         return env;
     if (arg[index] == '{')
@@ -92,7 +66,7 @@ static char *get_spec_sub(char *arg, unsigned int index, unsigned int *len) {
     if (isalpha(arg[index]) || arg[index] == '_') {
         *len = get_len_spec(arg + index);
         var = strndup(arg + index, *len);
-        env = getenv(var);
+        env = mx_get_var_val(SHELL, var);
         *len = strlen(var);
         mx_strdel(&var);
         return env ? strdup(env) : strdup("");
@@ -104,18 +78,24 @@ static char *get_spec_sub(char *arg, unsigned int index, unsigned int *len) {
     return strndup(arg + index - 1, 1);
 }
 
-static unsigned int get_len_spec(char *spec) {
-    unsigned int i = 1;
+char *mx_replace_env(char *arg, int *code) {
+    char *result = mx_strnew(ARG_MAX);
+    unsigned int len = 0;
+    unsigned int index[2] = {0, 0};
+    bool is_quotes = false;
 
-    if (isalpha(spec[i]) || spec[i] == '_') {
-        i++;
-        while (isnumber(spec[i]) || isalpha(spec[i]) || spec[i] == '_')
-            i++;
+    for (; mx_get_char_index(&arg[index[0]], '$') >= 0; index[0]++) {
+        mx_skip_exps_quots(arg, &index[0], &is_quotes);
+        if (arg[index[0]] == '$' && !mx_isescape_char(arg, index[0])) {
+            strncat(result, arg + index[1], index[0] - index[1]);
+            len = 0;
+            if (!mx_replace_env_var(result, get_spec_sub(arg, index[0] + 1, 
+                                    &len), index, len)) {
+                *code = 1;
+                return NULL;
+            }
+        }
     }
-    else if (isnumber(spec[i])) {
-        i++;
-        while (isnumber(spec[i]))
-            i++;
-    }
-    return i;
+    strcat(result, arg + index[1]);
+    return result;
 }

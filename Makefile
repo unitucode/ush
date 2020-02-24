@@ -8,6 +8,11 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_replace_funcs.c \
+	mx_continue_process.c \
+	mx_jobs.c \
+	mx_del_node_list.c \
+	mx_color.c \
 	mx_check_chars.c \
 	mx_replace_substitution.c \
 	mx_split_command.c \
@@ -47,7 +52,6 @@ SRC = mx_ush.c \
 	mx_get_var_val.c \
 	mx_check_escape.c \
 	mx_isescape_char.c \
-	mx_replace_special.c \
 	mx_replace_escape.c \
 	mx_replace_env.c \
 	mx_get_name.c \
@@ -58,6 +62,7 @@ SRC = mx_ush.c \
 	mx_cd.c \
 	mx_issubstitution.c \
 	mx_exec.c \
+	mx_env_exec.c \
 	mx_create_process.c \
 	mx_handle_substitution.c \
 	mx_remove_subchar.c \
@@ -71,20 +76,26 @@ SRC = mx_ush.c \
 	mx_source.c \
 	mx_put_pwd.c \
 	mx_env_copy.c \
-	mx_processes_on_pause.c \
-	mx_fg.c \
 	mx_exec_command.c \
-	mx_is_our.c \
+	mx_is_builtin.c \
 	mx_find_command.c \
 	mx_del_process.c \
 	mx_putenv.c \
 	mx_clearenv.c \
 	mx_env_fill.c \
 	mx_print_env_error.c \
+	mx_env_parse_vars.c \
+	mx_env_parse_flags.c \
 	mx_get_list_procs.c \
 	mx_replace_sub.c \
 	mx_exit.c \
-	# mx_env.c \
+	mx_env.c \
+	mx_fg.c \
+	mx_increment_shlvl.c \
+	mx_init_map_vars.c \
+	mx_init_signals.c \
+	mx_exec_copy_argv.c \
+	# mx_replace_special.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

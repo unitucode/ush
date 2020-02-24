@@ -1,10 +1,10 @@
 #include "ush.h"
 
 static bool check_link_full_path(t_map **map, char *newdir) {
-    char *path = mx_strnew(mx_strlen(mx_get_map(map, "PWD")) +
-            1 + mx_strlen(newdir));
+    char *path = mx_strnew(mx_strlen(mx_get_map(map, "PWD"))
+                           + 1 + mx_strlen(newdir));
     char *real_path;
-    
+
     path = strcpy(path, mx_get_map(map, "PWD"));
     path = strcat(path, "/");
     path = strcat(path, newdir);
@@ -65,7 +65,7 @@ static void flag_p_full_path(t_map **map, char *newdir) {
         char *pwd = strdup(mx_get_map(map, "PWD"));
         char *path = mx_strnew(mx_strlen(pwd) + 1 + mx_strlen(newdir));
         char *real_path;
-        
+
         path = strcpy(path, pwd);
         path = strcat(path, "/");
         path = strcat(path, newdir);
@@ -86,7 +86,7 @@ void mx_cd_flags(char *flag, t_map **map, char *newdir) {
     if (strcmp(flag, "-Ps") == 0 || strcmp(flag, "-sP") == 0) {
         if (cd_flag_s(map, newdir) == 1)
             flag = "-P";
-            newdir = ".";
+        newdir = ".";
     }
     if (strcmp(flag, "-P") == 0) {
         if (newdir == NULL)
@@ -99,7 +99,7 @@ void mx_cd_flags(char *flag, t_map **map, char *newdir) {
         }
         else
             flag_p_full_path(map, newdir); 
-        }
+    }
     else if (strcmp(flag, "-s") == 0)
         cd_flag_s(map, newdir);
 }

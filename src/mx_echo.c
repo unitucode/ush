@@ -1,30 +1,46 @@
 #include "ush.h"
 
-static char *replace_escape(char *arg, bool *is_nl);
-static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv);
-static char *replace_octal(char *arg);
-
-int mx_echo(char **args, int fd) {
-    bool is_nl = true;
-    bool is_e = false;
+static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
     unsigned int index = 0;
-    char *output = NULL;
 
-    index = set_flags(&is_nl, &is_e, args);
-    while (args[index]) {
-        if (is_e)
-            output = replace_escape(args[index], &is_nl);
+    while (argv[index]) {
+        if (mx_match(argv[index], "^-[nEe]+$")) {
+            for (unsigned int i = 0; i < strlen(argv[index]); i++) {
+                if (argv[index][i] == 'E')
+                    *is_e = false;
+                if (argv[index][i] == 'e')
+                    *is_e = true;
+                if (argv[index][i] == 'n')
+                    *is_nl = false;
+            }
+        }
         else
-            output = strdup(args[index]);
-        dprintf(fd, "%s", output);
-        mx_strdel(&output);
+            break;
         index++;
-        if (args[index])
-            dprintf(fd, " ");
     }
-    if (is_nl)
-        dprintf(fd, "\n");
-    return 0;
+    return index;
+}
+
+static char *replace_octal(char *arg) {
+    char *result = mx_strnew(strlen(arg));
+    int index = 0;
+    int num_size = 0;
+    char *octal_num = NULL;
+    char *save = arg;
+
+    while ((index = mx_get_substr_index(arg, "\\0")) >= 0) {
+        strncat(result, arg, index);
+        while (arg[++index] >= '0' && arg[index] <= '7' && arg[index])
+            num_size++;
+        octal_num = strndup(arg + index - num_size, num_size);
+        result[strlen(result)] = (char)strtol(octal_num, NULL, 8);
+        mx_strdel(&octal_num);
+        arg += index;
+        num_size = 0;
+    }
+    strcat(result, arg);
+    mx_strdel(&save);
+    return result;
 }
 
 static char *replace_escape(char *arg, bool *is_nl) {
@@ -51,49 +67,25 @@ static char *replace_escape(char *arg, bool *is_nl) {
     return result;
 }
 
-static char *replace_octal(char *arg) {
-    char *result = mx_strnew(strlen(arg));
-    int index = 0;
-    int num_size = 0;
-    char *octal_num = NULL;
-    char *save = arg;
-
-    while ((index = mx_get_substr_index(arg, "\\0")) >= 0) {
-        strncat(result, arg, index);
-        index += 1;
-        while (arg[index] >= '0' && arg[index] <= '7' && arg[index]) {
-            num_size++;
-            index++;
-        }
-        octal_num = strndup(arg + index - num_size, num_size);
-        result[strlen(result)] = (char)strtol(octal_num, NULL, 8);
-        mx_strdel(&octal_num);
-        arg += index;
-        num_size = 0;
-    }
-    strcat(result, arg);
-    mx_strdel(&save);
-    return result;
-}
-
-static unsigned int set_flags(bool *is_nl, bool *is_e, char **argv) {
+int mx_echo(char **args, int fd) {
+    bool is_nl = true;
+    bool is_e = false;
     unsigned int index = 0;
+    char *output = NULL;
 
-    while (argv[index]) {
-        if (mx_match(argv[index], "^-[nEe]+$")) {
-            for (unsigned int i = 0; i < strlen(argv[index]); i++) {
-                if (argv[index][i] == 'E')
-                    *is_e = false;
-                if (argv[index][i] == 'e')
-                    *is_e = true;
-                if (argv[index][i] == 'n')
-                    *is_nl = false;
-            }
-        }
-        else {
-            break;
-        }
+    index = set_flags(&is_nl, &is_e, args);
+    while (args[index]) {
+        if (is_e)
+            output = replace_escape(args[index], &is_nl);
+        else
+            output = strdup(args[index]);
+        dprintf(fd, "%s", output);
+        mx_strdel(&output);
         index++;
+        if (args[index])
+            dprintf(fd, " ");
     }
-    return index;
+    if (is_nl)
+        dprintf(fd, "\n");
+    return 0;
 }

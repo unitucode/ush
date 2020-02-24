@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
+#include <errno.h>
 #include <string.h>
 #include <curses.h>
 #include <limits.h>
@@ -13,9 +14,10 @@
 #include <regex.h>
 #include <stdbool.h>
 #include <sys/stat.h>
-#include <sys/ioctl.h>
 #include <spawn.h>
+#include <libgen.h>
 #include <wordexp.h>
+#include <glob.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
@@ -38,26 +40,38 @@
 #define MX_FORBIDDEN_CHARS "|&><"
 #define MX_HISTORY_SIZE 20
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
+#define MX_ENV_NAME "^[A-Za-z_]+[A-Za-z0-9_]*$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"
 #define MX_ENV_FLAG_I "^-(i*|i+.*|-.+)$"
+#define MX_ENV_VAR "^.+=.*$"
 #define MX_SPEC_ENV "$?#*@_0"
 
-#define MX_ISREG(m) (((m)&S_IFMT) == S_IFREG)
+#define MX_WIFSTOPPED(m) (_WSTATUS(m) == _WSTOPPED && WSTOPSIG(m) != 0x13)
+#define MX_ISREG(m) (((m) & S_IFMT) == S_IFREG)
+#define MX_WAIT_TO_INT(w) (*(int *) & (w))
+#define MX_WEXITSTATUS(x) ((MX_WAIT_TO_INT(x) >> 8) & 0x000000ff)
 
-typedef enum e_var_list {
+typedef enum e_var_list
+{
     SHELL,
     EXP
-} t_var_list;
+}            t_var_list;
 
-typedef struct s_process {
+typedef struct s_process
+{
+    int fd;
+    int pos;
+    char *cmd;
     int status;
     posix_spawn_file_actions_t actions;
     posix_spawnattr_t attrs;
     pid_t pid;
+    pid_t gpid;
     sigset_t signals;
-} t_process;
+}              t_process;
 
-typedef struct s_prompt {
+typedef struct s_prompt
+{
     unsigned int index;
     unsigned int cursor_index;
     bool end;
@@ -67,7 +81,7 @@ typedef struct s_prompt {
     char buff[5];
     char command[ARG_MAX + 1];
     char tmp_command[ARG_MAX + 1];
-} t_prompt;
+}              t_prompt;
 
 void mx_get_input(t_prompt * prompt, int *code);
 struct termios *mx_get_tty();
@@ -91,7 +105,6 @@ void mx_print_sh_error(char *process, char *message);
 int mx_preinterpretate(char *command);
 void mx_handle_command(char *command, int *code);
 t_list **mx_get_var_list(t_var_list key);
-void mx_init_var_lists();
 void mx_print_var_list(t_var_list key, int fd);
 void mx_var_list_insert(t_var_list key, char *arg);
 char *mx_get_var_info(char *arg, bool info_type);
@@ -107,6 +120,8 @@ bool mx_check_semicolons(char **commands, int *code);
 bool mx_check_brackets(char *command);
 bool mx_issubstitution(char *arg);
 int mx_exec(t_process *process, char *filename, char **argv, char **env);
+int mx_env_exec(t_process *process, char *filename, char **argv, char **env);
+char **mx_exec_copy_argv(char **argv);
 t_process *mx_create_process(int fd);
 void mx_del_process(t_process **process);
 t_list *mx_handle_substitution(t_list *arguments);
@@ -124,20 +139,38 @@ char *mx_replace_substitution(char *arg, int *code);
 bool mx_get_sub(char *arg, char *sub, int *code);
 t_process *mx_get_process_by_id(int id);
 bool mx_check_chars(char *command);
+void mx_del_node_list(t_list **list, t_process **process);
+void mx_enable_signals(t_process *process);
+void mx_disable_signals(t_process *process);
+void mx_continue_process(t_process *process, t_list **all_processes, int fd);
+void mx_skip_exps_quots(char *arg, unsigned int *index, bool *is_quotes);
+bool mx_replace_env_var(char *result, char *env, unsigned int *index,
+                        unsigned int len);
+void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
+void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
+void mx_kill_process();
+void mx_print_color(int color);
+void mx_init();
+void mx_init_var_lists();
+void mx_init_map_vars();
+void mx_init_signals();
+void mx_deinit();
 
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
-bool mx_is_our_command(char *command);
-bool mx_is_our_builtin(char *command);
+bool mx_is_builtin(char *command);
+void mx_increment_shlvl();
 void mx_change_dir(char *newdir, t_map **map, int fd);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
 void mx_put_pwd(char *pwd, char *oldpwd);
 char **mx_env_copy();
-int mx_print_env_error(char option, bool error);
+int mx_print_env_error(char option, char *err_arg, int error);
 void mx_putenv(char *var);
 void mx_clearenv();
 void mx_env_fill(char **src);
+void mx_env_parse_vars(char **argv, char **path, int *idx);
+int mx_env_parse_flags(char **argv, char **path, int *idx);
 
 t_list **mx_get_list_procs();
 void mx_pop_process(int id);
@@ -146,6 +179,8 @@ pid_t mx_get_process_pid_by_id(int id);
 
 void outputList();
 
+int mx_color(char **args);
+int mx_jobs(char **args, int fd);
 void mx_exit(char **args);
 int mx_true();
 int mx_false();

@@ -15,7 +15,8 @@ bool mx_check_brackets(char *c) {
             stack[top] = c[i];
         }
         if ((stack[top] == ')' && (top - 1 >= 0 && stack[top - 1] == '('))
-            || (stack[top] == '}' && (top - 1 >= 0 && stack[top - 1] == '{'))) {
+            || (stack[top] == '}' && (top - 1 >= 0
+            && stack[top - 1] == '{'))) {
             top = top - 2;
         }
     }
