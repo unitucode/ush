@@ -29,7 +29,7 @@ static char *collect_path(char **split_path) {
     for (int i = 0; split_path[i]; i++)
         if (strcmp(split_path[i], "") != 0) {
             path = strcat(path, split_path[i]);
-            if (split_path[i + 1] != NULL && strcmp(split_path[i + 1], "") != 0)
+            if (split_path[i + 1] != NULL)
                 path = strcat(path, "/");
         }
     return path;
