@@ -1,6 +1,6 @@
 #include "ush.h"
 
-char *mx_str_prompt() {
+char *mx_str_prompt(void) {
     char *prompt = mx_get_var_val(SHELL, "MX_PROMPT");
 
     mx_print_color(-1);

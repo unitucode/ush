@@ -4,7 +4,7 @@ static int count_size_of_path(char **split_path) {
     int size = 0;
 
     for (int i = 0; split_path[i]; i++) {
-        if (!strcmp(split_path[i], "null0"))
+        if (!strcmp(split_path[i], ""))
             continue;
         for (int j = 0; split_path[i][j]; j++)
             size++;
@@ -19,7 +19,7 @@ static char *collect_path(char **split_path) {
     bool null_path = true;
 
     for (int i = 0; split_path[i]; i++)
-        if (strcmp(split_path[i], "null0") != 0)
+        if (strcmp(split_path[i], "") != 0)
             null_path = false;
     if (null_path) {
         mx_strdel(&path);
@@ -27,7 +27,7 @@ static char *collect_path(char **split_path) {
     }
     path[0] = '/';
     for (int i = 0; split_path[i]; i++)
-        if (strcmp(split_path[i], "null0") != 0) {
+        if (strcmp(split_path[i], "") != 0) {
             path = strcat(path, split_path[i]);
             path = strcat(path, "/");
         }
@@ -41,7 +41,7 @@ static char *check_path(char *path) {
     for (int i = 0; split_path[i]; i++) {
         if (!strcmp(split_path[i], ".")) {
             mx_strdel(&split_path[i]);
-            split_path[i] = strdup("null0");
+            split_path[i] = strdup("");
         }
         if (!strcmp(split_path[i], ".."))
             mx_make_null_index(split_path, i);
@@ -88,7 +88,7 @@ char *mx_parse_path(char *path, char *newdir, t_map **map) {
     temp = make_bad_path(path, newdir);
     path = check_path(temp);
     mx_strdel(&temp);
-    temp = mx_strndup(path, mx_strlen(path) - 1);
+    temp = mx_strndup(path, mx_strlen(path));
     mx_strdel(&path);
     return temp;
 }

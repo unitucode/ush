@@ -22,7 +22,7 @@ int mx_env(char **argv, int fd) {
     char *filename = NULL;
     char *path = NULL;
     int retval = 0;
-    int i = 0;  // index of executable bin in argv
+    int i = 0;
 
     if (!(retval = mx_env_parse_flags(argv, &path, &i))) {
         mx_env_parse_vars(argv, &path, &i);

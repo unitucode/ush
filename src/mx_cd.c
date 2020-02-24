@@ -23,14 +23,6 @@ int mx_cd(char **split, int fd) {
 
     if (!mx_arr_size(split))
         mx_change_dir(NULL, map, fd);
-    else if (!strcmp(split[0], "-P") || !strcmp(split[0], "-s")) {
-        if (chdir(split[1]) != 0) {
-            mx_change_dir(split[1], map, fd);
-            return 0;
-        }
-        else
-            chdir("..");
-    }
     else if (!check_on_flags(split[0], split[1], map, fd))
         mx_change_dir(split[0], map, fd);
     return 1;

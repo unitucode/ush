@@ -1,6 +1,6 @@
 #include "ush.h"
 
-void mx_increment_shlvl() {
+void mx_increment_shlvl(void) {
     int new_lvl = 1;
     char *curr_lvl = mx_get_var_val(SHELL, "SHLVL");
     char shlvl[NAME_MAX];

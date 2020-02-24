@@ -96,8 +96,8 @@ SRC = mx_ush.c \
 	mx_init_map_vars.c \
 	mx_init_signals.c \
 	mx_exec_copy_argv.c \
+	mx_check_dir_exists.c \
 	mx_set.c \
-	# mx_replace_special.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
