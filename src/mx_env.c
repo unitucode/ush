@@ -3,9 +3,12 @@
 static void env_deinit(char ***env, char **path, char **filename) {
     mx_clearenv();
     mx_env_fill(*env);
-    mx_del_strarr(env);
-    mx_strdel(path);
-    mx_strdel(filename);
+    if (*env && *env[0])
+        mx_del_strarr(env);
+    if (*path)
+        mx_strdel(path);
+    if (*filename)
+        mx_strdel(filename);
 }
 
 static int exec_process(char *filename, char **argv, int fd) {
@@ -23,7 +26,6 @@ int mx_env(char **argv, int fd) {
     char *path = NULL;
     int retval = 0;
     int i = 0;
-
     if (!(retval = mx_env_parse_flags(argv, &path, &i))) {
         mx_env_parse_vars(argv, &path, &i);
         if (argv[i] == NULL)

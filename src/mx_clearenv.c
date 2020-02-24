@@ -11,6 +11,7 @@ void mx_clearenv(void) {
             mx_get_name(vars_to_del[i], &delname);
             unsetenv(delname);
         }
+        if (vars_to_del[0])
         mx_del_strarr(&vars_to_del);
         if (delname != NULL)
             mx_strdel(&delname);

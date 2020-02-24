@@ -18,8 +18,8 @@ void mx_var_list_delete(t_var_list key, char *del_name) {
     t_list *prev = NULL;
     char *curr_name = NULL;
 
-    mx_get_name(current->data, &curr_name);
     while (current) {
+        mx_get_name(current->data, &curr_name);
         if (strcmp(del_name, curr_name) == 0) {
             pop_curr_node(list, &prev, &current);
             break;
