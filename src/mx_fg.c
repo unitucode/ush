@@ -88,5 +88,9 @@ int mx_fg(char **args, int fd) {
         tcsetpgrp(STDOUT_FILENO, getpgrp());
         mx_enable_canon();
     }
+    else {
+        fprintf(stderr, "%s", *args ? "" : "fg: no current jobs\n");
+        return 1;   
+    }
     return f_process->status;
 }

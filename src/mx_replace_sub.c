@@ -8,7 +8,7 @@ static void append(char **result, char *buf) {
     mx_strdel(&tmp_str);
 }
 
-static char *get_output_fd(int fd) {
+char *mx_get_output_fd(int fd) {
     size_t bytes = 0;
     char *output = NULL;
     char buf[128];
@@ -27,7 +27,7 @@ static char *get_output(char **arguments, unsigned int len) {
     pipe(fds);
     mx_exec_command(arguments, fds[1]);
     close(fds[1]);
-    output = get_output_fd(fds[0]);
+    output = mx_get_output_fd(fds[0]);
     close(fds[0]);
     if (output) {
         save = output;

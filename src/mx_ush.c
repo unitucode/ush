@@ -20,6 +20,27 @@ void mx_deinit(void) {
     mx_del_map(map);
 }
 
+// static int check_output() {
+//     char *output = NULL;
+//     char **commands = NULL;
+//     int exit_code = 0;
+
+//     if ((fseek(stdin, 0, SEEK_END), ftell(stdin)) > 0) {
+//         rewind(stdin);
+//         output = mx_get_output_fd(STDIN_FILENO);
+//     }
+//     else
+//         return 0;
+//     commands = mx_strsplit(output, '\n');
+//     for (unsigned int i = 0; commands[i]; i++) {
+//         printf("\r\n");
+//         mx_handle_command(commands[i], &exit_code);
+//     }
+//     mx_strdel(&output);
+//     mx_del_strarr(&commands);
+//     return exit_code;
+// }
+
 static void main_cycle(void) {
     int result = 0;
     t_prompt *prompt = malloc(sizeof(t_prompt));
@@ -35,12 +56,17 @@ static void main_cycle(void) {
 }
 
 int main(int argc, char **argv) {
+    // int exit_code = 0;
     if (argc > 1) {
         fprintf(stderr, "%s: illegal option -- %s\n", MX_SHELL_NAME, argv[1]);
         fprintf(stderr, "usage: %s ./ush\n", MX_SHELL_NAME);
         return 1;
     }
     mx_init();
+    // if ((exit_code = check_output())) {
+    //     mx_deinit();
+    //     exit(exit_code);
+    // }
     main_cycle();
     mx_deinit();
     system("leaks -q ush");
