@@ -56,7 +56,7 @@ static int cd_flag_s(t_map **map, char *newdir) {
     return 1;
 }
 
-static void flag_p_full_path(t_map **map, char *newdir) {
+void mx_flag_p_full_path(t_map **map, char *newdir) {
     if (check_link_full_path(map, newdir)) {
         char *pwd = strdup(mx_get_map(map, "PWD"));
         char *path = mx_strnew(mx_strlen(pwd) + 1 + mx_strlen(newdir));
@@ -86,17 +86,7 @@ void mx_cd_flags(char *flag, t_map **map, char *newdir) {
         newdir = ".";
     }
     if (strcmp(flag, "-P") == 0) {
-        if (newdir == NULL)
-            mx_change_dir(newdir, map, 1);
-        else if (newdir[0] == '/') {
-            if (strcmp(newdir, realpath(newdir, NULL)) == 0)
-                mx_change_dir(newdir, map, 1);
-            else
-                mx_change_dir(realpath(newdir, NULL), map, 1);
-        }
-        else {
-            flag_p_full_path(map, newdir);
-        }
+        mx_flag_p_slash(newdir, map);
     }
     else if (strcmp(flag, "-s") == 0)
         cd_flag_s(map, newdir);
