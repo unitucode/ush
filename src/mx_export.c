@@ -27,8 +27,8 @@ static void export_var_to_lists(char *arg) {
     char *var_name = NULL;
 
     mx_get_name(arg, &arg_name);
-    mx_get_name(current->data, &var_name);
     while (current) {
+        mx_get_name(current->data, &var_name);
         if (strcmp(arg_name, var_name) == 0) {
             mx_var_list_insert(EXP, current->data);
             mx_putenv(current->data);

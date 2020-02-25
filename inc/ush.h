@@ -109,6 +109,11 @@ void mx_handle_command(char *command, int *code);
 t_list **mx_get_var_list(t_var_list key);
 void mx_print_var_list(t_var_list key, int fd);
 void mx_var_list_insert(t_var_list key, char *arg);
+void mx_var_list_push_front(t_list **node, t_list ***list,
+                       char **name1, char **name2);
+void mx_var_list_replace_var(t_list **list, t_list *node);
+void mx_var_list_push_mid(t_list **list, t_list **node,
+                     char *arg_name, char **var_name);
 char *mx_get_var_info(char *arg, bool info_type);
 char *mx_get_var_val(t_var_list key, char *var);
 bool mx_check_escape(char *command);

@@ -7,7 +7,8 @@ static bool check_dir(char *path, char *file) {
 
     if (dir) {
         while ((entry = readdir(dir)) != NULL)
-            if (!strcmp(entry->d_name, file))
+            if (!strcmp(entry->d_name, file) &&
+                strcmp(entry->d_name, ".") && strcmp(entry->d_name, ".."))
                 retval = 1;
         closedir(dir);
     }
