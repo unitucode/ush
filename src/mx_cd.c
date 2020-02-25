@@ -34,8 +34,8 @@ void mx_change_dir(char *newdir, t_map **map, int fd) {
     int result;
 
     if (newdir == NULL) {
-        result = chdir(getenv("HOME"));
-        newdir = getenv("HOME");
+        mx_home(map);
+        return;
     }
     else if (!strcmp(newdir, "~OLDPWD")) {
         mx_oldpwd(newdir, map, fd);
