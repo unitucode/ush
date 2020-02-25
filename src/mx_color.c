@@ -40,5 +40,8 @@ void mx_print_color(int color) {
     else if (st_color != -1) {
         printf("\x1b[0;3%dm", st_color);
     }
+    else {
+        printf("\x1b[0m");
+    }
 }
 
