@@ -100,6 +100,8 @@ SRC = mx_ush.c \
 	mx_check_dir_exists.c \
 	mx_set.c \
 	mx_var_list_insert_func.c \
+	mx_check_s_slash.c \
+	mx_oldpwd.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

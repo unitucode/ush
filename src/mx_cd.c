@@ -38,14 +38,14 @@ void mx_change_dir(char *newdir, t_map **map, int fd) {
         newdir = getenv("HOME");
     }
     else if (!strcmp(newdir, "~OLDPWD")) {
-        result = chdir(mx_get_map(map, "OLDPWD"));
-        dprintf(fd, "%s\n", mx_get_map(map, "OLDPWD"));
+        mx_oldpwd(newdir, map, fd);
+        return;
     }
     else
         result = chdir(newdir);
     if (result < 0) {
-        fprintf(stderr, "cd: %s", newdir);
-        perror(" ");
+        fprintf(stderr, "cd: %s: ", newdir);
+        perror("");
     }
     else
         mx_change_map(map, newdir);

@@ -29,8 +29,12 @@ int mx_pwd(char **flags, int fd) {
     char *pwd = mx_get_map(map, "PWD");
 
     if (!parse_flags(flags, &mode)) {
-        if (mode)
-            dprintf(fd, "%s\n", realpath(pwd, NULL));
+        if (mode) {
+            char *rpath = realpath(pwd, NULL);
+
+            dprintf(fd, "%s\n", rpath);
+            mx_strdel(&rpath);
+        }
         else
             dprintf(fd, "%s\n", pwd);
         return 0;
