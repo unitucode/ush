@@ -3,6 +3,11 @@
 static void get_names(char *var1, char **name1, char *var2, char **name2) {
     mx_get_name(var1, name1);
     mx_get_name(var2, name2);
+    if (!strcmp(*name2, "OLDPWD")) {
+        t_map **map = mx_get_lenv();
+
+        mx_put_map(map, "OLDPWD", mx_get_var_info(var2, 1));
+    }
 }
 
 static void change_var_value(t_list **list, t_list *node,
