@@ -109,7 +109,7 @@ INCS = $(addprefix $(INCD)/, $(INC))
 SRCS = $(addprefix $(SRCD)/, $(SRC))
 OBJS = $(addprefix $(OBJD)/, $(SRC:%.c=%.o))
 	
-CFLAGS = -std=c99 -g $(addprefix -W, all extra error pedantic)
+CFLAGS = -std=c11 -g $(addprefix -W, all extra error pedantic)
 CC = clang
 
 all: $(NAME)

@@ -37,7 +37,7 @@
 #define MX_GRAVE_ACCENT '`'
 #define MX_ESCAPE_CHARS "\\\"\'ntva$` "
 #define MX_FORBIDDEN_CHARS "|&><"
-#define MX_HISTORY_SIZE 20
+#define MX_HISTORY_SIZE 200
 #define MX_EXPORT_ARG "^[A-Za-z_]+[A-Za-z0-9_]*(=.*)?$"
 #define MX_ENV_NAME "^[A-Za-z_]+[A-Za-z0-9_]*$"
 #define MX_UNSET_ARG "^([0-9]+|[A-Za-z_]+[0-9A-Za-z_]*)$"

@@ -24,7 +24,7 @@ bool check_stdin(int *exit_code) {
     while ((linelen = getline(&buff, &linecap, stdin)) > 0) {
         buff[linelen] = '\0';
         if (buff[linelen - 1] == '\n')
-            buff[linelen - 1] = '\n';
+            buff[linelen - 1] = '\0';
         mx_handle_command(buff, exit_code);
     }
     mx_strdel(&buff);
