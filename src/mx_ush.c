@@ -7,7 +7,7 @@ void mx_init(void) {
     mx_increment_shlvl();
     mx_var_list_insert(SHELL,
                        "PATH=/bin:/usr/bin:/usr/local/bin:/usr/sbin:/sbin");
-    // mx_init_signals();
+    mx_init_signals();
     tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);
     mx_enable_canon();
