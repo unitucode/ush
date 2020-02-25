@@ -85,14 +85,14 @@ typedef struct s_prompt
     char tmp_command[ARG_MAX + 1];
 }              t_prompt;
 
-void mx_get_input(t_prompt * prompt, int *code);
+void mx_get_input(t_prompt * prompt, int fd, int *code);
 struct termios *mx_get_tty(void);
 void mx_enable_canon(void);
 void mx_disable_canon(void);
 bool mx_match(char *src, char *regex);
 void mx_print_env(int fd);
 bool mx_is_flag_stop(char *flag);
-void mx_backspace(unsigned int times);
+void mx_backspace(unsigned int times, int fd);
 void mx_handle_print_char(t_prompt *prompt);
 bool mx_handle_history(t_prompt *prompt);
 void mx_update_history(t_prompt *prompt);
@@ -152,6 +152,8 @@ void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
 void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
 char *mx_get_invalid_sub(char **arg, char **result, char **sub);
 void mx_kill_process(void);
+void mx_exec_fork(char **arguments, int fd);
+bool check_stdin(int *exit_code);
 char *mx_get_output_fd(int fd);
 char *mx_check_user_file(char *tmp_name);
 bool mx_check_user(char *user_name);

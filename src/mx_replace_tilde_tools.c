@@ -41,4 +41,3 @@ char *mx_check_user_file(char *tmp_name) {
     mx_strdel(&pass_file);
     return NULL;
 }
-

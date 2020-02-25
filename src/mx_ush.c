@@ -7,10 +7,28 @@ void mx_init(void) {
     mx_increment_shlvl();
     mx_var_list_insert(SHELL,
                        "PATH=/bin:/usr/bin:/usr/local/bin:/usr/sbin:/sbin");
-    // mx_init_signals();
+    mx_init_signals();
     tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);
     mx_enable_canon();
+}
+
+bool check_stdin(int *exit_code) {
+    char *buff = NULL;
+    size_t linecap = 0;
+    ssize_t linelen = 0;
+
+    if (isatty(STDIN_FILENO))
+        return false;
+    buff = mx_strnew(ARG_MAX + 1);
+    while ((linelen = getline(&buff, &linecap, stdin)) > 0) {
+        buff[linelen] = '\0';
+        if (buff[linelen - 1] == '\n')
+            buff[linelen - 1] = '\n';
+        mx_handle_command(buff, exit_code);
+    }
+    mx_strdel(&buff);
+    return true;
 }
 
 void mx_deinit(void) {
@@ -20,53 +38,38 @@ void mx_deinit(void) {
     mx_del_map(map);
 }
 
-// static int check_output() {
-//     char *output = NULL;
-//     char **commands = NULL;
-//     int exit_code = 0;
-
-//     if ((fseek(stdin, 0, SEEK_END), ftell(stdin)) > 0) {
-//         rewind(stdin);
-//         output = mx_get_output_fd(STDIN_FILENO);
-//     }
-//     else
-//         return 0;
-//     commands = mx_strsplit(output, '\n');
-//     for (unsigned int i = 0; commands[i]; i++) {
-//         printf("\r\n");
-//         mx_handle_command(commands[i], &exit_code);
-//     }
-//     mx_strdel(&output);
-//     mx_del_strarr(&commands);
-//     return exit_code;
-// }
-
 static void main_cycle(void) {
     int result = 0;
     t_prompt *prompt = malloc(sizeof(t_prompt));
     extern char **environ;
+    int fd = isatty(1) ? 1 : 2;
+    if (!isatty(1) && !isatty(2))
+        fd = open("/dev/null", O_RDONLY);
 
     while (result != -1) {
-        mx_get_input(prompt, &result);
-        printf("\r\n");
+        mx_get_input(prompt, fd, &result);
+        dprintf(fd, "\r\n");
         mx_handle_command(prompt->command, &result);
     }
+    if (fd != 1 && fd != 2)
+        close(fd);
     mx_d_del_list(&prompt->history_head);
     free(prompt);
 }
 
 int main(int argc, char **argv) {
-    // int exit_code = 0;
+    int exit_code = 0;
+
     if (argc > 1) {
         fprintf(stderr, "%s: illegal option -- %s\n", MX_SHELL_NAME, argv[1]);
         fprintf(stderr, "usage: %s ./ush\n", MX_SHELL_NAME);
         return 1;
     }
     mx_init();
-    // if ((exit_code = check_output())) {
-    //     mx_deinit();
-    //     exit(exit_code);
-    // }
+    if (check_stdin(&exit_code)) {
+        mx_deinit();
+        exit(exit_code);
+    }
     main_cycle();
     mx_deinit();
     system("leaks -q ush");

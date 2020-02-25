@@ -8,6 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_exec_fork.c \
 	mx_replace_tilde_tools.c \
 	mx_replace_funcs.c \
 	mx_continue_process.c \

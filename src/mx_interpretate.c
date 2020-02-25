@@ -51,7 +51,9 @@ char **mx_interpretate(char *command, int *code) {
         fprintf(stderr, "%s: unmatched quote\n", MX_SHELL_NAME);
         return NULL;
     }
-    if (!strlen(command))
+    if (!strlen(command)) {
+        mx_strdel(&command);
         return NULL;
+    }
     return get_result(command);
 }
