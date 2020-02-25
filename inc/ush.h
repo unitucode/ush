@@ -187,6 +187,7 @@ void mx_env_parse_vars(char **argv, char **path, int *idx);
 int mx_env_parse_flags(char **argv, char **path, int *idx);
 
 void mx_check_s_slash(char *newdir, t_map **map);
+void mx_oldpwd(char *newdir, t_map **map, int fd);
 
 t_list **mx_get_list_procs(void);
 void mx_pop_process(int id);
