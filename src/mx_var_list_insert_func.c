@@ -1,7 +1,7 @@
 #include "ush.h"
 
 void mx_var_list_push_front(t_list **node, t_list ***list,
-                       char **name1, char **name2) {
+                            char **name1, char **name2) {
     (*node)->next = (**list);
     (**list) = *node;
     mx_delete_names(name1, name2, NULL);
@@ -29,7 +29,7 @@ static void shift_nods(t_list **current, t_list **prev, t_list **node) {
 }
 
 void mx_var_list_push_mid(t_list **list, t_list **node,
-                     char *arg_name, char **var_name) {
+                          char *arg_name, char **var_name) {
     t_list *current = *list;
     t_list *prev = NULL;
 
