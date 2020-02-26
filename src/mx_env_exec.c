@@ -39,7 +39,7 @@ static void add_process(t_process *process) {
         process->pos = ((t_process*)tmp->data)->pos + 1;
     else
         process->pos = 1;
-    printf("[%d]    %d suspended  %s\n", process->pos, process->pid, 
+    printf("[%d]    %d suspended  %s\n", process->pos, process->pid,
            process->cmd);
 }
 
