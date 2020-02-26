@@ -11,7 +11,7 @@ static void copy_environ(char **copy, char **environ) {
 char **mx_env_copy(void) {
     extern char **environ;
     char **env_copy = NULL;
-    int len;
+    int len = 0;
 
     while (environ[len]) {
         len++;

@@ -2,7 +2,7 @@
 
 void mx_exit(char **args) {
     int code = 0;
-    system("leaks -q ush");
+
     mx_deinit();
     if (!*args) {
         exit(code);
