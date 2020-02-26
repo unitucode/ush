@@ -13,7 +13,8 @@ char **mx_env_copy(void) {
     char **env_copy = NULL;
     int len;
 
-    for (len = 0; environ[len]; len++) {
+    while (environ[len]) {
+        len++;
     }
     if (environ[0]) {
         env_copy = malloc((len + 1) * sizeof(char*));
