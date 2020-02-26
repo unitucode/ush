@@ -43,9 +43,9 @@ static void main_cycle(void) {
     t_prompt *prompt = malloc(sizeof(t_prompt));
     extern char **environ;
     int fd = isatty(1) ? 1 : 2;
+
     if (!isatty(1) && !isatty(2))
         fd = open("/dev/null", O_RDONLY);
-
     while (result != -1) {
         mx_get_input(prompt, fd, &result);
         dprintf(fd, "\r\n");
