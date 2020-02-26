@@ -43,8 +43,13 @@ static bool check_link_newdir(t_map **map, char *newdir) {
 static int cd_flag_s(t_map **map, char *newdir) {
     if (newdir == NULL)
         mx_change_dir(NULL, map, 1);
-    else if (newdir[0] == '/')
+    else if (newdir[0] == '/') {
+        if (mx_check_dir_exists(newdir) == false) {
+            fprintf(stderr, "cd: %s: No such file or directory\n", newdir);
+            return 0;
+        }
         mx_check_s_slash(newdir, map);
+    }
     else {
         if (check_link_newdir(map, newdir)) {
             fprintf(stderr, "cd: %s: is not a directory.\n", newdir);
