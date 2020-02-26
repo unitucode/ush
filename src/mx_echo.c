@@ -44,12 +44,10 @@ static char *replace_octal(char *arg) {
 }
 
 static char *replace_escape(char *arg, bool *is_nl) {
-    char *save = NULL;
     int index = 0;
     char *result = mx_strnew(ARG_MAX);
 
     if ((index = mx_get_substr_index(arg, "\\c")) >= 0) {
-        save = arg;
         strncpy(result, arg, index);
         *is_nl = false;
     }

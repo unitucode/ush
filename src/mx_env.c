@@ -14,8 +14,8 @@ static void env_deinit(char ***env, char **path, char **filename) {
 static int exec_process(char *filename, char **argv, int fd) {
     extern char **environ;
     t_process *process = mx_create_process(fd);
-
     int retval = mx_env_exec(process, filename, argv, environ);
+
     mx_del_process(&process);
     return retval;
 }
@@ -26,6 +26,7 @@ int mx_env(char **argv, int fd) {
     char *path = NULL;
     int retval = 0;
     int i = 0;
+
     if (!(retval = mx_env_parse_flags(argv, &path, &i))) {
         mx_env_parse_vars(argv, &path, &i);
         if (argv[i] == NULL)
