@@ -37,7 +37,8 @@ void mx_handle_print_char(t_prompt *prompt) {
         backspace_char(prompt, prompt->cursor_index - 1);
         return;
     }
-    if (!strcmp(prompt->buff, MX_DELETE_KEY)) {
+    if (!strcmp(prompt->buff, MX_DELETE_KEY)
+        || !strcmp(prompt->buff, "\x04")) {
         delete_char(prompt, prompt->cursor_index);
         return;
     }
