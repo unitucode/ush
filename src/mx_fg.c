@@ -43,7 +43,7 @@ static t_list *get_process(char *arg) {
     t_list **processes = mx_get_list_procs();
 
     if (!arg)
-        return *processes;
+        return mx_get_last_process(*processes);
     arg++;
     len = strlen(arg);
     for (unsigned int i = 0; i < len; i++) {

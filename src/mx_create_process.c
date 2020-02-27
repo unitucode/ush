@@ -10,6 +10,15 @@ static void set_signals(sigset_t *signals, int fd) {
         sigdelset(signals, SIGTSTP);
 }
 
+t_list *mx_get_last_process(t_list *processes) {
+    for (t_list *cur = processes; cur; cur = cur->next) {
+        if (!cur->next) {
+            return cur;
+        }
+    }
+    return NULL;
+}
+
 t_process *mx_create_process(int fd) {
     t_process *process = malloc(sizeof(t_process));
 

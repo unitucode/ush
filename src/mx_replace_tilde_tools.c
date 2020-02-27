@@ -41,3 +41,10 @@ char *mx_check_user_file(char *tmp_name) {
     mx_strdel(&pass_file);
     return NULL;
 }
+
+char *mx_get_invalid_sub(char **arg, char **result, char **sub) {
+    mx_strdel(arg);
+    mx_strdel(result);
+    mx_strdel(sub);
+    return NULL;
+}

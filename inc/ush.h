@@ -157,6 +157,7 @@ char *mx_get_invalid_sub(char **arg, char **result, char **sub);
 void mx_kill_process(void);
 void mx_exec_fork(char **arguments, int fd);
 bool check_stdin(int *exit_code);
+t_list *mx_get_last_process(t_list *processes);
 char *mx_get_output_fd(int fd);
 char *mx_check_user_file(char *tmp_name);
 bool mx_check_user(char *user_name);
