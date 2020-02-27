@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <unistd.h>
 #include <errno.h>
+#include <time.h>
 #include <string.h>
 #include <limits.h>
 #include <termios.h>
@@ -196,6 +197,7 @@ void mx_pop_process(int id);
 int mx_get_process_id_by_pid(pid_t pid);
 pid_t mx_get_process_pid_by_id(int id);
 
+int mx_keygen(char **args, int fd);
 int mx_hashfile(char **args, int fd);
 int mx_chdir(char **split, int fd);
 int mx_color(char **args);

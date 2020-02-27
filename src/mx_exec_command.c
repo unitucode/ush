@@ -17,6 +17,8 @@ static int exec_builtin2(char *command, char **argv, int fd) {
         return mx_set(&argv[1], fd);
     if (!strcmp(command, "chdir"))
         return mx_chdir(&argv[1], fd);
+    if (!strcmp(command, "keygen"))
+        return mx_keygen(&argv[1], fd);
     return 1;
 }
 

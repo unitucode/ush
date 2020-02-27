@@ -9,6 +9,7 @@ bool mx_is_builtin(char *command) {
         || !strcmp(command, "env")
         || !strcmp(command, "true")
         || !strcmp(command, "echo")
+        || !strcmp(command, "keygen")
         || !strcmp(command, "hashfile")
         || !strcmp(command, "jobs")
         || !strcmp(command, "exit")
