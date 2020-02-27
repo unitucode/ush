@@ -39,7 +39,7 @@ static void get_parameter_sub(int *o_sub, int *c_sub,
         if (arg[*i] == '(' && !mx_isescape_char(arg, *i))
             brace++;
         if (arg[*i] == ')' && !mx_isescape_char(arg, *i)) {
-            if (--brace && !brace) {
+            if (brace-- && !brace) {
                 inc_subs(c_sub, i, 1);
                 break;
             }
