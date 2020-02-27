@@ -16,7 +16,8 @@ static unsigned int get_len_spec(char *spec) {
     return i;
 }
 
-static char *check_spec_char(char *arg, unsigned int *len, unsigned int var_len) {
+static char *check_spec_char(char *arg, unsigned int *len,
+                             unsigned int var_len) {
     t_map **map = mx_get_lenv();
     char key[2];
     unsigned int l_s = var_len ? var_len : get_len_spec(arg);
