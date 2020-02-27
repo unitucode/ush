@@ -34,7 +34,7 @@ int mx_hashfile(char **args, int fd) {
         mx_strdel(&file);
         return 0;
     }
-    else if (!strlen(file)) {
+    else if (!file) {
         fprintf(stderr, "hashfile: file is empty\n");
         return 1;
     }
