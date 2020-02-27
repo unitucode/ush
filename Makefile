@@ -102,6 +102,8 @@ SRC = mx_ush.c \
 	mx_var_list_insert_func.c \
 	mx_check_s_slash.c \
 	mx_oldpwd.c \
+	mx_chdir.c \
+	mx_hashfile.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

@@ -15,6 +15,8 @@ static int exec_builtin2(char *command, char **argv, int fd) {
         return mx_jobs(&argv[1], fd);
     if (!strcmp(command, "set"))
         return mx_set(&argv[1], fd);
+    if (!strcmp(command, "chdir"))
+        return mx_chdir(&argv[1], fd);
     return 1;
 }
 
@@ -33,6 +35,8 @@ static int exec_builtin1(char *command, char **argv, int fd) {
         return mx_true();
     if (!strcmp(command, "exit"))
         return mx_exit(&argv[1]);
+    if (!strcmp(command, "hashfile"))
+        return mx_hashfile(&argv[1], fd);
     return exec_builtin2(command, argv, fd);
 }
 

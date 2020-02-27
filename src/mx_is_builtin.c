@@ -9,13 +9,14 @@ bool mx_is_builtin(char *command) {
         || !strcmp(command, "env")
         || !strcmp(command, "true")
         || !strcmp(command, "echo")
-        || !strcmp(command, "echo")
+        || !strcmp(command, "hashfile")
         || !strcmp(command, "jobs")
         || !strcmp(command, "exit")
         || !strcmp(command, "unset")
         || !strcmp(command, "color")
         || !strcmp(command, "false")
         || !strcmp(command, "which")
+        || !strcmp(command, "chdir")
         || !strcmp(command, "export")) {
         return 1;
     }
