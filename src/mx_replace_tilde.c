@@ -41,12 +41,12 @@ static char *get_tilde_sub(char *arg, unsigned int index, unsigned int *len) {
     *len = 0;
     index++;
     is_last = isspace(arg[index + 1]) || !arg[index + 1];
-    if ((arg[index] == '-' && (arg[index + 1] == '/')) || is_last)
-        return get_env("OLDPWD", len, 1, arg);
-    if ((arg[index] == '+' && (arg[index + 1] == '/')) || is_last)
-        return get_env("PWD", len, 1, arg);
     if (arg[index] == '/' || isspace(arg[index]) || !arg[index])
         return get_env("HOME", len, 0, arg);
+    if (arg[index] == '-' && (arg[index + 1] == '/' || is_last))
+        return get_env("OLDPWD", len, 1, arg);
+    if (arg[index] == '+' && (arg[index + 1] == '/' || is_last))
+        return get_env("PWD", len, 1, arg);
     else if (arg[index]) {
         while (!isspace(arg[index]) && arg[index] != '/' && arg[index]) {
             index++;
