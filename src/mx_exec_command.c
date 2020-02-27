@@ -32,7 +32,7 @@ static int exec_builtin1(char *command, char **argv, int fd) {
     if (!strcmp(command, "true"))
         return mx_true();
     if (!strcmp(command, "exit"))
-        mx_exit(&argv[1]);
+        return mx_exit(&argv[1]);
     return exec_builtin2(command, argv, fd);
 }
 

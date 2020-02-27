@@ -198,7 +198,7 @@ pid_t mx_get_process_pid_by_id(int id);
 
 int mx_color(char **args);
 int mx_jobs(char **args, int fd);
-void mx_exit(char **args);
+int mx_exit(char **args);
 int mx_true(void);
 int mx_false(void);
 int mx_echo(char **args, int fd);
