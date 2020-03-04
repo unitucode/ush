@@ -34,6 +34,7 @@ static bool check_link_newdir(t_map **map, char *newdir) {
     mx_strdel(&pwd);
     mx_strdel(&real_pwd);
     real_path = realpath(path, NULL);
+    path = mx_clear_slash_end(mx_parse_path(NULL, path, map));
     result = (mx_strcmp(path, real_path) == 0) ? false : true;
     mx_strdel(&path);
     mx_strdel(&real_path);

@@ -38,7 +38,7 @@ static char *collect_path(char **split_path) {
 static char *check_path(char *path) {
     char **split_path = mx_strsplit(path, '/');
     char *result;
-
+    
     for (int i = 0; split_path[i]; i++) {
         if (!strcmp(split_path[i], ".")) {
             mx_strdel(&split_path[i]);

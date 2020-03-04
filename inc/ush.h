@@ -191,6 +191,7 @@ void mx_oldpwd(char *newdir, t_map **map, int fd);
 void mx_home(t_map **map);
 void mx_flag_p_slash(char *newdir, t_map **map);
 void mx_flag_p_full_path(t_map **map, char *newdir);
+char *mx_clear_slash_end(char *str);
 
 t_list **mx_get_list_procs(void);
 void mx_pop_process(int id);

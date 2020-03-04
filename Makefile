@@ -103,6 +103,7 @@ SRC = mx_ush.c \
 	mx_check_s_slash.c \
 	mx_oldpwd.c \
 	mx_chdir.c \
+	mx_clear_slash_end.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
