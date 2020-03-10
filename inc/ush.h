@@ -16,6 +16,7 @@
 #include <sys/stat.h>
 #include <spawn.h>
 #include <libgen.h>
+#include <wordexp.h>
 #include "inc/libmx.h"
 
 #define MX_SHELL_NAME "ush"
