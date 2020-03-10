@@ -1,5 +1,5 @@
 # ush
-### Developers
+### Developers:
 [Oleksandr Khomin](https://github.com/AIexMoran)
 
 [Yurii Makohon](https://github.com/yuriimakohon)
