@@ -7,7 +7,7 @@
 [Maksim Avramenko](https://github.com/PowerMaxZ)
 
 ### Installation:
->**1. git clone --recursive**  
+>**1. git clone --recursive https://github.com/AIexMoran/ush**  
 >**2. make**  
 >**3. ./ush**
 
