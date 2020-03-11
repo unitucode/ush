@@ -157,6 +157,7 @@ void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
 void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i);
 char *mx_get_invalid_sub(char **arg, char **result, char **sub);
 void mx_kill_process(void);
+void mx_replace_sub_escapes(char **commands);
 void mx_exec_fork(char **arguments, int fd);
 bool check_stdin(int *exit_code);
 t_list *mx_get_last_process(t_list *processes);

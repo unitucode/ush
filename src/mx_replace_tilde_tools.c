@@ -6,6 +6,17 @@ static void clear_data(char **s2, char ***a_s1, char ***a_s2) {
     mx_strdel(s2);
 }
 
+void mx_replace_sub_escapes(char **commands) {
+    unsigned int i = 0;
+
+    while (commands[i]) {
+        commands[i] = mx_replace_escape(commands[i], "\\`",
+                                        MX_GRAVE_ACCENT, true);
+        commands[i] = mx_replace_escape(commands[i], "\\\\",  '\\', true);
+        i++;
+    }
+}
+
 bool mx_check_user(char *user_name) {
     DIR *dir = opendir("/Users/");
     struct dirent *entry;
