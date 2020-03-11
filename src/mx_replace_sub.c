@@ -45,9 +45,9 @@ static void parse_commands(char **commands, char *sub, char *arg, int *code) {
     char *output = NULL;
 
     for (unsigned int i = 0; commands[i]; i++) {
-        commands[i] = mx_replace_escape(commands[i], "\\\\",  '\\', true);
         commands[i] = mx_replace_escape(commands[i], "\\`",
                                         MX_GRAVE_ACCENT, true);
+        commands[i] = mx_replace_escape(commands[i], "\\\\",  '\\', true);
         if (!(arguments = mx_interpretate(commands[i], code))) {
             mx_del_strarr(&commands);
             mx_strdel(&sub);
