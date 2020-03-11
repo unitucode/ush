@@ -4,7 +4,7 @@
 
 [Yurii Makohon](https://github.com/yuriimakohon)
 
-[Maksim Avramenko](https://github.com/PowerMaxZ)
+[Maksym Avramenko](https://github.com/PowerMaxZ)
 
 ### Installation:
 >**1. git clone --recursive https://github.com/AIexMoran/ush**  
