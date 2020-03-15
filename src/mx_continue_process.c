@@ -6,7 +6,7 @@ void mx_continue_process(t_process *process, t_list **all_processes, int fd) {
     }
     dprintf(fd, "[%d]    %d continued  %s\n", process->pos, process->pid,
             process->cmd);
-    if (waitpid(process->gpid, &process->status, WUNTRACED) != -1) {
+    if (waitpid(-process->gpid, &process->status, WUNTRACED) != -1) {
         if (!MX_WIFSTOPPED(process->status)) {
             mx_del_node_list(all_processes, &process);
         }

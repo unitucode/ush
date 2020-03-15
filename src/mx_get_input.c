@@ -8,11 +8,15 @@ static void clear_prompt(t_prompt *prompt) {
     prompt->end = false;
 }
 
-static void set_code(char *buff, int *code, int index) {
-    if (buff[0] == '\x03' && strlen(buff) == 1)
+static void set_code(t_prompt *prompt, int *code) {
+    if (prompt->buff[0] == '\x03' && strlen(prompt->buff) == 1) {
+        clear_prompt(prompt);
         *code = 130;
-    if (buff[0] == '\x04' && !index && strlen(buff) == 1)
+    }
+    if (prompt->buff[0] == '\x04'
+        && !prompt->index && strlen(prompt->buff) == 1) {
         *code = -1;
+    }
 }
 
 static void clear_view(t_prompt *prompt, int fd) {
@@ -22,7 +26,7 @@ static void clear_view(t_prompt *prompt, int fd) {
 }
 
 static bool handle_key(t_prompt *prompt, int fd, int *code) {
-    set_code(prompt->buff, code, prompt->index);
+    set_code(prompt, code);
     if (mx_match(prompt->buff, MX_NEW_LINE_CHARS))
         return false;
     if (prompt->buff[0] == '\x04' && !prompt->index)
