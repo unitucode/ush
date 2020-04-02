@@ -72,6 +72,5 @@ int main(int argc, char **argv) {
     }
     main_cycle();
     mx_deinit();
-    system("leaks -q ush");
     return 0;
 }
