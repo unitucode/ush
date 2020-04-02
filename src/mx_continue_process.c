@@ -1,7 +1,7 @@
 #include "ush.h"
 
 void mx_continue_process(t_process *process, t_list **all_processes, int fd) {
-    if (kill(-process->gpid, SIGCONT)) {
+    if (kill(-process->pid, SIGCONT)) {
         fprintf(stderr, "fg: %s\n", strerror(errno));
     }
     dprintf(fd, "[%d]    %d continued  %s\n", process->pos, process->pid,

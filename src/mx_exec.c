@@ -18,7 +18,8 @@ static bool run_process(t_process *process,
     process->status = posix_spawn(&process->pid, filename, &process->actions,
                                   &process->attrs, argv, env);
     process->gpid = getpgid(process->pid);
-    tcsetpgrp(STDOUT_FILENO, process->pid);
+    tcsetpgrp(STDIN_FILENO, process->gpid);
+    kill(-process->pid, SIGCONT);
     if (process->status) {
         return false;
     }
@@ -54,14 +55,14 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
         retval = 126;
     }
     else if (waitpid(-process->pid, &process->status, WUNTRACED) != -1) {
-        tcsetpgrp(STDOUT_FILENO, getpgrp());
+        tcsetpgrp(STDIN_FILENO, getpgrp());
         mx_enable_canon();
         if (MX_WIFSTOPPED(process->status)) {
             add_process(process);
         }
     }
     else {
-        tcsetpgrp(STDOUT_FILENO, getpgrp());
+        tcsetpgrp(STDIN_FILENO, getpgrp());
         mx_enable_canon();
     }
     return retval != 126 ? MX_WEXITSTATUS(process->status) : retval;

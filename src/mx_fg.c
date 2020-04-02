@@ -83,9 +83,9 @@ int mx_fg(char **args, int fd) {
     if (process) {
         f_process = (t_process*)process->data;
         mx_disable_canon();
-        tcsetpgrp(STDOUT_FILENO, f_process->gpid);
+        tcsetpgrp(STDIN_FILENO, f_process->gpid);
         mx_continue_process(f_process, all_processes, fd);
-        tcsetpgrp(STDOUT_FILENO, getpgrp());
+        tcsetpgrp(STDIN_FILENO, getpgrp());
         mx_enable_canon();
     }
     else {
