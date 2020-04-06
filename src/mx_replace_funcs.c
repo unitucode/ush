@@ -28,7 +28,7 @@ void mx_inc_val_var(unsigned int *len, unsigned int add, char *var) {
 
 void mx_skip_quotes_if(bool *is_quotes, char *arg, unsigned int *i) {
     if (arg[*i] == MX_D_QUOTES && !mx_isescape_char(arg, *i))
-            *is_quotes = !*is_quotes;
+        *is_quotes = !*is_quotes;
     if (!*is_quotes)
         mx_skip_quotes(arg, i, MX_S_QUOTES);
 }

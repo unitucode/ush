@@ -62,11 +62,20 @@ static void parse_commands(char **commands, char *sub, char *arg, int *code) {
 bool mx_get_sub(char *arg, char *sub, int *code) {
     char **commands = NULL;
     bool sub_type = true;
+    char *sub_trimmed = NULL;
 
     if (sub[0] == '$')
         sub_type = false;
-    if (mx_remove_subchar(sub))
+    if (mx_remove_subchar(sub)) {
+        sub_trimmed = mx_strtrim(sub);
+        if (!strlen(sub_trimmed)) {
+            mx_strdel(&sub);
+            mx_strdel(&sub_trimmed);
+            return true;
+        }
+        mx_strdel(&sub_trimmed);
         commands = mx_parse_command(sub, code);
+    }
     if (*code || !commands)
         return false;
     if (sub_type)

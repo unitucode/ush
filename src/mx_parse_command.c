@@ -2,9 +2,13 @@
     
 char **mx_parse_command(char *command, int *code) {
     char **commands = NULL;
+    char *cmd_trimmed = mx_strtrim(command);
 
-    if (!strlen(command))
+    if (!strlen(cmd_trimmed)) {
+        mx_strdel(&cmd_trimmed);
         return NULL;
+    }
+    mx_strdel(&cmd_trimmed);
     if ((*code = mx_preinterpretate(command)))
         return NULL;
     commands = mx_split_commands(command);

@@ -71,8 +71,9 @@ char *mx_replace_substitution(char *arg, int *code) {
         mx_skip_quotes_if(&is_quotes, arg, &i);
         if ((sub = get_substitution(&i_s[0], &i_s[1], &i, arg))) {
             strncat(result, arg + i_s[2], i_s[0] - i_s[2]);
-            if (!mx_get_sub(result, sub, code))
+            if (!mx_get_sub(result, sub, code)) {
                 return mx_get_invalid_sub(&arg, &result, &sub);
+            }
             i = i_s[1];
             i_s[2] = i + 1;
         }
