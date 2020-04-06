@@ -12,8 +12,7 @@ bool mx_check_quotes(char *command) {
             && !mx_isescape_char(command, i) && !s_quotes) {
             d_quotes = !d_quotes;
         }
-        if (command[i] == MX_S_QUOTES
-            && !mx_isescape_char(command, i) && !d_quotes) {
+        if (command[i] == MX_S_QUOTES && !d_quotes) {
             s_quotes = !s_quotes;
         }
     }
