@@ -16,6 +16,7 @@ void mx_oldpwd(char *newdir, t_map **map, int fd) {
     }
     dprintf(fd, "%s\n", mx_get_map(map, "OLDPWD"));
     mx_change_map(map, newdir);
+    mx_strdel(&str);
 }
 
 void mx_home(t_map **map) {
