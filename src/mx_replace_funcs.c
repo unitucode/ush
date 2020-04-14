@@ -1,8 +1,8 @@
 #include "ush.h"
 
-void mx_skip_exps_quots(char *arg, unsigned int *index, bool *is_quotes) {
+void mx_skip_exps_quotes(char *arg, unsigned int *index, bool *is_quotes) {
     if (arg[*index] == MX_D_QUOTES && !mx_isescape_char(arg, *index))
-            *is_quotes = !*is_quotes;
+        *is_quotes = !*is_quotes;
     if (!*is_quotes)
         mx_skip_quotes(arg, index, MX_S_QUOTES);
     mx_skip_quotes(arg, index, MX_GRAVE_ACCENT);

@@ -150,7 +150,7 @@ void mx_del_node_list(t_list **list, t_process **process);
 void mx_enable_signals(t_process *process);
 void mx_disable_signals(t_process *process);
 void mx_continue_process(t_process *process, t_list **all_processes, int fd);
-void mx_skip_exps_quots(char *arg, unsigned int *index, bool *is_quotes);
+void mx_skip_exps_quotes(char *arg, unsigned int *index, bool *is_quotes);
 bool mx_replace_env_var(char *result, char *env, unsigned int *index,
                         unsigned int len);
 void mx_inc_val_var(unsigned int *len, unsigned int add, char *var);
@@ -200,6 +200,7 @@ void mx_pop_process(int id);
 int mx_get_process_id_by_pid(pid_t pid);
 pid_t mx_get_process_pid_by_id(int id);
 
+int mx_bye(char **args);
 int mx_chdir(char **split, int fd);
 int mx_color(char **args);
 int mx_jobs(char **args, int fd);
