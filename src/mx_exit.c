@@ -11,7 +11,7 @@ static bool is_number_arg(char *arg) {
 
 int mx_exit(char **args) {
     int code = 0;
-    system("leaks -q ush");
+    // system("leaks -q ush");
 
     if (mx_arr_size(args) > 1 && is_number_arg(args[0])) {
         fprintf(stderr, "exit: too many arguments\n");

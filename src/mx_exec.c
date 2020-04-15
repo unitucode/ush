@@ -30,6 +30,8 @@ static void add_process(t_process *process) {
     t_list **list = mx_get_list_procs();
     t_list *tmp = *list;
 
+    tcsetpgrp(STDIN_FILENO, getpgrp());
+        mx_enable_canon();
     while (tmp) {
         if (!tmp->next) {
             break;
@@ -55,15 +57,10 @@ int mx_exec(t_process *process, char *filename, char **argv, char **env) {
         retval = 126;
     }
     else if (waitpid(-process->pid, &process->status, WUNTRACED) != -1) {
-        tcsetpgrp(STDIN_FILENO, getpgrp());
-        mx_enable_canon();
-        if (MX_WIFSTOPPED(process->status)) {
+        if (MX_WIFSTOPPED(process->status))
             add_process(process);
-        }
     }
-    else {
-        tcsetpgrp(STDIN_FILENO, getpgrp());
-        mx_enable_canon();
-    }
+    tcsetpgrp(STDIN_FILENO, getpgrp());
+    mx_enable_canon();
     return retval != 126 ? MX_WEXITSTATUS(process->status) : retval;
 }
