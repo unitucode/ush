@@ -16,7 +16,7 @@ void mx_kill_process(void) {
 
     for (t_list *cur = *processes; cur; cur = cur->next) {
         tmp = (t_process*)cur->data;
-        kill(-tmp->gpid, SIGKILL);
+        kill(-tmp->pid, SIGKILL);
         mx_del_node_list(processes, &tmp);
     }
 }

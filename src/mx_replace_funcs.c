@@ -21,6 +21,15 @@ bool mx_replace_env_var(char *result, char *env, unsigned int *index,
     return true;
 }
 
+bool mx_check_trimmed_str(char *sub_trimmed, char *sub) {
+    bool retval = strlen(sub_trimmed) == 0;
+
+    mx_strdel(&sub_trimmed);
+    if (retval)
+        mx_strdel(&sub);
+    return retval;
+}
+
 void mx_inc_val_var(unsigned int *len, unsigned int add, char *var) {
     *len += add;
     mx_strdel(&var);

@@ -68,12 +68,8 @@ bool mx_get_sub(char *arg, char *sub, int *code) {
         sub_type = false;
     if (mx_remove_subchar(sub)) {
         sub_trimmed = mx_strtrim(sub);
-        if (!strlen(sub_trimmed)) {
-            mx_strdel(&sub);
-            mx_strdel(&sub_trimmed);
+        if (mx_check_trimmed_str(sub_trimmed, sub))
             return true;
-        }
-        mx_strdel(&sub_trimmed);
         commands = mx_parse_command(sub, code);
     }
     if (*code || !commands)

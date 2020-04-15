@@ -164,6 +164,7 @@ t_list *mx_get_last_process(t_list *processes);
 char *mx_get_output_fd(int fd);
 char *mx_check_user_file(char *tmp_name);
 bool mx_check_user(char *user_name);
+bool mx_check_trimmed_str(char *sub_trimmed, char *sub);
 void mx_kill_process();
 void mx_print_color(int color);
 void mx_init(void);
