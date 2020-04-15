@@ -176,6 +176,7 @@ void mx_deinit(void);
 char *mx_parse_path(char *pwd, char *newdir, t_map **map);
 char **mx_make_null_index(char **split, int index);
 bool mx_is_builtin(char *command);
+bool mx_builtin_which(char *file, int *mode);
 void mx_increment_shlvl(void);
 void mx_change_dir(char *newdir, t_map **map, int fd);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
