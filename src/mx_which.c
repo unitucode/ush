@@ -34,14 +34,14 @@ static bool check_dir(char *path, char *file) {
     return 0;
 }
 
-static bool search_exe(char *file, int mode, int fd) {
+static bool search_exe(char *file, int *mode, int fd) {
     char **paths = mx_strsplit(mx_get_var_val(SHELL, "PATH"), ':');
-    bool retval = 1;
+    bool retval = mx_builtin_which(file, mode);
 
     if (paths) {
         for (int i = 0; paths[i]; i++)
             if (check_dir(paths[i], file)) {
-                if (mode != 2)
+                if (*mode != 2)
                     dprintf(fd, "%s/%s\n", paths[i], file);
                 retval = 0;
                 if (mode == 0) {
@@ -51,7 +51,7 @@ static bool search_exe(char *file, int mode, int fd) {
             }
         mx_del_strarr(&paths);
     }
-    if (retval)
+    if (retval && *mode != 2)
         fprintf(stderr, "%s not found\n", file);
     return retval;
 }
@@ -65,10 +65,11 @@ static int parse_flags(char **flags, int *mode) {
         for (int j = 1; flags[i][j] != '\0'; j++)
             if (flags[i][j] == 's')
                 *mode = 2;
-            else if (flags[i][j] == 'a' && *mode != 2)
-                *mode = 1;
-            else if (flags[i][j] != '-'
-                     || (flags[i][j] == '-' && j == 2)) {
+            else if (flags[i][j] == 'a') {
+                if (*mode != 2)
+                    *mode = 1;
+            }
+            else if (flags[i][j] != '-' || (flags[i][j] == '-' && j == 2)) {
                 fprintf(stderr, "which: bad option: -%c\n", flags[i][j]);
                 return -1;
             }
@@ -89,7 +90,7 @@ int mx_which(char **args, int fd) {
     }
     if (first_arg_index != -1)
         for (int i = first_arg_index; args[i]; i++)
-            end_status = end_status | search_exe(args[i], mode, fd);
+            end_status = end_status | search_exe(args[i], &mode, fd);
     else
         end_status = 1;
     return end_status;

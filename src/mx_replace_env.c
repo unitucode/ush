@@ -86,7 +86,7 @@ char *mx_replace_env(char *arg, int *code) {
     bool is_quotes = false;
 
     for (; mx_get_char_index(&arg[index[0]], '$') >= 0; index[0]++) {
-        mx_skip_exps_quots(arg, &index[0], &is_quotes);
+        mx_skip_exps_quotes(arg, &index[0], &is_quotes);
         if (arg[index[0]] == '$' && !mx_isescape_char(arg, index[0])) {
             strncat(result, arg + index[1], index[0] - index[1]);
             len = 0;

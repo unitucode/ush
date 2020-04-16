@@ -1,20 +1,17 @@
 #include "ush.h"
 
-static t_list *split(char *command);
-static int get_next_command(char *command);
-
-char **mx_split_commands(char *command) {
-    t_list *commands = split(command);
-    size_t size = mx_list_size(commands);
-    char **cmds = malloc(sizeof(char*) * (size + 1));
-    unsigned int index = 0;
-
-    cmds[size] = NULL;
-    for (t_list *cur = commands; cur; cur = cur->next) {
-        cmds[index++] = strdup(cur->data);
+static int get_next_command(char *command) {
+    for (unsigned int i = 0; i < strlen(command); i++) {
+        mx_skip_quotes(command, &i, MX_GRAVE_ACCENT);
+        mx_skip_quotes(command, &i, MX_S_QUOTES);
+        mx_skip_quotes(command, &i, MX_D_QUOTES);
+        mx_skip_expansion(command, &i);
+        if (command[i] == ';')
+            return i;
+        if (!command[i + 1] && command[i] != ';')
+            return i + 1;
     }
-    mx_del_list(&commands);
-    return cmds;
+    return -1;
 }
 
 static t_list *split(char *command) {
@@ -34,16 +31,16 @@ static t_list *split(char *command) {
     return commands;
 }
 
-static int get_next_command(char *command) {
-    for (unsigned int i = 0; i < strlen(command); i++) {
-        mx_skip_quotes(command, &i, MX_GRAVE_ACCENT);
-        mx_skip_quotes(command, &i, MX_S_QUOTES);
-        mx_skip_quotes(command, &i, MX_D_QUOTES);
-        mx_skip_expansion(command, &i);
-        if (command[i] == ';')
-            return i;
-        if (!command[i + 1] && command[i] != ';')
-            return i + 1;
+char **mx_split_commands(char *command) {
+    t_list *commands = split(command);
+    size_t size = mx_list_size(commands);
+    char **cmds = malloc(sizeof(char*) * (size + 1));
+    unsigned int index = 0;
+
+    cmds[size] = NULL;
+    for (t_list *cur = commands; cur; cur = cur->next) {
+        cmds[index++] = strdup(cur->data);
     }
-    return -1;
+    mx_del_list(&commands);
+    return cmds;
 }

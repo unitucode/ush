@@ -8,6 +8,7 @@ LBMXD = libmx
 LMBX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
+	mx_bye.c \
 	mx_exec_fork.c \
 	mx_replace_tilde_tools.c \
 	mx_replace_funcs.c \
@@ -104,6 +105,7 @@ SRC = mx_ush.c \
 	mx_oldpwd.c \
 	mx_chdir.c \
 	mx_clear_slash_end.c \
+	mx_builtin_which.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

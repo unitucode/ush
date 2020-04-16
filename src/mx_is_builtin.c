@@ -16,7 +16,8 @@ bool mx_is_builtin(char *command) {
         || !strcmp(command, "false")
         || !strcmp(command, "which")
         || !strcmp(command, "chdir")
-        || !strcmp(command, "export")) {
+        || !strcmp(command, "export")
+        || !strcmp(command, "bye")) {
         return 1;
     }
     return 0;
