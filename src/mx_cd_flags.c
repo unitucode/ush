@@ -75,8 +75,6 @@ void mx_flag_p_full_path(t_map **map, char *newdir) {
         chdir("/");
         chdir(real_path);
         mx_strdel(&pwd);
-        mx_strdel(&real_path);
-        real_path = getcwd(NULL, 2048);
         mx_change_map(map, real_path);
         mx_put_pwd(real_path, mx_get_map(map, "OLDPWD"));
         mx_strdel(&path);

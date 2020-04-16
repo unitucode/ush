@@ -91,5 +91,7 @@ char *mx_parse_path(char *path, char *newdir, t_map **map) {
     mx_strdel(&temp);
     temp = mx_strndup(path, mx_strlen(path));
     mx_strdel(&path);
+    chdir("/");
+    chdir(temp);
     return temp;
 }
