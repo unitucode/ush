@@ -18,7 +18,8 @@ static bool run_process(t_process *process,
     process->status = posix_spawn(&process->pid, filename, &process->actions,
                                   &process->attrs, argv, env);
     process->gpid = getpgid(process->pid);
-    tcsetpgrp(STDOUT_FILENO, process->gpid);
+    tcsetpgrp(STDIN_FILENO, process->gpid);
+    kill(-process->pid, SIGCONT);
     if (process->status) {
         return false;
     }
@@ -29,9 +30,12 @@ static void add_process(t_process *process) {
     t_list **list = mx_get_list_procs();
     t_list *tmp = *list;
 
+    tcsetpgrp(STDIN_FILENO, getpgrp());
+    mx_enable_canon();
     while (tmp) {
-        if (!tmp->next)
+        if (!tmp->next) {
             break;
+        }
         tmp = tmp->next;
     }
     mx_push_back(list, process);
@@ -39,7 +43,7 @@ static void add_process(t_process *process) {
         process->pos = ((t_process*)tmp->data)->pos + 1;
     else
         process->pos = 1;
-    printf("[%d]    %d suspended  %s\n", process->pos, process->pid,
+    printf("[%d]    %d suspended  %s\n", process->pos, process->pid, 
            process->cmd);
 }
 
