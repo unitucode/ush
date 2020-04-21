@@ -4,6 +4,8 @@ void mx_put_pwd(char *pwd, char *oldpwd) {
     char *new_pwd = mx_strjoin("PWD=", pwd);
     char *new_oldpwd = mx_strjoin("OLDPWD=", oldpwd);
 
+    chdir("/");
+    chdir(pwd);
     mx_var_list_insert(SHELL, new_pwd);
     mx_var_list_insert(EXP, new_pwd);
     mx_putenv(new_pwd);
