@@ -11,5 +11,8 @@ void mx_check_s_slash(char *newdir, t_map **map) {
     else {
         fprintf(stderr, "cd: %s: is not a directory.\n", newdir);
         mx_strdel(&str);
+        str = mx_get_map(map, "PWD");
+        chdir("/");
+        chdir(str);
     }
 }

@@ -28,8 +28,6 @@ int mx_cd(char **split, int fd) {
     return 1;
 }
 
-
-
 void mx_change_dir(char *newdir, t_map **map, int fd) {
     int result;
 
@@ -41,8 +39,7 @@ void mx_change_dir(char *newdir, t_map **map, int fd) {
         mx_oldpwd(newdir, map, fd);
         return;
     }
-    else
-        result = chdir(newdir);
+    result = chdir(newdir);
     if (result < 0) {
         fprintf(stderr, "cd: %s: ", newdir);
         perror("");
@@ -58,7 +55,6 @@ void mx_change_map(t_map **map, char *newdir) {
     if (strcmp(newdir, "~OLDPWD") != 0) {
         tmp = mx_strcpy(tmp, mx_get_map(map, "PWD"));
         result_path = mx_parse_path(tmp, newdir, map);
-        printf("result = %s\nchanged = %s\nfull = %s\n", result_path, tmp, newdir);
         result_path = mx_clear_slash_end(result_path);
         mx_put_map(map, "OLDPWD", strdup(mx_get_map(map, "PWD")));
         mx_put_map(map, "PWD", strdup(result_path));

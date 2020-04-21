@@ -4,7 +4,6 @@ bool mx_is_builtin(char *command) {
     if (!strcmp(command, "pwd")
         || !strcmp(command, "cd")
         || !strcmp(command, "fg")
-        || !strcmp(command, "fg")
         || !strcmp(command, "set")
         || !strcmp(command, "env")
         || !strcmp(command, "true")
