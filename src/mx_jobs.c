@@ -1,6 +1,17 @@
 #include "ush.h"
 
-static void check_status(t_list **processes);
+static void check_status(t_list **processes) {
+    pid_t ret_pid = 0;
+    t_process *tmp = NULL;
+
+    for (t_list *cur = *processes; cur; cur = cur->next) {
+        tmp = (t_process*)cur->data;
+        ret_pid = waitpid(tmp->pid, &tmp->status, WNOHANG | WUNTRACED);
+        if (!MX_WIFSTOPPED(tmp->status) || ret_pid == -1) {
+            mx_del_node_list(processes, &tmp);
+        }
+    }
+}
 
 int mx_jobs(char **args, int fd) {
     t_list **processes = mx_get_list_procs();
@@ -18,17 +29,4 @@ int mx_jobs(char **args, int fd) {
         dprintf(fd, "%s\n", tmp->cmd);
     }
     return 0;
-}
-
-static void check_status(t_list **processes) {
-    pid_t ret_pid = 0;
-    t_process *tmp = NULL;
-
-    for (t_list *cur = *processes; cur; cur = cur->next) {
-        tmp = (t_process*)cur->data;
-        ret_pid = waitpid(tmp->pid, &tmp->status, WNOHANG | WUNTRACED);
-        if (!MX_WIFSTOPPED(tmp->status) || ret_pid == -1) {
-            mx_del_node_list(processes, &tmp);
-        }
-    }
 }

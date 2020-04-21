@@ -28,8 +28,6 @@ int mx_cd(char **split, int fd) {
     return 1;
 }
 
-
-
 void mx_change_dir(char *newdir, t_map **map, int fd) {
     int result;
 
