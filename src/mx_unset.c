@@ -1,18 +1,5 @@
 #include "ush.h"
 
-static int unset_var(char *var) {
-    int result = 0;
-
-    result = unsetenv(var);
-    if (result != -1 && mx_match(var, MX_UNSET_ARG)) {
-        mx_var_list_delete(SHELL, var);
-        mx_var_list_delete(EXP, var);
-    }
-    else
-        result = -1;
-    return result;
-}
-
 static void unset_all(void) {
     t_list **shell = mx_get_var_list(SHELL);
     t_list *curr = *shell;
@@ -52,7 +39,7 @@ int mx_unset(char **args) {
 
     result = parse_flags(args, &idx, &mode);
     for (; args[idx] && result != 1; idx++) {
-        if (unset_var(args[idx]) == -1 && !result) {
+        if (mx_unset_var(args[idx]) == -1 && !result) {
             fprintf(stderr, "unset: %s: invalid parameter name\n", args[idx]);
             result = 1;
         }

@@ -106,6 +106,7 @@ SRC = mx_ush.c \
 	mx_chdir.c \
 	mx_clear_slash_end.c \
 	mx_builtin_which.c \
+	mx_unset_var.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \

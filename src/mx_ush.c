@@ -5,8 +5,9 @@ void mx_init(void) {
     mx_init_var_lists();
     mx_init_map_vars();
     mx_increment_shlvl();
-    mx_var_list_insert(SHELL,
-                       "PATH=/bin:/usr/bin:/usr/local/bin:/usr/sbin:/sbin");
+    mx_unset_var("OLDPWD");
+    if (getenv("PATH") == NULL)
+        mx_var_list_insert(SHELL, DEFAULT_PATH);
     mx_init_signals();
     tcgetattr(STDIN_FILENO, mx_get_tty());
     setvbuf(stdout, NULL, _IONBF, 0);

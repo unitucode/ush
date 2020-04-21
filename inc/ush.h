@@ -21,6 +21,7 @@
 
 #define MX_SHELL_NAME "ush"
 #define MX_SHELL_PROMPT "u$h> "
+#define DEFAULT_PATH "PATH=/bin:/usr/bin:/usr/local/bin:/usr/sbin:/sbin"
 #define MX_UP_ARROW "\x1b\x5b\x41"
 #define MX_DOWN_ARROW "\x1b\x5b\x42"
 #define MX_RIGHT_ARROW "\x1b\x5b\x43"
@@ -178,6 +179,7 @@ char **mx_make_null_index(char **split, int index);
 bool mx_is_builtin(char *command);
 bool mx_builtin_which(char *file, int *mode);
 void mx_increment_shlvl(void);
+int mx_unset_var(char *var);
 void mx_change_dir(char *newdir, t_map **map, int fd);
 void mx_cd_flags(char *flag, t_map **map, char *newdir);
 void mx_change_map(t_map **map, char *newdir);
