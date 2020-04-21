@@ -1,10 +1,7 @@
 # ush
-### Developers:
-[Oleksandr Khomin](https://github.com/AIexMoran)
 
-[Yurii Makohon](https://github.com/yuriimakohon)
-
-[Maksym Avramenko](https://github.com/PowerMaxZ)
+### ush
+![](https://github.com/AIexMoran/ush/blob/master/ush.gif)
 
 ### Installation:
 >**1. git clone --recursive https://github.com/AIexMoran/ush**  
@@ -29,5 +26,9 @@
 | env     | set the environment for command invocation             |
 | exit    | cause the shell to exit                                |
 
-### ush
-![](https://github.com/AIexMoran/ush/blob/master/ush.gif)
+### Developers:
+[Oleksandr Khomin](https://github.com/AIexMoran)
+
+[Yurii Makohon](https://github.com/yuriimakohon)
+
+[Maksym Avramenko](https://github.com/PowerMaxZ)
