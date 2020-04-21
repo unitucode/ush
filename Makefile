@@ -4,8 +4,9 @@ SRCD = src
 INCD = inc
 OBJD = obj
 LBMXD = libmx
+LIBMX = libmx
 
-LMBX = libmx.a
+LBMX = libmx.a
 INC = ush.h
 SRC = mx_ush.c \
 	mx_bye.c \
@@ -110,7 +111,7 @@ SRC = mx_ush.c \
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
 
-LBMXS = $(addprefix $(LBMXD)/, $(LMBX))
+LBMXS = $(addprefix $(LBMXD)/, $(LBMX))
 INCS = $(addprefix $(INCD)/, $(INC))
 SRCS = $(addprefix $(SRCD)/, $(SRC))
 OBJS = $(addprefix $(OBJD)/, $(SRC:%.c=%.o))
@@ -125,7 +126,10 @@ install: $(NAME) clean
 $(LBMXS):
 	@make -sC $(LBMXD)
 
-$(NAME): $(OBJS) $(LBMXS)
+$(LIBMX): $(LBMXS)
+	@make -sC $(LBMXD)
+	
+$(NAME): $(OBJS) $(LIBMX)
 	@$(CC) $(CFLAGS) $(LBMXS) $(OBJS) -o $@
 	@printf "\x1b[32;1m$@ created\x1b[0m\n"
 
