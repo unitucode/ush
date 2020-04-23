@@ -84,7 +84,6 @@ void mx_flag_p_full_path(t_map **map, char *newdir) {
         mx_change_dir(newdir, map, 1);
 }
 
-
 void mx_cd_flags(char *flag, t_map **map, char *newdir) {
     if (strcmp(flag, "-Ps") == 0 || strcmp(flag, "-sP") == 0) {
         if (cd_flag_s(map, newdir) == 1)
