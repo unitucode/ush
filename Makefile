@@ -43,6 +43,8 @@ SRC = mx_ush.c \
 	mx_handle_cursor.c \
 	mx_interpretate.c \
 	mx_check_quotes.c \
+	mx_home.c \
+	mx_flag_p_slash.c \
 	mx_split_commands.c \
 	mx_preinterpretate.c \
 	mx_handle_command.c \
