@@ -11,18 +11,10 @@ static void export_pwd_var(char *name, char *val) {
 }
 
 static void init_pwd_vars(t_map **map, char *path) {
-    if (getenv("OLDPWD") != NULL)
-        mx_put_map(map, strdup("OLDPWD"), strdup(getenv("OLDPWD")));
-    else {
-        mx_put_map(map, strdup("OLDPWD"), strdup(""));
-        export_pwd_var("OLDPWD", "");
-    }
-    if (getenv("PWD") != NULL)
-        mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
-    else {
-        mx_put_map(map, strdup("PWD"), strdup(path));
-        export_pwd_var("PWD", path);
-    }
+    mx_put_map(map, strdup("OLDPWD"), strdup(""));
+    export_pwd_var("OLDPWD", "");
+    mx_put_map(map, strdup("PWD"), strdup(path));
+    export_pwd_var("PWD", path);
 }
 
 void mx_init_map_vars(void) {
