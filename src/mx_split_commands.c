@@ -19,7 +19,7 @@ static t_list *split(char *command) {
     int len = 0;
     char *tmp_cmd = strdup(command);
     char *save = tmp_cmd;
-    
+
     for (unsigned int i = 0; len != -1; i++) {
         len = get_next_command(tmp_cmd);
         mx_push_back(&commands, strndup(tmp_cmd, len));
