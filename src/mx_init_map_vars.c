@@ -13,8 +13,12 @@ static void export_pwd_var(char *name, char *val) {
 static void init_pwd_vars(t_map **map, char *path) {
     mx_put_map(map, strdup("OLDPWD"), strdup(""));
     export_pwd_var("OLDPWD", "");
-    mx_put_map(map, strdup("PWD"), strdup(path));
-    export_pwd_var("PWD", path);
+    if (mx_check_dir_exists(getenv("PWD")))
+        mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
+    else {
+        mx_put_map(map, strdup("PWD"), strdup(path));
+        export_pwd_var("PWD", path);
+    }
 }
 
 void mx_init_map_vars(void) {
