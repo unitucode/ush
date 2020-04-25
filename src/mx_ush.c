@@ -5,6 +5,14 @@ void mx_init(void) {
     mx_init_var_lists();
     mx_init_map_vars();
     mx_increment_shlvl();
+    if (getenv("HOME") == NULL) {
+        struct passwd *pw = getpwuid(getuid());
+        char *home = mx_strjoin("HOME=", pw->pw_dir);
+
+        mx_putenv(home);
+        mx_var_list_insert(SHELL, home);
+        mx_strdel(&home);
+    }
     if (getenv("PATH") == NULL)
         mx_var_list_insert(SHELL, DEFAULT_PATH);
     mx_init_signals();

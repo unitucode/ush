@@ -7,7 +7,7 @@ static char *get_env(char *var, unsigned int *len, int add, char *arg) {
         *len += add;
         return strdup(result);
     }
-    return strndup(arg, 1);
+    return strndup(arg, 0);
 }
 
 static char *get_dir(char *arg, unsigned int *len,
