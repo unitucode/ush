@@ -5,7 +5,6 @@ void mx_init(void) {
     mx_init_var_lists();
     mx_init_map_vars();
     mx_increment_shlvl();
-    mx_unset_var("OLDPWD");
     if (getenv("PATH") == NULL)
         mx_var_list_insert(SHELL, DEFAULT_PATH);
     mx_init_signals();
