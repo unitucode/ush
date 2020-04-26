@@ -12,7 +12,8 @@ static bool check_pwd(char *pwd) {
             return true;
         }
     }
-    mx_strdel(&curr_dir);
+    if (curr_dir)
+        mx_strdel(&curr_dir);
     return false;
 }
 
