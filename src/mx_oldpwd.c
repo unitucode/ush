@@ -14,7 +14,8 @@ void mx_oldpwd(char *newdir, t_map **map, int fd) {
         mx_strdel(&str);
         return;
     }
-    dprintf(fd, "%s\n", mx_get_map(map, "OLDPWD"));
+    if (isatty(STDIN_FILENO))
+        dprintf(fd, "%s\n", mx_get_map(map, "OLDPWD"));
     mx_change_map(map, newdir);
     mx_strdel(&str);
 }
