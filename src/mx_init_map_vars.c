@@ -1,5 +1,21 @@
 #include "ush.h"
 
+static bool check_pwd(char *pwd) {
+    char *str = NULL;
+    char *curr_dir = getwd(NULL);
+
+    if (pwd) {
+        str = realpath(pwd, NULL);
+        if (str && curr_dir && !strcmp(curr_dir, str)) {
+            mx_strdel(&str);
+            mx_strdel(&curr_dir);
+            return true;
+        }
+    }
+    mx_strdel(&curr_dir);
+    return false;
+}
+
 static void export_pwd_var(char *name, char *val) {
     char var[NAME_MAX];
     char *arg[2] = {NULL, NULL};
@@ -13,7 +29,7 @@ static void export_pwd_var(char *name, char *val) {
 static void init_pwd_vars(t_map **map, char *path) {
     mx_put_map(map, strdup("OLDPWD"), strdup(""));
     export_pwd_var("OLDPWD", "");
-    if (mx_check_dir_exists(getenv("PWD")))
+    if (check_pwd(getenv("PWD")))
         mx_put_map(map, strdup("PWD"), strdup(getenv("PWD")));
     else {
         mx_put_map(map, strdup("PWD"), strdup(path));
