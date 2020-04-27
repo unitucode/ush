@@ -67,7 +67,7 @@ static char *replace_escape(char *arg, bool *is_nl) {
 
 int mx_echo(char **args, int fd) {
     bool is_nl = true;
-    bool is_e = true;
+    bool is_e = false;
     unsigned int index = 0;
     char *output = NULL;
 
