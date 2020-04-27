@@ -110,6 +110,8 @@ SRC = mx_ush.c \
 	mx_clear_slash_end.c \
 	mx_builtin_which.c \
 	mx_unset_var.c \
+	mx_change_dir.c \
+	mx_change_map.c \
 
 INCLUDE = -I $(LBMXD) \
 	-I $(INCD) \
