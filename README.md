@@ -26,6 +26,9 @@
 | env     | set the environment for command invocation             |
 | exit    | cause the shell to exit                                |
 
+### Tested systems:
+  - Mac OS Mojave
+
 ### Developers:
 [Oleksandr Khomin](https://github.com/AIexMoran)
 
