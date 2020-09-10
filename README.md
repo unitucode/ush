@@ -4,7 +4,7 @@
 ![](https://github.com/AIexMoran/ush/blob/master/ush.gif)
 
 ### Installation:
->**1. git clone --recursive https://github.com/AIexMoran/ush**  
+>**1. git clone --recursive https://github.com/unitucode/ush.git**  
 >**2. make**  
 >**3. ./ush**
 
